@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { GraduationCap, Settings, X, ChevronDown, ChevronRight } from "lucide-react";
 import { menuConfig } from "./menuData"; // Assuming your menuConfig array is saved here
-import { prisma }  from "@/lib/prisma";
+
 import Link from "next/link";
 
 
