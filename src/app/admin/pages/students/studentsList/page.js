@@ -180,29 +180,7 @@ export default function StudentList() {
 		}
 	};
 
-	const handleCloseModal = () => {
-		setIsModalOpen(false);
-		setTimeout(() => setSelectedStudent(null), 300);
-	};
 
-	const handleChange = (e) =>
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-
-	const filteredStudents = students.filter((student) => {
-		const matchesSearch =
-			student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			student.rollNumber.toLowerCase().includes(searchTerm.toLowerCase());
-		const matchesClass =
-			selectedClass === "All" || student.class.includes(selectedClass);
-		const matchesRoute =
-			routeFilter === "All" ||
-			(routeFilter === "Transport" &&
-				student.route !== "Self / Private") ||
-			(routeFilter === "Self" && student.route === "Self / Private");
-		const matchesStatus =
-			statusFilter === "All" || student.status === statusFilter;
-		return matchesSearch && matchesClass && matchesRoute && matchesStatus;
-	});
 	const CLASSES = [
 		"All",
 		"Nursery",
@@ -230,6 +208,52 @@ export default function StudentList() {
 		"Section E",
 	];
 
+
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+		setTimeout(() => setSelectedStudent(null), 300);
+	};
+
+	const handleChange = (e) =>
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+
+	const filteredStudents = students.filter((student) => {
+		// Null safety ke liye default strings add kiye hain
+		const safeName = student?.name || "";
+		const safeRoll = student?.rollNumber || "";
+
+		const matchesSearch =
+			safeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			safeRoll.toLowerCase().includes(searchTerm.toLowerCase());
+
+		// .includes() ki jagah strict (===) match lagaya hai
+		const matchesClass =
+			selectedClass === "All" || student.class === selectedClass;
+
+		// Yeh matchesSection check pehle MISSING tha
+		const matchesSection =
+			selectedSection === "All" || student.section === selectedSection;
+
+		const matchesRoute =
+			routeFilter === "All" ||
+			(routeFilter === "Transport" &&
+				student.route !== "Self / Private") ||
+			(routeFilter === "Self" && student.route === "Self / Private");
+
+		const matchesStatus =
+			statusFilter === "All" || student.status === statusFilter;
+
+		// Yahan matchesSection ko final return mein add kar diya hai
+		return (
+			matchesSearch &&
+			matchesClass &&
+			matchesSection &&
+			matchesRoute &&
+			matchesStatus
+		);
+	});
+	
 
 	return (
 		<div className="min-h-screen bg-slate-50 p-4 sm:p-8 animate-in fade-in duration-500 relative">
@@ -329,6 +353,7 @@ export default function StudentList() {
 								<th className="p-4">Roll Number</th>
 								<th className="p-4">Student Name</th>
 								<th className="p-4">Class</th>
+								<th className="p-4">Section</th>
 								<th className="p-4">Phone Number</th>
 								<th className="p-4 text-center">Attendance</th>
 								<th className="p-4">DOB</th>
@@ -356,10 +381,13 @@ export default function StudentList() {
 											{student.rollNumber}
 										</td>
 										<td className="p-4 font-semibold text-slate-800">
-											{student.name}
+											{student?.name}
 										</td>
 										<td className="p-4 font-medium text-slate-600">
 											{student.class}
+										</td>
+										<td className="p-4 font-medium text-slate-600">
+											{student.section}
 										</td>
 										<td className="p-4 text-slate-600">
 											{student.phone}

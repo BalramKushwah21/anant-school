@@ -6,7 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export async function GET(request) {
 	try {
 		const session = await getServerSession(authOptions);
-		if (!session || !session.user || !session.user.schoolId) {
+		if (!session?.user?.schoolId) {
 			return NextResponse.json(
 				{ error: "Unauthorized access." },
 				{ status: 401 },
@@ -15,13 +15,13 @@ export async function GET(request) {
 
 		const schoolId = session.user.schoolId;
 
-		// Fetch students with all related profiles
+		// Fetch students with related profiles, grabbing the most recent records
 		const students = await prisma.student.findMany({
 			where: { schoolId: schoolId },
 			include: {
-				academicProfiles: true,
+				academicProfiles: { orderBy: { createdAt: "desc" }, take: 1 },
 				family: true,
-				feeRecords: true,
+				feeRecords: { orderBy: { createdAt: "desc" }, take: 1 },
 				transportProfile: true,
 			},
 			orderBy: { createdAt: "desc" },
@@ -32,32 +32,35 @@ export async function GET(request) {
 			const formattedDob = dobDate
 				? dobDate.toLocaleDateString("en-IN")
 				: "N/A";
+
 			const phoneStr = std.family?.fatherMobile || "N/A";
 
-			// Fee Due Logic: Total due (mock structure, updatable based on your calculations)
-			const dueAmount = std.feeRecord ? 12000 : 0;
+			// Safely access the first item of the relational arrays
+			const currentAcademic = std.academicProfiles?.[0] || {};
+			const currentFee = std.feeRecords?.[0] || null;
 
-			// Transport Route
+			// Fee Due Logic: Total due (Replace with your actual business logic)
+			const dueAmount = currentFee ? 12000 : 0;
+
+			// Transport Route Logic
 			const routeStatus = std.transportProfile?.needTransport
 				? std.transportProfile?.route || "Route Pending"
 				: "Self / Private";
 
-			// Attendance Status
-			const attendanceStr = "85%";
-
+			// Return the properly structured object directly to the outer map
 			return {
 				id: std.id,
 				rollNumber:
 					std.rollNumber || `TMP-${std.id.slice(-4).toUpperCase()}`,
-				name: `${std.firstName} ${std.lastName}`,
-				class: std.academicProfiles?.currentClass || "N/A",
-				section: std.academicProfile?.section || "N/A",
+				name: `${std.firstName || ""} ${std.lastName || ""}`.trim(),
+				class: currentAcademic.currentClass || "N/A",
+				section: currentAcademic.section || "N/A",
 				phone: phoneStr,
-				attendance: attendanceStr,
+				attendance: "85%", // Placeholder for actual attendance logic
 				dob: formattedDob,
 				dueAmount: dueAmount,
 				route: routeStatus,
-				status: "Active", // Default logic or use std.isActive if added to schema
+				status: "Active",
 			};
 		});
 
@@ -65,7 +68,7 @@ export async function GET(request) {
 	} catch (error) {
 		console.error("Fetch Students Error:", error);
 		return NextResponse.json(
-			{ error: "Internal Server Error" },
+			{ error: "Internal Server Error. Please try again later." },
 			{ status: 500 },
 		);
 	}

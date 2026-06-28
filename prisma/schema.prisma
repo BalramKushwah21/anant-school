@@ -267,7 +267,7 @@ model AcademicProfile {
 
   academicYearId       String
   academicYear         AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
-
+  academicSession      String
   currentClass         String
   section              String?
   udiseNumber          String?
@@ -279,6 +279,9 @@ model AcademicProfile {
   tcNumber             String?
   boardRegistrationNo  String?
 
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
   @@unique([studentId, academicYearId]) 
   @@index([schoolId, academicYearId]) 
 }
