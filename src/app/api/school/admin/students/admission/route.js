@@ -21,6 +21,25 @@ const mapFeeCategory = (categoryStr) => {
 
 export async function POST(request) {
 	try {
+
+		function getAcademicSession() {
+			const today = new Date();
+
+			const year = today.getFullYear();
+			const month = today.getMonth(); // January = 0
+
+			if (month >= 3) {
+				// April ya uske baad
+				return `${year}-${year + 1}`;
+			} else {
+				// January se March
+				return `${year - 1}-${year}`;
+			}
+		}
+
+		console.log(getAcademicSession());
+
+
 		// 1. SECURITY: Check if user is logged in
 		const session = await getServerSession(authOptions);
 
@@ -153,6 +172,8 @@ export async function POST(request) {
 					create: {
 						school: { connect: { id: schoolId } },
 						academicYear: { connect: { id: activeYear.id } }, // FIX APPLIED HERE
+						academicSession: getAcademicSession() || "N/A",
+						
 
 						currentClass: data.classApplyingFor,
 						section: data.section || null,

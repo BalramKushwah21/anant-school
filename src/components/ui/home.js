@@ -19,7 +19,7 @@ export default function HomePage() {
 			yearly: "₹7,999",
 		},
 		{
-			students: "upto 1000 Students",
+			students: "upto 1000+ Students",
 			monthly: "₹999",
 			yearly: "₹9,999",
 		},
@@ -79,26 +79,26 @@ export default function HomePage() {
 								<p className="text-slate-400">
 									Registered Schools
 								</p>
-								<h4 className="text-3xl font-bold">558</h4>
+								<h4 className="text-3xl font-bold">N/A</h4>
 							</div>
 
 							<div className="bg-slate-800 p-5 rounded-xl">
 								<p className="text-slate-400">
 									Total Registered Student
 								</p>
-								<h4 className="text-3xl font-bold">25,678</h4>
+								<h4 className="text-3xl font-bold">N/A</h4>
 							</div>
 
 							<div className="bg-slate-800 p-5 rounded-xl">
 								<p className="text-slate-400">Revenue</p>
-								<h4 className="text-3xl font-bold">₹4.8L</h4>
+								<h4 className="text-3xl font-bold">N/A</h4>
 							</div>
 
 							<div className="bg-slate-800 p-5 rounded-xl">
 								<p className="text-slate-400">
 									Total Registered Teachers
 								</p>
-								<h4 className="text-3xl font-bold">2,200</h4>
+								<h4 className="text-3xl font-bold">N/A</h4>
 							</div>
 						</div>
 					</div>
