@@ -66,7 +66,7 @@ export async function GET(request) {
 					take: 1,
 				},
 				family: true,
-				address: true,
+				addresses: true,
 			},
 			orderBy: {
 				// Roll number ya First Name se sort karne ka best practice
@@ -81,7 +81,7 @@ export async function GET(request) {
 		const formattedStudents = studentsRaw.map((student) => {
 			const academic = student.academicProfiles?.[0] || {};
 			const family = student.family || {};
-			const address = student.address || {};
+			const address = student.addresses?.[0] || {};
 
 			return {
 				id: student.id,
@@ -89,14 +89,14 @@ export async function GET(request) {
 				fatherName: family.fatherName || "Not Provided",
 				class: academic.class || targetClass,
 				section: academic.section || targetSection,
-				rollNumber: academic.rollNumber || "N/A",
+				rollNumber: student.rollNumber || "N/A",
 				phone:
-					family.fatherContact ||
-					family.motherContact ||
+					family.fatherMobile ||
+					family.motherMobile ||
 					"Not Provided",
 				// Address ko combine karna (Flat -> City)
-				address: address.addressLine1
-					? `${address.addressLine1}, ${address.city || ""}`.trim()
+				address: address.city
+					? `${address.city}, ${address.district}, ${address.state}, ${address.pincode}`.trim()
 					: "Address not available",
 				gender: student.gender || "Unknown",
 			};

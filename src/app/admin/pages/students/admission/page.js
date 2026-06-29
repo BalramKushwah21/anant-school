@@ -956,35 +956,6 @@ export default function StudentAdmissionForm() {
 			</div>
 
 			<div className="max-w-7xl mx-auto">
-				{/* STATUS MESSAGES */}
-				{submissionStatus.message && (
-					<div
-						className={`mb-8 p-5 rounded-2xl shadow-sm flex items-start gap-3 border ${
-							submissionStatus.type === "success"
-								? "bg-emerald-50 border-emerald-200 text-emerald-800"
-								: "bg-red-50 border-red-200 text-red-800"
-						}`}
-					>
-						<div className="mt-0.5">
-							{submissionStatus.type === "success" ? (
-								<Icons.Check />
-							) : (
-								<Icons.Alert />
-							)}
-						</div>
-						<div>
-							<h3 className="font-bold text-lg">
-								{submissionStatus.type === "success"
-									? "Registration Successful"
-									: "Action Required"}
-							</h3>
-							<p className="text-sm font-medium mt-1">
-								{submissionStatus.message}
-							</p>
-						</div>
-					</div>
-				)}
-
 				<form
 					ref={formRef}
 					onSubmit={handleSubmit}
@@ -1834,7 +1805,6 @@ export default function StudentAdmissionForm() {
 								</h3>
 								<div className="space-y-4 text-black font-mono">
 									<FormInput
-										
 										label="Username"
 										name="studentUsername"
 										value={formData.studentUsername}
@@ -1995,6 +1965,35 @@ export default function StudentAdmissionForm() {
 						</div>
 					</div>
 
+					{/* STATUS MESSAGES */}
+					{submissionStatus.message && (
+						<div
+							className={`mb-8 p-5 rounded-2xl shadow-sm flex items-start gap-3 border ${
+								submissionStatus.type === "success"
+									? "bg-emerald-50 border-emerald-200 text-emerald-800"
+									: "bg-red-50 border-red-200 text-red-800"
+							}`}
+						>
+							<div className="mt-0.5">
+								{submissionStatus.type === "success" ? (
+									<Icons.Check />
+								) : (
+									<Icons.Alert />
+								)}
+							</div>
+							<div>
+								<h3 className="font-bold text-lg">
+									{submissionStatus.type === "success"
+										? "Registration Successful"
+										: "Action Required"}
+								</h3>
+								<p className="text-sm font-medium mt-1">
+									{submissionStatus.message}
+								</p>
+							</div>
+						</div>
+					)}
+
 					{/* ----------------------------------------------------
                         SUBMIT ACTION BAR
                     ------------------------------------------------------*/}
@@ -2004,7 +2003,6 @@ export default function StudentAdmissionForm() {
 							submission.
 						</div>
 						<button
-					
 							type="submit"
 							disabled={isLoading}
 							className={`w-full md:w-auto flex items-center justify-center gap-2 py-4 px-10 rounded-xl shadow-lg text-base font-bold text-white transition-all transform active:scale-[0.98]

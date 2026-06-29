@@ -126,19 +126,41 @@ const DetailRow = ({
 // MAIN COMPONENT: Page Layout & Data Fetching
 // ==========================================
 export default function GenerateIDCards() {
-	const [targetClass, setTargetClass] = useState("ALL");
-	const [targetSection, setTargetSection] = useState("ALL");
+	const [targetClass, setTargetClass] = useState("Nursery");
+	const [targetSection, setTargetSection] = useState("Section A");
 	const [searchQuery, setSearchQuery] = useState(""); // NEW: Search state
 
 	const [students, setStudents] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
+	const CLASSES = [
+		
+		"Nursery",
+		"LKG",
+		"UKG",
+		"Class 1",
+		"Class 2",
+		"Class 3",
+		"Class 4",
+		"Class 5",
+		"Class 6",
+		"Class 7",
+		"Class 8",
+		"Class 9",
+		"Class 10",
+		"Class 11",
+		"Class 12",
+	];
 
-
-  const CLASSES = ["Class 1st", "Class 2nd", "Class 3rd", "Class 4th", "Class 5th", "Class 6th", "Class 7th", "Class 8th", "Class 9th", "Class 10th", "Class 11th", "Class 12th"];
-  const SECTIONS = ["Section A", " Section B", "Section C", "Section D", "Section E"];
-
+	const SECTIONS = [
+		
+		"Section A",
+		"Section B",
+		"Section C",
+		"Section D",
+		"Section E",
+	];
 
 	const loadLiveRosterFromBackend = useCallback(async () => {
 		setLoading(true);
@@ -295,7 +317,7 @@ export default function GenerateIDCards() {
 					<div className="p-12 text-center text-slate-400 italic bg-white rounded-2xl border border-slate-200 print:hidden">
 						{searchQuery
 							? `No students found matching "${searchQuery}"`
-							: `No student records found for ${targetClass} - Section ${targetSection}.`}
+							: `No student records found for ${targetClass} - ${targetSection}.`}
 					</div>
 				)}
 
