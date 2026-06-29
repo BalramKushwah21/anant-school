@@ -3,6 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Apna actual path check karein
 import{ prisma } from "@/lib/prisma"; // Aapke Prisma client ka path
 
+
+// ✅ Add this line to prevent Next.js Build crashes
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
 	try {
 		// ==========================================
