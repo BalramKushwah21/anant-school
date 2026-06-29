@@ -23,6 +23,8 @@ export default function StudentList() {
 	const [activeTab, setActiveTab] = useState("studentInfo");
 	const [formData, setFormData] = useState({});
 
+	
+
 	// Fetch master table list
 	const fetchStudents = async () => {
 		try {
@@ -58,6 +60,9 @@ export default function StudentList() {
 			const result = await response.json();
 			const std = result.data;
 			setSelectedStudent(std);
+			
+			const academic = std.academicProfiles?.[0] || {};
+			const fees = std.feeRecords?.[0] || {};
 
 			// Map exact values matching the original page.js initial state
 			setFormData({
@@ -77,21 +82,21 @@ export default function StudentList() {
 				nationality: std.nationality || "Indian",
 				isStaffChild: std.isStaffChild ? "Yes" : "No",
 				identificationMark: std.identificationMark || "",
-				aadhar: std.nationalIdNumber || "",
+				aadhar: std.aadharNumber || "",
 				abcId: std.abcId || "",
 				panNumber: std.panNumber || "",
 
-				classApplyingFor: std.academicProfile?.currentClass || "",
-				section: std.academicProfile?.section || "",
-				previousSchool: std.academicProfile?.previousSchool || "",
-				previousClass: std.academicProfile?.previousClass || "",
-				tcNumber: std.academicProfile?.tcNumber || "",
-				previousUdiseCode: std.academicProfile?.previousUdiseCode || "",
-				academicSession: std.academicProfile?.academicSession || "",
+				classApplyingFor: academic.currentClass || "",
+				section: academic.section || "",
+				previousSchool: academic.previousSchool || "",
+				previousClass: academic.previousClass || "",
+				tcNumber: academic.tcNumber || "",
+				previousUdiseCode: academic.previousUdiseCode || "",
+				academicSession: academic.academicSession || "",
 				previousMediumOfInstruction:
-					std.academicProfile?.previousSchoolMedium || "English",
+					academic.previousSchoolMedium || "English",
 				boardRegistrationNumber:
-					std.academicProfile?.boardRegistrationNo || "",
+					academic.boardRegistrationNo || "",
 
 				parentsMaritalStatus:
 					std.family?.parentsMaritalStatus || "Married",
@@ -130,18 +135,18 @@ export default function StudentList() {
 				medicalConditions: std.medicalProfile?.medicalConditions || "",
 				allergies: std.medicalProfile?.allergies || "",
 
-				feeCategory: std.feeRecord?.feeCategory || "GENERAL",
-				scholarship: std.feeRecord?.scholarship ? "Yes" : "No",
-				concessionDetails: std.feeRecord?.concessionDetails || "",
-				admissionFeePaid: std.feeRecord?.admissionFeePaid || "0",
-				transportFeePaid: std.feeRecord?.transportFeePaid || "0",
-				securityDepositPaid: std.feeRecord?.securityDepositPaid || "0",
-				tuitionFeeCycle: std.feeRecord?.tuitionFeeCycle || "QUARTERLY",
-				paymentMode: std.feeRecord?.paymentMode || "CASH",
-				bankName: std.feeRecord?.bankName || "",
-				accountNumber: std.feeRecord?.accountNumber || "",
-				ifscCode: std.feeRecord?.ifscCode || "",
-				branchNameAndCode: std.feeRecord?.branchNameAndCode || "",
+				feeCategory: fees.feeCategory || "GENERAL",
+				scholarship: fees.scholarship ? "Yes" : "No",
+				concessionDetails: fees.concessionDetails || "",
+				admissionFeePaid: fees.admissionFeePaid || "0",
+				transportFeePaid: fees.transportFeePaid || "0",
+				securityDepositPaid: fees.securityDepositPaid || "0",
+				tuitionFeeCycle: fees.tuitionFeeCycle || "QUARTERLY",
+				paymentMode: fees.paymentMode || "CASH",
+				bankName: fees.bankName || "",
+				accountNumber: fees.accountNumber || "",
+				ifscCode: fees.ifscCode || "",
+				branchNameAndCode: fees.branchNameAndCode || "",
 
 				needTransport: std.transportProfile?.needTransport
 					? "Yes"
