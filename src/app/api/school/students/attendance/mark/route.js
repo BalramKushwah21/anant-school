@@ -25,9 +25,11 @@ export async function GET(request) {
 		const dbStudents = await prisma.student.findMany({
 			where: {
 				schoolId: schoolId,
-				academicProfile: {
-					currentClass: className, // 🔴 Yahan 'className' ki jagah 'currentClass' aayega
-					section: section,
+				academicProfiles: {
+					some: {
+						currentClass: className, // 🔴 Yahan 'className' ki jagah 'currentClass' aayega
+						section: section,
+					},
 				},
 			},
 			select: {
@@ -93,32 +95,65 @@ export async function POST(request) {
 		const body = await request.json();
 		const { date, attendanceData, remarksData } = body;
 		const targetDate = new Date(date);
+		const academicYearId = new Date().getFullYear().toString();
 
-		// Prisma Transaction - taaki saare records ek sath safely upsert ho jayein
+		// 1. Pehle database se iss school ka ACTIVE Academic Year fetch karein
+		let currentAcademicYear = await prisma.academicYear.findFirst({
+			where: {
+				schoolId: schoolId, // Session se aaya hua schoolId
+				// status: "ACTIVE" // Agar aapke schema mein active status ka option hai
+			},
+		});
+
+		// 2. Agar by chance is school ka koi academic year nahi bana hai, toh fallback ke liye create kar lein
+		if (!currentAcademicYear) {
+			const yearStr = new Date().getFullYear().toString();
+			const nextYearStr = (new Date().getFullYear() + 1)
+				.toString()
+				.slice(-2);
+
+			currentAcademicYear = await prisma.academicYear.create({
+				data: {
+					name: `${yearStr}-${nextYearStr}`, // e.g., "2026-27"
+					schoolId: schoolId,
+					// startDate aur endDate bhi add karein agar aapka schema require karta hai
+				},
+			});
+		}
+
+		// 3. Ab real database ID use karein!
+		const actualAcademicYearId = currentAcademicYear.id;
+
+		// 4. Prisma Transaction - saare records safely upsert karne ke liye
 		const upsertPromises = Object.keys(attendanceData).map((studentId) => {
 			return prisma.attendance.upsert({
 				where: {
 					studentId_date: {
 						studentId: studentId,
-						date: targetDate,
+						date: targetDate, // Jo bhi aapki date variable hai
 					},
 				},
 				update: {
 					status: attendanceData[studentId],
-					remarks: remarksData[studentId] || "",
+					// ... baaki update fields agar koi hain
 				},
 				create: {
-					studentId: studentId,
-					schoolId: schoolId,
+					
 					date: targetDate,
 					status: attendanceData[studentId],
+					
 					remarks: remarksData[studentId] || "",
+
+					// ✅ YAHAN ACTUAL ID CONNECT KAREIN
+					student: { connect: { id: studentId } },
+					school: { connect: { id: schoolId } },
+					academicYear: { connect: { id: actualAcademicYearId } },
 				},
 			});
 		});
 
+		// Run the transaction safely
 		await prisma.$transaction(upsertPromises);
-
 		return NextResponse.json({ message: "Attendance Saved Successfully" });
 	} catch (error) {
 		console.error("POST Attendance Error:", error);

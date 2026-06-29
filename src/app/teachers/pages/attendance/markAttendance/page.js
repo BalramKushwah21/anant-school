@@ -23,18 +23,18 @@ const CLASSES = [
 	"Nursery",
 	"LKG",
 	"UKG",
-	"Class 1st",
-	"Class 2nd",
-	"Class 3rd",
-	"Class 4th",
-	"Class 5th",
-	"Class 6th",
-	"Class 7th",
-	"Class 8th",
-	"Class 9th",
-	"Class 10th",
-	"Class 11th",
-	"Class 12th",
+	"Class 1",
+	"Class 2",
+	"Class 3",
+	"Class 4",
+	"Class 5",
+	"Class 6",
+	"Class 7",
+	"Class 8",
+	"Class 9",
+	"Class 10",
+	"Class 11",
+	"Class 12",
 	
 ];
 const SECTIONS = ["Section A", "Section B", "Section C", "Section D", "Section E"];
@@ -80,7 +80,7 @@ export default function FacultyAttendanceManager() {
 			setIsLoading(true);
 			try {
 				const response = await fetch(
-					`/api/school/students/attendance?className=${selectedClass}&section=${selectedSection}&date=${attendanceDate}`,
+					`/api/school/students/attendance/mark?className=${selectedClass}&section=${selectedSection}&date=${attendanceDate}`,
 				);
 				const data = await response.json();
 
@@ -121,7 +121,7 @@ export default function FacultyAttendanceManager() {
 		setIsSaving(true);
 
 		try {
-			const response = await fetch("/api/school/students/attendance", {
+			const response = await fetch("/api/school/students/attendance/mark", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
