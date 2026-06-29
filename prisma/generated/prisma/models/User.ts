@@ -182,7 +182,7 @@ export type UserGroupByOutputType = {
   name: string
   userRole: $Enums.UserRole
   username: string | null
-  email: string
+  email: string | null
   password: string
   isActive: boolean
   schoolId: string
@@ -216,7 +216,7 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   userRole?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   username?: Prisma.StringNullableFilter<"User"> | string | null
-  email?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringFilter<"User"> | string
   isActive?: Prisma.BoolFilter<"User"> | boolean
   schoolId?: Prisma.StringFilter<"User"> | string
@@ -231,7 +231,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   userRole?: Prisma.SortOrder
   username?: Prisma.SortOrderInput | Prisma.SortOrder
-  email?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -264,7 +264,7 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   userRole?: Prisma.SortOrder
   username?: Prisma.SortOrderInput | Prisma.SortOrder
-  email?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -283,7 +283,7 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   userRole?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   username?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   schoolId?: Prisma.StringWithAggregatesFilter<"User"> | string
@@ -296,7 +296,7 @@ export type UserCreateInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   createdAt?: Date | string
@@ -310,7 +310,7 @@ export type UserUncheckedCreateInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   schoolId: string
@@ -324,7 +324,7 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -338,7 +338,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   schoolId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -352,7 +352,7 @@ export type UserCreateManyInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   schoolId: string
@@ -365,7 +365,7 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -377,7 +377,7 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   schoolId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -506,7 +506,7 @@ export type UserCreateWithoutSchoolInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   createdAt?: Date | string
@@ -519,7 +519,7 @@ export type UserUncheckedCreateWithoutSchoolInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   createdAt?: Date | string
@@ -561,7 +561,7 @@ export type UserScalarWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   userRole?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   username?: Prisma.StringNullableFilter<"User"> | string | null
-  email?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringNullableFilter<"User"> | string | null
   password?: Prisma.StringFilter<"User"> | string
   isActive?: Prisma.BoolFilter<"User"> | boolean
   schoolId?: Prisma.StringFilter<"User"> | string
@@ -574,7 +574,7 @@ export type UserCreateWithoutTeacherProfileInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   createdAt?: Date | string
@@ -587,7 +587,7 @@ export type UserUncheckedCreateWithoutTeacherProfileInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   schoolId: string
@@ -616,7 +616,7 @@ export type UserUpdateWithoutTeacherProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -629,7 +629,7 @@ export type UserUncheckedUpdateWithoutTeacherProfileInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   schoolId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -642,7 +642,7 @@ export type UserCreateManySchoolInput = {
   name: string
   userRole: $Enums.UserRole
   username?: string | null
-  email: string
+  email?: string | null
   password: string
   isActive?: boolean
   createdAt?: Date | string
@@ -654,7 +654,7 @@ export type UserUpdateWithoutSchoolInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -667,7 +667,7 @@ export type UserUncheckedUpdateWithoutSchoolInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -680,7 +680,7 @@ export type UserUncheckedUpdateManyWithoutSchoolInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   userRole?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -768,7 +768,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     userRole: $Enums.UserRole
     username: string | null
-    email: string
+    email: string | null
     password: string
     isActive: boolean
     schoolId: string

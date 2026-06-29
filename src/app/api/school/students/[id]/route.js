@@ -87,7 +87,7 @@ export async function PUT(request, { params }) {
 				nationality: data.nationality || "Indian",
 				isStaffChild: data.isStaffChild === "Yes",
 				identificationMark: data.identificationMark || "",
-				nationalIdNumber: data.aadhar || "",
+				aadharNumber: data.aadhar || "",
 				abcId: data.abcId || "",
 				panNumber: data.panNumber || "",
 				admissionDate: data.admissionDate

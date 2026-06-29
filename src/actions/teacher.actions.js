@@ -63,7 +63,10 @@ export async function registerTeacher(formData) {
 				});
 				return teacher;
 			},
-			{ timeout: 20000 },
+			{
+				maxWait: 5000, // DB connection pool ke liye 5 seconds wait karega [cite: 309]
+				timeout: 20000,
+			},
 		);
 
 		// ✅ FIX APPLIED HERE: Next.js Client Component ke liye Data ko Plain/Safe banana

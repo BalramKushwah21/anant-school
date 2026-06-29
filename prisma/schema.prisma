@@ -44,7 +44,7 @@ model School {
   transportProfiles TransportProfile[]
   documentArchives DocumentArchive[]
   attendances      Attendance[]
-
+  
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
@@ -81,7 +81,7 @@ model User {
   name      String
   userRole  UserRole
   username  String?  @unique
-  email     String   @unique
+  email     String?   @unique
   password  String
   isActive  Boolean  @default(true)
 
@@ -182,7 +182,7 @@ model Family {
   fatherIncome         String?
   fatherEmail          String?
   motherName           String
-  motherMobile         String
+  motherMobile         String?
   motherOccupation     String?
   motherEmail          String?
   siblingStudyingHere  Boolean @default(false)
@@ -220,11 +220,13 @@ model Student {
   school             School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   familyId           String
   family             Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
-  
+  userId             String?  @unique
   rollNumber         String?
   firstName          String
   middleName         String?
   lastName           String
+  studentEmail       String? @unique
+
   admissionDate      DateTime
   gender             Gender
   dateOfBirth        DateTime
@@ -234,10 +236,11 @@ model Student {
   nationality        String   @default("Indian")
   isStaffChild       Boolean  @default(false)
   identificationMark String?
-  nationalIdNumber   String?  @unique 
+  aadharNumber      String?  @unique 
   abcId              String?
   panNumber          String?
-  
+  samagraId          String? @unique
+
   medicalProfile     MedicalProfile?
   transportProfile   TransportProfile?
   documents          DocumentArchive?
