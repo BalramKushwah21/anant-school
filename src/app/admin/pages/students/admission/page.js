@@ -260,7 +260,6 @@ const CONSTANTS = {
 	],
 	CATEGORIES: ["General", "OBC", "SC", "ST", "EWS"],
 	CLASSES: [
-		"Pre-Nursery",
 		"Nursery",
 		"LKG",
 		"UKG",

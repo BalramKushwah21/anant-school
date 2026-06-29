@@ -63,6 +63,11 @@ export type Student = Prisma.StudentModel
  */
 export type AcademicProfile = Prisma.AcademicProfileModel
 /**
+ * Model FeeStructure
+ * 
+ */
+export type FeeStructure = Prisma.FeeStructureModel
+/**
  * Model FeeRecord
  * 
  */

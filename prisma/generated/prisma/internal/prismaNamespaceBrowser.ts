@@ -60,6 +60,7 @@ export const ModelName = {
   Address: 'Address',
   Student: 'Student',
   AcademicProfile: 'AcademicProfile',
+  FeeStructure: 'FeeStructure',
   FeeRecord: 'FeeRecord',
   Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
@@ -269,6 +270,22 @@ export const AcademicProfileScalarFieldEnum = {
 } as const
 
 export type AcademicProfileScalarFieldEnum = (typeof AcademicProfileScalarFieldEnum)[keyof typeof AcademicProfileScalarFieldEnum]
+
+
+export const FeeStructureScalarFieldEnum = {
+  id: 'id',
+  className: 'className',
+  academicYear: 'academicYear',
+  tuitionFee: 'tuitionFee',
+  libraryFee: 'libraryFee',
+  transportFee: 'transportFee',
+  activityFee: 'activityFee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  schoolId: 'schoolId'
+} as const
+
+export type FeeStructureScalarFieldEnum = (typeof FeeStructureScalarFieldEnum)[keyof typeof FeeStructureScalarFieldEnum]
 
 
 export const FeeRecordScalarFieldEnum = {

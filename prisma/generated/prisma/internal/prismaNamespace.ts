@@ -393,6 +393,7 @@ export const ModelName = {
   Address: 'Address',
   Student: 'Student',
   AcademicProfile: 'AcademicProfile',
+  FeeStructure: 'FeeStructure',
   FeeRecord: 'FeeRecord',
   Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive"
+    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeStructure" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1083,6 +1084,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FeeStructure: {
+      payload: Prisma.$FeeStructurePayload<ExtArgs>
+      fields: Prisma.FeeStructureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeeStructureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeeStructureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        findFirst: {
+          args: Prisma.FeeStructureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeeStructureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        findMany: {
+          args: Prisma.FeeStructureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>[]
+        }
+        create: {
+          args: Prisma.FeeStructureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        createMany: {
+          args: Prisma.FeeStructureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeeStructureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>[]
+        }
+        delete: {
+          args: Prisma.FeeStructureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        update: {
+          args: Prisma.FeeStructureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        deleteMany: {
+          args: Prisma.FeeStructureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeeStructureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeeStructureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>[]
+        }
+        upsert: {
+          args: Prisma.FeeStructureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeeStructurePayload>
+        }
+        aggregate: {
+          args: Prisma.FeeStructureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFeeStructure>
+        }
+        groupBy: {
+          args: Prisma.FeeStructureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeeStructureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeeStructureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeeStructureCountAggregateOutputType> | number
+        }
+      }
+    }
     FeeRecord: {
       payload: Prisma.$FeeRecordPayload<ExtArgs>
       fields: Prisma.FeeRecordFieldRefs
@@ -1680,6 +1755,22 @@ export const AcademicProfileScalarFieldEnum = {
 export type AcademicProfileScalarFieldEnum = (typeof AcademicProfileScalarFieldEnum)[keyof typeof AcademicProfileScalarFieldEnum]
 
 
+export const FeeStructureScalarFieldEnum = {
+  id: 'id',
+  className: 'className',
+  academicYear: 'academicYear',
+  tuitionFee: 'tuitionFee',
+  libraryFee: 'libraryFee',
+  transportFee: 'transportFee',
+  activityFee: 'activityFee',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  schoolId: 'schoolId'
+} as const
+
+export type FeeStructureScalarFieldEnum = (typeof FeeStructureScalarFieldEnum)[keyof typeof FeeStructureScalarFieldEnum]
+
+
 export const FeeRecordScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
@@ -1927,6 +2018,20 @@ export type ListEnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
  * Reference to a field of type 'FeeCategory'
  */
 export type EnumFeeCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeeCategory'>
@@ -1965,20 +2070,6 @@ export type EnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'PaymentMode[]'
  */
 export type ListEnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMode[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2100,6 +2191,7 @@ export type GlobalOmitConfig = {
   address?: Prisma.AddressOmit
   student?: Prisma.StudentOmit
   academicProfile?: Prisma.AcademicProfileOmit
+  feeStructure?: Prisma.FeeStructureOmit
   feeRecord?: Prisma.FeeRecordOmit
   attendance?: Prisma.AttendanceOmit
   medicalProfile?: Prisma.MedicalProfileOmit

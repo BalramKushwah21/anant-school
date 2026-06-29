@@ -44,6 +44,7 @@ model School {
   transportProfiles TransportProfile[]
   documentArchives DocumentArchive[]
   attendances      Attendance[]
+  feeStructures    FeeStructure[]
   
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -290,6 +291,25 @@ model AcademicProfile {
   @@unique([studentId, academicYearId]) 
   @@index([schoolId, academicYearId]) 
 }
+
+model FeeStructure {
+  id           Int      @id @default(autoincrement())
+  className    String
+  academicYear String
+  
+  tuitionFee   Float    @default(0)
+  libraryFee   Float    @default(0)
+  transportFee Float    @default(0)
+  activityFee  Float    @default(0)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Multi-tenant relationship (Uncommented and linked)
+  schoolId     String
+  school       School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+}
+
 
 model FeeRecord {
   id                  String       @id @default(cuid())
