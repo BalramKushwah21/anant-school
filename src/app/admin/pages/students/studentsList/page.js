@@ -77,11 +77,11 @@ export default function StudentList() {
 				nationality: std.nationality || "Indian",
 				isStaffChild: std.isStaffChild ? "Yes" : "No",
 				identificationMark: std.identificationMark || "",
-				aadhar: std.nationalIdNumber || "",
+				aadhar: std.aadharNumber || "",
 				abcId: std.abcId || "",
 				panNumber: std.panNumber || "",
 
-				classApplyingFor: std.academicProfile?.currentClass || "",
+				classApplyingFor: std.academicProfiles?.currentClass || "",
 				section: std.academicProfile?.section || "",
 				previousSchool: std.academicProfile?.previousSchool || "",
 				previousClass: std.academicProfile?.previousClass || "",
