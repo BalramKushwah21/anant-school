@@ -176,8 +176,8 @@ export const menuConfig = [
 		icon: CreditCard,
 		isDropdown: true,
 		subItems: [
-			{ label: "Fee Structure", link: "/admin/pages/finance/structure" },
-			{ label: "Fee Collection", link: "/admin/pages/finance/collect" },
+			{ label: "Fee Structure", link: "/admin/pages/finance/feeStructure" },
+			{ label: "Fee Collection", link: "/admin/pages/finance/feeCollection" },
 			{ label: "Scholarships", link: "/admin/pages/finance/scholarship" },
 			{ label: "Expenses", link: "/admin/pages/finance/expenses" },
 			{

@@ -39,6 +39,9 @@ export async function POST(req) {
 		}
 
 		const body = await req.json();
+		const totalFee = body.tuitionFee + body.libraryFee + body.transportFee + body.activityFee;
+
+
 
 		const newStructure = await prisma.feeStructure.create({
 			data: {
@@ -48,6 +51,7 @@ export async function POST(req) {
 				libraryFee: body.libraryFee,
 				transportFee: body.transportFee,
 				activityFee: body.activityFee,
+				totalFee: totalFee,
 				schoolId: session.user.schoolId,
 			},
 		});

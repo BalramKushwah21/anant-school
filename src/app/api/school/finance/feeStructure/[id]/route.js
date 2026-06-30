@@ -35,6 +35,9 @@ export async function PUT(req, { params }) {
 			);
 		}
 
+		const totalFee = body.tuitionFee + body.libraryFee + body.transportFee + body.activityFee;
+
+
 		const updatedStructure = await prisma.feeStructure.update({
 			where: { id: parseInt(id) },
 			data: {
@@ -44,6 +47,7 @@ export async function PUT(req, { params }) {
 				libraryFee: body.libraryFee,
 				transportFee: body.transportFee,
 				activityFee: body.activityFee,
+				totalFee: totalFee,
 			},
 		});
 

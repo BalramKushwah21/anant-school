@@ -1763,6 +1763,7 @@ export const FeeStructureScalarFieldEnum = {
   libraryFee: 'libraryFee',
   transportFee: 'transportFee',
   activityFee: 'activityFee',
+  totalFee: 'totalFee',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   schoolId: 'schoolId'

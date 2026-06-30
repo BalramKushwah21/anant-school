@@ -32,6 +32,7 @@ export type FeeStructureAvgAggregateOutputType = {
   libraryFee: number | null
   transportFee: number | null
   activityFee: number | null
+  totalFee: number | null
 }
 
 export type FeeStructureSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type FeeStructureSumAggregateOutputType = {
   libraryFee: number | null
   transportFee: number | null
   activityFee: number | null
+  totalFee: number | null
 }
 
 export type FeeStructureMinAggregateOutputType = {
@@ -50,6 +52,7 @@ export type FeeStructureMinAggregateOutputType = {
   libraryFee: number | null
   transportFee: number | null
   activityFee: number | null
+  totalFee: number | null
   createdAt: Date | null
   updatedAt: Date | null
   schoolId: string | null
@@ -63,6 +66,7 @@ export type FeeStructureMaxAggregateOutputType = {
   libraryFee: number | null
   transportFee: number | null
   activityFee: number | null
+  totalFee: number | null
   createdAt: Date | null
   updatedAt: Date | null
   schoolId: string | null
@@ -76,6 +80,7 @@ export type FeeStructureCountAggregateOutputType = {
   libraryFee: number
   transportFee: number
   activityFee: number
+  totalFee: number
   createdAt: number
   updatedAt: number
   schoolId: number
@@ -89,6 +94,7 @@ export type FeeStructureAvgAggregateInputType = {
   libraryFee?: true
   transportFee?: true
   activityFee?: true
+  totalFee?: true
 }
 
 export type FeeStructureSumAggregateInputType = {
@@ -97,6 +103,7 @@ export type FeeStructureSumAggregateInputType = {
   libraryFee?: true
   transportFee?: true
   activityFee?: true
+  totalFee?: true
 }
 
 export type FeeStructureMinAggregateInputType = {
@@ -107,6 +114,7 @@ export type FeeStructureMinAggregateInputType = {
   libraryFee?: true
   transportFee?: true
   activityFee?: true
+  totalFee?: true
   createdAt?: true
   updatedAt?: true
   schoolId?: true
@@ -120,6 +128,7 @@ export type FeeStructureMaxAggregateInputType = {
   libraryFee?: true
   transportFee?: true
   activityFee?: true
+  totalFee?: true
   createdAt?: true
   updatedAt?: true
   schoolId?: true
@@ -133,6 +142,7 @@ export type FeeStructureCountAggregateInputType = {
   libraryFee?: true
   transportFee?: true
   activityFee?: true
+  totalFee?: true
   createdAt?: true
   updatedAt?: true
   schoolId?: true
@@ -233,6 +243,7 @@ export type FeeStructureGroupByOutputType = {
   libraryFee: number
   transportFee: number
   activityFee: number
+  totalFee: number
   createdAt: Date
   updatedAt: Date
   schoolId: string
@@ -269,6 +280,7 @@ export type FeeStructureWhereInput = {
   libraryFee?: Prisma.FloatFilter<"FeeStructure"> | number
   transportFee?: Prisma.FloatFilter<"FeeStructure"> | number
   activityFee?: Prisma.FloatFilter<"FeeStructure"> | number
+  totalFee?: Prisma.FloatFilter<"FeeStructure"> | number
   createdAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   schoolId?: Prisma.StringFilter<"FeeStructure"> | string
@@ -283,6 +295,7 @@ export type FeeStructureOrderByWithRelationInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -291,20 +304,21 @@ export type FeeStructureOrderByWithRelationInput = {
 
 export type FeeStructureWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  className?: string
   AND?: Prisma.FeeStructureWhereInput | Prisma.FeeStructureWhereInput[]
   OR?: Prisma.FeeStructureWhereInput[]
   NOT?: Prisma.FeeStructureWhereInput | Prisma.FeeStructureWhereInput[]
-  className?: Prisma.StringFilter<"FeeStructure"> | string
   academicYear?: Prisma.StringFilter<"FeeStructure"> | string
   tuitionFee?: Prisma.FloatFilter<"FeeStructure"> | number
   libraryFee?: Prisma.FloatFilter<"FeeStructure"> | number
   transportFee?: Prisma.FloatFilter<"FeeStructure"> | number
   activityFee?: Prisma.FloatFilter<"FeeStructure"> | number
+  totalFee?: Prisma.FloatFilter<"FeeStructure"> | number
   createdAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   schoolId?: Prisma.StringFilter<"FeeStructure"> | string
   school?: Prisma.XOR<Prisma.SchoolScalarRelationFilter, Prisma.SchoolWhereInput>
-}, "id">
+}, "id" | "className">
 
 export type FeeStructureOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -314,6 +328,7 @@ export type FeeStructureOrderByWithAggregationInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -335,6 +350,7 @@ export type FeeStructureScalarWhereWithAggregatesInput = {
   libraryFee?: Prisma.FloatWithAggregatesFilter<"FeeStructure"> | number
   transportFee?: Prisma.FloatWithAggregatesFilter<"FeeStructure"> | number
   activityFee?: Prisma.FloatWithAggregatesFilter<"FeeStructure"> | number
+  totalFee?: Prisma.FloatWithAggregatesFilter<"FeeStructure"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FeeStructure"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FeeStructure"> | Date | string
   schoolId?: Prisma.StringWithAggregatesFilter<"FeeStructure"> | string
@@ -347,6 +363,7 @@ export type FeeStructureCreateInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   school: Prisma.SchoolCreateNestedOneWithoutFeeStructuresInput
@@ -360,6 +377,7 @@ export type FeeStructureUncheckedCreateInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   schoolId: string
@@ -372,6 +390,7 @@ export type FeeStructureUpdateInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   school?: Prisma.SchoolUpdateOneRequiredWithoutFeeStructuresNestedInput
@@ -385,6 +404,7 @@ export type FeeStructureUncheckedUpdateInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   schoolId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -398,6 +418,7 @@ export type FeeStructureCreateManyInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   schoolId: string
@@ -410,6 +431,7 @@ export type FeeStructureUpdateManyMutationInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -422,6 +444,7 @@ export type FeeStructureUncheckedUpdateManyInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   schoolId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -445,6 +468,7 @@ export type FeeStructureCountOrderByAggregateInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -456,6 +480,7 @@ export type FeeStructureAvgOrderByAggregateInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
 }
 
 export type FeeStructureMaxOrderByAggregateInput = {
@@ -466,6 +491,7 @@ export type FeeStructureMaxOrderByAggregateInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -479,6 +505,7 @@ export type FeeStructureMinOrderByAggregateInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   schoolId?: Prisma.SortOrder
@@ -490,6 +517,7 @@ export type FeeStructureSumOrderByAggregateInput = {
   libraryFee?: Prisma.SortOrder
   transportFee?: Prisma.SortOrder
   activityFee?: Prisma.SortOrder
+  totalFee?: Prisma.SortOrder
 }
 
 export type FeeStructureCreateNestedManyWithoutSchoolInput = {
@@ -549,6 +577,7 @@ export type FeeStructureCreateWithoutSchoolInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -561,6 +590,7 @@ export type FeeStructureUncheckedCreateWithoutSchoolInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -602,6 +632,7 @@ export type FeeStructureScalarWhereInput = {
   libraryFee?: Prisma.FloatFilter<"FeeStructure"> | number
   transportFee?: Prisma.FloatFilter<"FeeStructure"> | number
   activityFee?: Prisma.FloatFilter<"FeeStructure"> | number
+  totalFee?: Prisma.FloatFilter<"FeeStructure"> | number
   createdAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeeStructure"> | Date | string
   schoolId?: Prisma.StringFilter<"FeeStructure"> | string
@@ -615,6 +646,7 @@ export type FeeStructureCreateManySchoolInput = {
   libraryFee?: number
   transportFee?: number
   activityFee?: number
+  totalFee?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -626,6 +658,7 @@ export type FeeStructureUpdateWithoutSchoolInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -638,6 +671,7 @@ export type FeeStructureUncheckedUpdateWithoutSchoolInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -650,6 +684,7 @@ export type FeeStructureUncheckedUpdateManyWithoutSchoolInput = {
   libraryFee?: Prisma.FloatFieldUpdateOperationsInput | number
   transportFee?: Prisma.FloatFieldUpdateOperationsInput | number
   activityFee?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalFee?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -664,6 +699,7 @@ export type FeeStructureSelect<ExtArgs extends runtime.Types.Extensions.Internal
   libraryFee?: boolean
   transportFee?: boolean
   activityFee?: boolean
+  totalFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   schoolId?: boolean
@@ -678,6 +714,7 @@ export type FeeStructureSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   libraryFee?: boolean
   transportFee?: boolean
   activityFee?: boolean
+  totalFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   schoolId?: boolean
@@ -692,6 +729,7 @@ export type FeeStructureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   libraryFee?: boolean
   transportFee?: boolean
   activityFee?: boolean
+  totalFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   schoolId?: boolean
@@ -706,12 +744,13 @@ export type FeeStructureSelectScalar = {
   libraryFee?: boolean
   transportFee?: boolean
   activityFee?: boolean
+  totalFee?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   schoolId?: boolean
 }
 
-export type FeeStructureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "className" | "academicYear" | "tuitionFee" | "libraryFee" | "transportFee" | "activityFee" | "createdAt" | "updatedAt" | "schoolId", ExtArgs["result"]["feeStructure"]>
+export type FeeStructureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "className" | "academicYear" | "tuitionFee" | "libraryFee" | "transportFee" | "activityFee" | "totalFee" | "createdAt" | "updatedAt" | "schoolId", ExtArgs["result"]["feeStructure"]>
 export type FeeStructureInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
 }
@@ -735,6 +774,7 @@ export type $FeeStructurePayload<ExtArgs extends runtime.Types.Extensions.Intern
     libraryFee: number
     transportFee: number
     activityFee: number
+    totalFee: number
     createdAt: Date
     updatedAt: Date
     schoolId: string
@@ -1169,6 +1209,7 @@ export interface FeeStructureFieldRefs {
   readonly libraryFee: Prisma.FieldRef<"FeeStructure", 'Float'>
   readonly transportFee: Prisma.FieldRef<"FeeStructure", 'Float'>
   readonly activityFee: Prisma.FieldRef<"FeeStructure", 'Float'>
+  readonly totalFee: Prisma.FieldRef<"FeeStructure", 'Float'>
   readonly createdAt: Prisma.FieldRef<"FeeStructure", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FeeStructure", 'DateTime'>
   readonly schoolId: Prisma.FieldRef<"FeeStructure", 'String'>

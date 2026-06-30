@@ -294,14 +294,15 @@ model AcademicProfile {
 
 model FeeStructure {
   id           Int      @id @default(autoincrement())
-  className    String
+  className    String   @unique
   academicYear String
   
   tuitionFee   Float    @default(0)
   libraryFee   Float    @default(0)
   transportFee Float    @default(0)
   activityFee  Float    @default(0)
-
+  totalFee    Float    @default(0)
+  
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
