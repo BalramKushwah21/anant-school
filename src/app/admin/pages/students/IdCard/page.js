@@ -128,14 +128,13 @@ const DetailRow = ({
 export default function GenerateIDCards() {
 	const [targetClass, setTargetClass] = useState("Nursery");
 	const [targetSection, setTargetSection] = useState("Section A");
-	const [searchQuery, setSearchQuery] = useState(""); // NEW: Search state
+	const [searchQuery, setSearchQuery] = useState("");
 
 	const [students, setStudents] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	const CLASSES = [
-		
 		"Nursery",
 		"LKG",
 		"UKG",
@@ -154,7 +153,6 @@ export default function GenerateIDCards() {
 	];
 
 	const SECTIONS = [
-		
 		"Section A",
 		"Section B",
 		"Section C",
@@ -197,7 +195,7 @@ export default function GenerateIDCards() {
 		setSearchQuery(""); // Reset search when class/section changes
 	}, [loadLiveRosterFromBackend]);
 
-	// NEW: Optimized Filtering Logic
+	// Optimized Filtering Logic
 	const filteredStudents = useMemo(() => {
 		if (!searchQuery.trim()) return students;
 
@@ -211,6 +209,31 @@ export default function GenerateIDCards() {
 
 	return (
 		<div className="min-h-screen bg-slate-50 p-4 sm:p-8 text-slate-800 font-sans antialiased print:p-0 print:bg-white">
+			{/* 🖨️ THE BULLETPROOF PRINT OVERRIDE STYLES */}
+			<style dangerouslySetInnerHTML={{__html: `
+				@media print {
+					@page {
+						size: A4;
+						margin: 10mm;
+					}
+					body * {
+						visibility: hidden;
+					}
+					#printable-id-cards-container, 
+					#printable-id-cards-container * {
+						visibility: visible;
+					}
+					#printable-id-cards-container {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 100%;
+						margin: 0;
+						padding: 0;
+					}
+				}
+			`}} />
+
 			<div className="max-w-7xl mx-auto space-y-6 print:space-y-0">
 				{/* ================= HEADER & CONTROLS ================= */}
 				<div className="print:hidden space-y-6">
@@ -276,7 +299,7 @@ export default function GenerateIDCards() {
 							</select>
 						</div>
 
-						{/* NEW: Search Input */}
+						{/* Search Input */}
 						<div>
 							<label className="block text-[10px] font-black text-slate-400 uppercase tracking-wider mb-1">
 								Search Student
@@ -321,9 +344,12 @@ export default function GenerateIDCards() {
 					</div>
 				)}
 
-				{/* Use filteredStudents instead of students */}
+				{/* 🖨️ THE TARGET PRINT CONTAINER */}
 				{!loading && filteredStudents.length > 0 && (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 place-items-center print:grid-cols-2 print:gap-4 print:place-items-start">
+					<div 
+						id="printable-id-cards-container" 
+						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 place-items-center print:grid-cols-2 print:gap-4 print:place-items-start print:w-full"
+					>
 						{filteredStudents.map((student) => (
 							<StudentIdCard key={student.id} student={student} />
 						))}
