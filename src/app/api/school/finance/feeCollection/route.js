@@ -135,6 +135,7 @@ export async function POST(request) {
 
 		// 2. Parse Data from Frontend Modal
 		const body = await request.json();
+        
 		const { id: studentId, paidAmount, route } = body;
 
 		if (!studentId) {
@@ -155,6 +156,7 @@ export async function POST(request) {
 				});
 
 				if (existingFee) {
+
 					await tx.feeRecord.update({
 						where: { id: existingFee.id },
 						data: { admissionFeePaid: Number(paidAmount) },
