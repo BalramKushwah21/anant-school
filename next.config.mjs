@@ -1,6 +1,6 @@
 
 const nextConfig = {
-	allowedDevOrigins: ["10.37.246.234"],
+	allowedDevOrigins: ["10.37.246.187"],
 
 	reactCompiler: true,
 };
