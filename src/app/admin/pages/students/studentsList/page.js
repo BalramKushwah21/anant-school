@@ -23,7 +23,7 @@ export default function StudentList() {
 	const [activeTab, setActiveTab] = useState("studentInfo");
 	const [formData, setFormData] = useState({});
 
-	
+	const [isLoading, setIsLoading] = useState(true);
 
 	// Fetch master table list
 	const fetchStudents = async () => {
@@ -52,15 +52,13 @@ export default function StudentList() {
 		setActiveTab("studentInfo");
 
 		try {
-			const response = await fetch(
-				`/api/school/students/${studentId}`,
-			);
+			const response = await fetch(`/api/school/students/${studentId}`);
 			if (!response.ok)
 				throw new Error("Failed to get admission dossier.");
 			const result = await response.json();
 			const std = result.data;
 			setSelectedStudent(std);
-			
+
 			const academic = std.academicProfiles?.[0] || {};
 			const fees = std.feeRecords?.[0] || {};
 
@@ -95,8 +93,7 @@ export default function StudentList() {
 				academicSession: academic.academicSession || "",
 				previousMediumOfInstruction:
 					academic.previousSchoolMedium || "English",
-				boardRegistrationNumber:
-					academic.boardRegistrationNo || "",
+				boardRegistrationNumber: academic.boardRegistrationNo || "",
 
 				parentsMaritalStatus:
 					std.family?.parentsMaritalStatus || "Married",
@@ -185,7 +182,6 @@ export default function StudentList() {
 		}
 	};
 
-
 	const CLASSES = [
 		"All",
 		"Nursery",
@@ -213,12 +209,14 @@ export default function StudentList() {
 		"Section E",
 	];
 
-
+	
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
 		setTimeout(() => setSelectedStudent(null), 300);
 	};
+
+
 
 	const handleChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -258,7 +256,7 @@ export default function StudentList() {
 			matchesStatus
 		);
 	});
-	
+console.log(students);
 
 	return (
 		<div className="min-h-screen bg-slate-50 p-4 sm:p-8 animate-in fade-in duration-500 relative">
@@ -399,7 +397,7 @@ export default function StudentList() {
 										</td>
 										<td className="p-4 text-center">
 											<span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md text-xs font-bold">
-												{student.attendance}
+												{student.attendance}%
 											</span>
 										</td>
 										<td className="p-4 text-slate-500">

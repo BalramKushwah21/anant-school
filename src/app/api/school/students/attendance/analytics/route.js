@@ -22,23 +22,41 @@ export async function GET(request) {
 		const targetDate =
 			searchParams.get("date") || new Date().toISOString().split("T")[0];
 
-		// 3. Fetch students with their attendance records strictly for this school
+		// 3. FETCH GLOBAL SCHOOL DAYS (New Logic)
+		// Note: Agar aapka schema relation 'attendances' hai toh model name likely 'attendance' hoga.
+		// Agar aapka Prisma model kisi aur naam se hai (e.g., studentAttendance), toh usko yahan update karein.
+		const uniqueAttendanceDates = await prisma.attendance.groupBy({
+			by: ["date"],
+			where: {
+				schoolId: schoolId,
+			},
+		});
+		const actualTotalSchoolDays = uniqueAttendanceDates.length;
+
+		// 4. Fetch students with their attendance records strictly for this school
 		const students = await prisma.student.findMany({
 			where: {
 				schoolId: schoolId,
 			},
 			include: {
-				attendances: true, // Fetch all historical attendance to count total and present
+				attendances: true, // Fetch historical records for present count
 			},
 		});
 
-		// 4. Transform data to match Frontend requirements
+		// 5. Transform data to match Frontend requirements
 		const analyticsData = students.map((student) => {
-			// Calculate Total Days and Present Days
-			const totalDays = student.attendances.length;
+			// Calculate Present Days (using the records that actually exist)
 			const presentDays = student.attendances.filter(
 				(record) => record.status.toLowerCase() === "present",
 			).length;
+
+			// FIX: Assign the globally calculated school days instead of student's array length
+			const totalDays = actualTotalSchoolDays;
+			const absentDays = totalDays - presentDays;
+			const percentage =
+				totalDays === 0
+					? 0
+					: Math.round((presentDays / totalDays) * 100);
 
 			// Find Today's (or Selected Date's) Status
 			const todaysRecord = student.attendances.find((record) => {
@@ -63,6 +81,8 @@ export async function GET(request) {
 				status: currentStatus,
 				totalDays: totalDays,
 				presentDays: presentDays,
+				absentDays: absentDays,
+				percentage: percentage,
 			};
 		});
 

@@ -64,17 +64,6 @@ export default function AttendanceAnalytics() {
 			return matchesSearch && matchesClass && matchesSection;
 		});
 
-		// B. Calculate Aggregates
-		result = result.map((student) => {
-			// Safe fallback if totalDays is 0 to avoid NaN percentage
-			const total = student.totalDays || 0;
-			const present = student.presentDays || 0;
-			const absentDays = total > 0 ? total - present : 0;
-			const percentage =
-				total > 0 ? Math.round((present / total) * 100) : 0;
-
-			return { ...student, absentDays, percentage };
-		});
 
 		// C. Sort
 		result.sort((a, b) => {
