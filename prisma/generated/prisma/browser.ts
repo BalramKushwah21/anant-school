@@ -92,3 +92,8 @@ export type TransportProfile = Prisma.TransportProfileModel
  * 
  */
 export type DocumentArchive = Prisma.DocumentArchiveModel
+/**
+ * Model Vehicle
+ * 
+ */
+export type Vehicle = Prisma.VehicleModel

@@ -45,6 +45,7 @@ model School {
   documentArchives DocumentArchive[]
   attendances      Attendance[]
   feeStructures    FeeStructure[]
+  vehicles         Vehicle[]
   
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -419,6 +420,37 @@ model DocumentArchive {
 
   @@index([schoolId])
 }
+
+// ==========================================
+// TRANSPORT & FLEET MANAGEMENT
+// ==========================================
+
+model Vehicle {
+  id                String   @id @default(cuid())
+  
+  schoolId          String
+  school            School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  vehicleNumber     String   // e.g., MH-04-AB-1234
+  vehicleType       String   @default("Bus") // Bus, Mini-Van, Traveler
+  capacity          Int      @default(40)
+  
+  driverName        String?
+  driverContact     String?
+  
+  insuranceExpiry   DateTime? @db.Date
+  fitnessExpiry     DateTime? @db.Date
+  
+  status            String   @default("Active") // Active, Maintenance, Inactive
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([schoolId, vehicleNumber])
+  @@index([schoolId])
+}
+
+
 
 // ==========================================
 // 9. ENUMS

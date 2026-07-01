@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/next.config.mjs
+/.mjs
 /.pnp
 .pnp.*
 .yarn/*

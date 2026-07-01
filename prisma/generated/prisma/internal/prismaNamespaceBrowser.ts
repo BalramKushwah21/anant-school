@@ -65,7 +65,8 @@ export const ModelName = {
   Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
   TransportProfile: 'TransportProfile',
-  DocumentArchive: 'DocumentArchive'
+  DocumentArchive: 'DocumentArchive',
+  Vehicle: 'Vehicle'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -370,6 +371,24 @@ export const DocumentArchiveScalarFieldEnum = {
 } as const
 
 export type DocumentArchiveScalarFieldEnum = (typeof DocumentArchiveScalarFieldEnum)[keyof typeof DocumentArchiveScalarFieldEnum]
+
+
+export const VehicleScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  vehicleNumber: 'vehicleNumber',
+  vehicleType: 'vehicleType',
+  capacity: 'capacity',
+  driverName: 'driverName',
+  driverContact: 'driverContact',
+  insuranceExpiry: 'insuranceExpiry',
+  fitnessExpiry: 'fitnessExpiry',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
 
 
 export const SortOrder = {
