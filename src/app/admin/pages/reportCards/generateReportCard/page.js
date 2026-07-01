@@ -1,156 +1,144 @@
 "use client";
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-	ArrowLeft,
-	Printer,
-	Sparkles,
-	User,
-	FileCheck,
-	Loader2,
-} from "lucide-react";
-import MarksheetRenderer from "../templates/components/marksheetRenderer";
+import { ArrowLeft, Printer, AlertTriangle, Loader2 } from "lucide-react";
+import MarksheetRenderer from "../templates/components/marksheetRenderer"; // Sahi path fix karein
 
-// 1. Decoupled child component containing the useSearchParams logic
-function ReportCardContent() {
+function SingleReportCardContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
+
+	const studentId = searchParams.get("studentId");
 	const templateParamId = searchParams.get("template") || "cbse";
 
 	const [activeConfigData, setActiveConfigData] = useState({});
-	const [studentObject, setStudentObject] = useState({
-		name: "ARJUN KUMAR",
-		rollNo: "22345678",
-		motherName: "SUNITA DEVI",
-		fatherName: "RAJESH KUMAR",
-		marks: [
-			{
-				code: "301",
-				name: "ENGLISH CORE",
-				th: "075",
-				pr: "019",
-				total: "094",
-				grade: "A1",
-			},
-			{
-				code: "041",
-				name: "MATHEMATICS",
-				th: "082",
-				pr: "020",
-				total: "102",
-				grade: "A1",
-			},
-			{
-				code: "042",
-				name: "PHYSICS",
-				th: "065",
-				pr: "028",
-				total: "093",
-				grade: "A1",
-			},
-			{
-				code: "043",
-				name: "CHEMISTRY",
-				th: "068",
-				pr: "029",
-				total: "097",
-				grade: "A1",
-			},
-			{
-				code: "083",
-				name: "COMPUTER SCIENCE",
-				th: "069",
-				pr: "030",
-				total: "099",
-				grade: "A1",
-			},
-		],
-	});
+	const [studentObject, setStudentObject] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-	// Mobile layout wrapper processing variables
+	// Zoom Scale Logic (Just like your previous code)
 	const [scale, setScale] = useState(1);
 	const [wrapperHeight, setWrapperHeight] = useState("auto");
 	const rendererContainerFrameRef = useRef(null);
 
 	useEffect(() => {
-		const fetchedConfig = JSON.parse(
+		// 1. Load Layout Config from LocalStorage (Or DB in future)
+		const storedConfig = JSON.parse(
 			localStorage.getItem(`saved_config_${templateParamId}`),
 		) || {
-			templateId: templateParamId,
-			schoolName: "CAMBRIDGE PUBLIC SCHOOL",
-			tagline: "A Senior Secondary Co-Education School",
-			themeColor: "#b91c1c",
+			schoolName: "DEFAULT SCHOOL NAME",
+			themeColor: "#0f766e",
 		};
-		setActiveConfigData(fetchedConfig);
-	}, [templateParamId]);
+		setActiveConfigData(storedConfig);
 
-	useEffect(() => {
-		const calculateLiveRescaleMatrix = () => {
-			const windowWidthValue = window.innerWidth;
-			const benchmarkWidthFrame = 900;
+		// 2. Fetch Student Real Data
+		const fetchStudentData = async () => {
+			if (!studentId) {
+				setError("Student ID is missing in URL");
+				setIsLoading(false);
+				return;
+			}
 
-			if (windowWidthValue < benchmarkWidthFrame) {
-				const calculatedScaleMatrix =
-					(windowWidthValue - 24) / benchmarkWidthFrame;
-				setScale(calculatedScaleMatrix);
-				if (rendererContainerFrameRef.current) {
-					setWrapperHeight(
-						`${rendererContainerFrameRef.current.offsetHeight * calculatedScaleMatrix}px`,
-					);
-				}
-			} else {
-				setScale(1);
-				setWrapperHeight("auto");
+			try {
+				const res = await fetch(
+					`/api/school/students/marksheet?studentId=${studentId}`,
+				);
+				if (!res.ok) throw new Error("Failed to fetch student data");
+				const data = await res.json();
+				setStudentObject(data);
+			} catch (err) {
+				setError(err.message);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
-		calculateLiveRescaleMatrix();
-		const delayTimer = setTimeout(calculateLiveRescaleMatrix, 200);
-		window.addEventListener("resize", calculateLiveRescaleMatrix);
-		return () => {
-			window.removeEventListener("resize", calculateLiveRescaleMatrix);
-			clearTimeout(delayTimer);
-		};
-	}, [activeConfigData, studentObject]);
+		fetchStudentData();
+	}, [studentId, templateParamId]);
+
+	// Adjust Scale Logic for preview window
+	useEffect(() => {
+		if (!isLoading && studentObject) {
+			const fitPreviewScreen = () => {
+				const currentWidth = window.innerWidth;
+				const baselineBounds = 900;
+				if (currentWidth < baselineBounds + 60) {
+					const ratio = (currentWidth - 40) / baselineBounds;
+					setScale(ratio);
+				} else {
+					setScale(1);
+				}
+			};
+			fitPreviewScreen();
+			window.addEventListener("resize", fitPreviewScreen);
+			return () => window.removeEventListener("resize", fitPreviewScreen);
+		}
+	}, [isLoading, studentObject]);
+
+	useEffect(() => {
+		if (rendererContainerFrameRef.current) {
+			const exactHeight =
+				rendererContainerFrameRef.current.getBoundingClientRect()
+					.height;
+			setWrapperHeight(
+				exactHeight > 0 ? `${exactHeight + 50}px` : "auto",
+			);
+		}
+	}, [scale, isLoading, studentObject]);
+
+	if (isLoading) {
+		return (
+			<div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-500">
+				<Loader2
+					className="animate-spin text-indigo-600 mb-4"
+					size={40}
+				/>
+				<p className="font-semibold animate-pulse">
+					Fetching Student Records...
+				</p>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-red-500">
+				<AlertTriangle size={50} className="mb-4" />
+				<h2 className="text-xl font-bold">
+					Error Generating Marksheet
+				</h2>
+				<p className="text-slate-600 mt-2">{error}</p>
+				<button
+					onClick={() => router.back()}
+					className="mt-6 px-4 py-2 bg-slate-800 text-white rounded-md"
+				>
+					Go Back
+				</button>
+			</div>
+		);
+	}
 
 	return (
-		<div className="min-h-screen bg-slate-100 font-sans flex flex-col overflow-x-hidden print:bg-white print:p-0">
-			{/* Action panel header controls layer - Auto hidden on standard operating system print engine configurations */}
-			<div className="bg-white border-b border-slate-200 p-4 shadow-sm sticky top-0 z-50 print:hidden">
-				<div className="max-w-[1600px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-					<div className="flex items-center gap-3">
-						<div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100 shadow-sm">
-							<FileCheck size={22} />
-						</div>
-						<div>
-							<h1 className="text-lg font-black text-slate-800 tracking-tight flex items-center gap-1.5">
-								Live Generation Node Workbench
-							</h1>
-							<p className="text-xs text-slate-400 font-medium">
-								Verify system alignment variables schema map
-								matching models before finalizing layout prints.
-							</p>
-						</div>
-					</div>
-
-					<div className="flex gap-2 w-full sm:w-auto">
-						<button
-							onClick={() => router.push("/my-templates")}
-							className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-200 transition active:scale-95"
-						>
-							<ArrowLeft size={14} /> Back to Repository Folder
-						</button>
-						<button
-							onClick={() => window.print()}
-							className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-md transition active:scale-95"
-						>
-							<Printer size={14} /> Print Document (PDF Export)
-						</button>
-					</div>
+		<div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+			{/* Top Controller Ribbon */}
+			<div className="bg-white border-b border-slate-200 px-4 sm:px-8 py-4 flex justify-between items-center print:hidden sticky top-0 z-50 shadow-sm">
+				<button
+					onClick={() => router.back()}
+					className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors font-semibold text-sm"
+				>
+					<ArrowLeft size={16} /> Back to Roster
+				</button>
+				<div className="flex gap-3">
+					<button
+						onClick={() => window.print()}
+						className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg shadow-md font-bold text-sm transition-all active:scale-95"
+					>
+						<Printer size={18} /> Print Marksheet
+					</button>
 				</div>
 			</div>
 
-			{/* Workspace renderer viewport node layout mapping framework elements */}
+			{/* Workspace Renderer */}
 			<div className="flex-1 w-full flex justify-center p-3 sm:p-8 print:p-0 print:block">
 				<div
 					style={{ height: wrapperHeight, width: "100%" }}
@@ -164,7 +152,7 @@ function ReportCardContent() {
 							transform: `scale(${scale})`,
 							transformOrigin: "top center",
 						}}
-						className="print:transform-none print:w-auto print:min-w-0 print:h-auto"
+						className="print:transform-none print:w-auto print:min-w-0 print:h-auto print:m-0"
 					>
 						<MarksheetRenderer
 							templateType={templateParamId}
@@ -179,25 +167,16 @@ function ReportCardContent() {
 	);
 }
 
-// 2. Suspense boundary wrapper for the default export
 export default function SingleStudentReportCardGeneratorPage() {
 	return (
 		<Suspense
 			fallback={
-				<div className="min-h-screen bg-slate-100 flex items-center justify-center text-slate-500">
-					<div className="flex flex-col items-center gap-3">
-						<Loader2
-							className="animate-spin text-indigo-600"
-							size={32}
-						/>
-						<p className="font-bold tracking-wider text-sm uppercase">
-							Loading Report Card Context...
-						</p>
-					</div>
+				<div className="h-screen w-full flex justify-center items-center">
+					<Loader2 className="animate-spin text-indigo-600" />
 				</div>
 			}
 		>
-			<ReportCardContent />
+			<SingleReportCardContent />
 		</Suspense>
 	);
 }

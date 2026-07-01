@@ -116,3 +116,13 @@ export type TransportProfile = Prisma.TransportProfileModel
  * 
  */
 export type DocumentArchive = Prisma.DocumentArchiveModel
+/**
+ * Model ExamResult
+ * 
+ */
+export type ExamResult = Prisma.ExamResultModel
+/**
+ * Model SubjectMark
+ * 
+ */
+export type SubjectMark = Prisma.SubjectMarkModel

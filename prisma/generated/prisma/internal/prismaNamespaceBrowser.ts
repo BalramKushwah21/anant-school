@@ -65,7 +65,9 @@ export const ModelName = {
   Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
   TransportProfile: 'TransportProfile',
-  DocumentArchive: 'DocumentArchive'
+  DocumentArchive: 'DocumentArchive',
+  ExamResult: 'ExamResult',
+  SubjectMark: 'SubjectMark'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -372,12 +374,69 @@ export const DocumentArchiveScalarFieldEnum = {
 export type DocumentArchiveScalarFieldEnum = (typeof DocumentArchiveScalarFieldEnum)[keyof typeof DocumentArchiveScalarFieldEnum]
 
 
+export const ExamResultScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  studentId: 'studentId',
+  academicYearId: 'academicYearId',
+  examTerm: 'examTerm',
+  totalMaxMarks: 'totalMaxMarks',
+  totalObtained: 'totalObtained',
+  percentage: 'percentage',
+  overallGrade: 'overallGrade',
+  resultStatus: 'resultStatus',
+  overallRemarks: 'overallRemarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof typeof ExamResultScalarFieldEnum]
+
+
+export const SubjectMarkScalarFieldEnum = {
+  id: 'id',
+  examResultId: 'examResultId',
+  subjectName: 'subjectName',
+  subjectCode: 'subjectCode',
+  subjectType: 'subjectType',
+  orderIndex: 'orderIndex',
+  theoryMax: 'theoryMax',
+  theoryObtained: 'theoryObtained',
+  theoryPassMark: 'theoryPassMark',
+  practicalMax: 'practicalMax',
+  practicalObtained: 'practicalObtained',
+  practicalPassMark: 'practicalPassMark',
+  internalMax: 'internalMax',
+  internalObtained: 'internalObtained',
+  totalMax: 'totalMax',
+  totalObtained: 'totalObtained',
+  grade: 'grade',
+  gradePoint: 'gradePoint',
+  isAbsent: 'isAbsent',
+  passStatus: 'passStatus',
+  remarks: 'remarks',
+  customComponents: 'customComponents',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubjectMarkScalarFieldEnum = (typeof SubjectMarkScalarFieldEnum)[keyof typeof SubjectMarkScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -394,4 +453,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

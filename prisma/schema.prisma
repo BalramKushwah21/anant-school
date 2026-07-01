@@ -45,6 +45,7 @@ model School {
   documentArchives DocumentArchive[]
   attendances      Attendance[]
   feeStructures    FeeStructure[]
+  examResults      ExamResult[]
   
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -65,6 +66,7 @@ model AcademicYear {
   attendances      Attendance[]
   feeRecords       FeeRecord[]
   academicProfiles AcademicProfile[]
+  examResults      ExamResult[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -250,6 +252,7 @@ model Student {
   feeRecords         FeeRecord[]
   attendances        Attendance[]
   addresses          Address[]
+  examResults      ExamResult[]
 
 
   createdAt          DateTime @default(now())
@@ -420,6 +423,91 @@ model DocumentArchive {
   @@index([schoolId])
 }
 
+
+
+// ==========================================
+// 10. EXAM & MARKSHEET MODULE
+// ==========================================
+
+model ExamResult {
+  id              String        @id @default(cuid())
+
+  // --- SaaS & Temporal Relations ---
+  schoolId        String
+  school          School        @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  
+  studentId       String
+  student         Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  academicYearId  String
+  academicYear    AcademicYear  @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+
+  // --- Exam Metadata ---
+  examTerm        String        // e.g., "Term 1", "Half Yearly", "Annual"
+  
+  // --- Overall Summary ---
+  totalMaxMarks   Float?        
+  totalObtained   Float?        
+  percentage      Float?        
+  overallGrade    String?       
+  resultStatus    String?       // e.g., "Pass", "Fail", "Compartment", "Promoted"
+  overallRemarks  String?
+  
+  // --- Relation to subject-wise marks ---
+  subjectMarks    SubjectMark[] 
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Indexes for fast fetching in SaaS dashboard
+  @@index([schoolId, academicYearId])
+  @@index([studentId])
+}
+
+model SubjectMark {
+  id                String     @id @default(cuid())
+  
+  // --- Parent Relation ---
+  examResultId      String
+  examResult        ExamResult @relation(fields: [examResultId], references: [id], onDelete: Cascade)
+  
+  // --- Subject Identity ---
+  subjectName       String     // e.g., "Mathematics"
+  subjectCode       String?    // e.g., "041"
+  subjectType       String?    // e.g., "Scholastic", "Co-Scholastic"
+  orderIndex        Int?       // Marksheet me sorting ke liye
+
+  // --- MAXIMUM POSSIBLE SCORE CASES ---
+  theoryMax         Float?     
+  theoryObtained    Float?     
+  theoryPassMark    Float?     
+
+  practicalMax      Float?     
+  practicalObtained Float?     
+  practicalPassMark Float?     
+
+  internalMax       Float?     
+  internalObtained  Float?     
+
+  totalMax          Float?     
+  totalObtained     Float?     
+  
+  grade             String?    
+  gradePoint        Float?     
+
+  // --- Edge Cases ---
+  isAbsent          Boolean    @default(false)  
+  passStatus        String?    
+  remarks           String?    
+
+  // --- Custom Fallback for unique school formats ---
+  customComponents  Json?      
+
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([examResultId])
+}
 // ==========================================
 // 9. ENUMS
 // ==========================================

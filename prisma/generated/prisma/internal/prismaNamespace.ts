@@ -398,7 +398,9 @@ export const ModelName = {
   Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
   TransportProfile: 'TransportProfile',
-  DocumentArchive: 'DocumentArchive'
+  DocumentArchive: 'DocumentArchive',
+  ExamResult: 'ExamResult',
+  SubjectMark: 'SubjectMark'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeStructure" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive"
+    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeStructure" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive" | "examResult" | "subjectMark"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1530,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ExamResult: {
+      payload: Prisma.$ExamResultPayload<ExtArgs>
+      fields: Prisma.ExamResultFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExamResultFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExamResultFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        findFirst: {
+          args: Prisma.ExamResultFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExamResultFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        findMany: {
+          args: Prisma.ExamResultFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>[]
+        }
+        create: {
+          args: Prisma.ExamResultCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        createMany: {
+          args: Prisma.ExamResultCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExamResultCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>[]
+        }
+        delete: {
+          args: Prisma.ExamResultDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        update: {
+          args: Prisma.ExamResultUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExamResultDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExamResultUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExamResultUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExamResultUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamResultPayload>
+        }
+        aggregate: {
+          args: Prisma.ExamResultAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExamResult>
+        }
+        groupBy: {
+          args: Prisma.ExamResultGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamResultGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExamResultCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamResultCountAggregateOutputType> | number
+        }
+      }
+    }
+    SubjectMark: {
+      payload: Prisma.$SubjectMarkPayload<ExtArgs>
+      fields: Prisma.SubjectMarkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SubjectMarkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SubjectMarkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        findFirst: {
+          args: Prisma.SubjectMarkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SubjectMarkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        findMany: {
+          args: Prisma.SubjectMarkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>[]
+        }
+        create: {
+          args: Prisma.SubjectMarkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        createMany: {
+          args: Prisma.SubjectMarkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SubjectMarkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>[]
+        }
+        delete: {
+          args: Prisma.SubjectMarkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        update: {
+          args: Prisma.SubjectMarkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        deleteMany: {
+          args: Prisma.SubjectMarkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SubjectMarkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SubjectMarkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>[]
+        }
+        upsert: {
+          args: Prisma.SubjectMarkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SubjectMarkPayload>
+        }
+        aggregate: {
+          args: Prisma.SubjectMarkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSubjectMark>
+        }
+        groupBy: {
+          args: Prisma.SubjectMarkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubjectMarkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SubjectMarkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SubjectMarkCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1855,12 +2005,69 @@ export const DocumentArchiveScalarFieldEnum = {
 export type DocumentArchiveScalarFieldEnum = (typeof DocumentArchiveScalarFieldEnum)[keyof typeof DocumentArchiveScalarFieldEnum]
 
 
+export const ExamResultScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  studentId: 'studentId',
+  academicYearId: 'academicYearId',
+  examTerm: 'examTerm',
+  totalMaxMarks: 'totalMaxMarks',
+  totalObtained: 'totalObtained',
+  percentage: 'percentage',
+  overallGrade: 'overallGrade',
+  resultStatus: 'resultStatus',
+  overallRemarks: 'overallRemarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamResultScalarFieldEnum = (typeof ExamResultScalarFieldEnum)[keyof typeof ExamResultScalarFieldEnum]
+
+
+export const SubjectMarkScalarFieldEnum = {
+  id: 'id',
+  examResultId: 'examResultId',
+  subjectName: 'subjectName',
+  subjectCode: 'subjectCode',
+  subjectType: 'subjectType',
+  orderIndex: 'orderIndex',
+  theoryMax: 'theoryMax',
+  theoryObtained: 'theoryObtained',
+  theoryPassMark: 'theoryPassMark',
+  practicalMax: 'practicalMax',
+  practicalObtained: 'practicalObtained',
+  practicalPassMark: 'practicalPassMark',
+  internalMax: 'internalMax',
+  internalObtained: 'internalObtained',
+  totalMax: 'totalMax',
+  totalObtained: 'totalObtained',
+  grade: 'grade',
+  gradePoint: 'gradePoint',
+  isAbsent: 'isAbsent',
+  passStatus: 'passStatus',
+  remarks: 'remarks',
+  customComponents: 'customComponents',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubjectMarkScalarFieldEnum = (typeof SubjectMarkScalarFieldEnum)[keyof typeof SubjectMarkScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1877,6 +2084,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2073,6 +2289,20 @@ export type EnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumPaymentModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMode[]'>
     
 
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2198,6 +2428,8 @@ export type GlobalOmitConfig = {
   medicalProfile?: Prisma.MedicalProfileOmit
   transportProfile?: Prisma.TransportProfileOmit
   documentArchive?: Prisma.DocumentArchiveOmit
+  examResult?: Prisma.ExamResultOmit
+  subjectMark?: Prisma.SubjectMarkOmit
 }
 
 /* Types for Logging */
