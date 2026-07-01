@@ -399,6 +399,7 @@ export const ModelName = {
   MedicalProfile: 'MedicalProfile',
   TransportProfile: 'TransportProfile',
   DocumentArchive: 'DocumentArchive',
+  Vehicle: 'Vehicle',
   ExamResult: 'ExamResult',
   SubjectMark: 'SubjectMark'
 } as const
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeStructure" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive" | "examResult" | "subjectMark"
+    modelProps: "school" | "academicYear" | "user" | "teacher" | "teacherAttendance" | "family" | "address" | "student" | "academicProfile" | "feeStructure" | "feeRecord" | "attendance" | "medicalProfile" | "transportProfile" | "documentArchive" | "vehicle" | "examResult" | "subjectMark"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1530,6 +1531,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Vehicle: {
+      payload: Prisma.$VehiclePayload<ExtArgs>
+      fields: Prisma.VehicleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VehicleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VehicleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        findFirst: {
+          args: Prisma.VehicleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VehicleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        findMany: {
+          args: Prisma.VehicleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+        }
+        create: {
+          args: Prisma.VehicleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        createMany: {
+          args: Prisma.VehicleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VehicleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+        }
+        delete: {
+          args: Prisma.VehicleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        update: {
+          args: Prisma.VehicleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        deleteMany: {
+          args: Prisma.VehicleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VehicleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VehicleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+        }
+        upsert: {
+          args: Prisma.VehicleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePayload>
+        }
+        aggregate: {
+          args: Prisma.VehicleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVehicle>
+        }
+        groupBy: {
+          args: Prisma.VehicleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VehicleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VehicleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VehicleCountAggregateOutputType> | number
+        }
+      }
+    }
     ExamResult: {
       payload: Prisma.$ExamResultPayload<ExtArgs>
       fields: Prisma.ExamResultFieldRefs
@@ -2005,6 +2080,24 @@ export const DocumentArchiveScalarFieldEnum = {
 export type DocumentArchiveScalarFieldEnum = (typeof DocumentArchiveScalarFieldEnum)[keyof typeof DocumentArchiveScalarFieldEnum]
 
 
+export const VehicleScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  vehicleNumber: 'vehicleNumber',
+  vehicleType: 'vehicleType',
+  capacity: 'capacity',
+  driverName: 'driverName',
+  driverContact: 'driverContact',
+  insuranceExpiry: 'insuranceExpiry',
+  fitnessExpiry: 'fitnessExpiry',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
+
+
 export const ExamResultScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
@@ -2428,6 +2521,7 @@ export type GlobalOmitConfig = {
   medicalProfile?: Prisma.MedicalProfileOmit
   transportProfile?: Prisma.TransportProfileOmit
   documentArchive?: Prisma.DocumentArchiveOmit
+  vehicle?: Prisma.VehicleOmit
   examResult?: Prisma.ExamResultOmit
   subjectMark?: Prisma.SubjectMarkOmit
 }

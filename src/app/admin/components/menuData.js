@@ -86,7 +86,7 @@ export const menuConfig = [
 			{ label: "Staff List", link: "/admin/pages/otherStaff/list" },
 			{ label: "Add Member", link: "/admin/pages/otherStaff/add" },
 
-			{ label: "Leave Requests", link: "/admin/pages/otherStaff/leaves" },
+			{ label: "Leave Requests", link: "/admin/pages/otherStaff/leave" },
 			{ label: "Payroll", link: "/admin/pages/otherStaff/payroll" },
 
 			{
@@ -214,9 +214,9 @@ export const menuConfig = [
 		icon: Bus,
 		isDropdown: true,
 		subItems: [
-			{ label: "Vehicles", link: "/dashboard/transport/vehicles" },
-			{ label: "Routes", link: "/dashboard/transport/routes" },
-			{ label: "Drivers", link: "/dashboard/transport/drivers" },
+			{ label: "Vehicles", link: "/admin/pages/transport/vehicles" },
+			{ label: "Routes", link: "/admin/pages/transport/routes" },
+			{ label: "Drivers", link: "/admin/pages/transport/drivers" },
 			{
 				label: "Student Allocation",
 				link: "/dashboard/transport/allocation",
