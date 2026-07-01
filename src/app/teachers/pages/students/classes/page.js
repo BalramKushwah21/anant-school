@@ -1,86 +1,65 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { 
-  Users, UserCheck, BookOpen, Calendar, FileText, TrendingUp, 
-  Award, ShieldCheck, ArrowRight, BookMarked, BrainCircuit, Clock, Layers
+  ShieldCheck, Clock, BrainCircuit 
 } from "lucide-react";
 import { 
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line 
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip 
 } from "recharts";
 
-// Premium Database Dataset mapping all available classes
-const CLASS_DATABASE_MOCK = {
-  "10-A": {
-    className: "Class 10 - A",
-    totalStudents: 42,
-    boysCount: 22,
-    girlsCount: 20,
-    avgAttendance: 95,
-    classPerformance: 88,
-    subjectsCount: 5,
-    subjects: ["Mathematics", "Physics", "Chemistry", "English Literature", "Computer Applications"],
-    upcomingExams: [
-      { id: "EX-101", subject: "Mathematics", date: "2026-06-29", type: "Unit Test II", weightage: "15%" },
-      { id: "EX-102", subject: "Physics", date: "2026-07-03", type: "Practical Evaluation", weightage: "10%" }
-    ],
-    pendingAssignments: [
-      { id: "AS-201", title: "Trigonometry Problem Set 4", due: "In 2 Days", submissions: "31/42" },
-      { id: "AS-202", title: "Electromagnetic Induction Report", due: "In 5 Days", submissions: "18/42" },
-      { id: "AS-203", title: "Java OOPs Interface Mockup", due: "In 1 Week", submissions: "05/42" }
-    ],
-    weeklyAttendanceTrend: [
-      { day: "Mon", rate: 96 }, { day: "Tue", rate: 94 }, { day: "Wed", rate: 95 }, { day: "Thu", rate: 97 }, { day: "Fri", rate: 93 }
-    ]
-  },
-  "9-A": {
-    className: "Class 9 - A",
-    totalStudents: 38,
-    boysCount: 18,
-    girlsCount: 20,
-    avgAttendance: 92,
-    classPerformance: 81,
-    subjectsCount: 6,
-    subjects: ["General Science", "Algebra", "Social Studies", "Hindi", "English", "Foundation IT"],
-    upcomingExams: [
-      { id: "EX-091", subject: "Algebra", date: "2026-06-30", type: "Quarterly Exam", weightage: "25%" }
-    ],
-    pendingAssignments: [
-      { id: "AS-091", title: "French Revolution Timeline Charts", due: "Tomorrow", submissions: "35/38" },
-      { id: "AS-092", title: "Cell Structure Diagrams Lab-File", due: "In 4 Days", submissions: "22/38" }
-    ],
-    weeklyAttendanceTrend: [
-      { day: "Mon", rate: 91 }, { day: "Tue", rate: 93 }, { day: "Wed", rate: 92 }, { day: "Thu", rate: 94 }, { day: "Fri", rate: 90 }
-    ]
-  },
-  "11-B": {
-    className: "Class 11 - B",
-    totalStudents: 45,
-    boysCount: 25,
-    girlsCount: 20,
-    avgAttendance: 89,
-    classPerformance: 76,
-    subjectsCount: 4,
-    subjects: ["Accountancy", "Business Studies", "Economics", "Core English"],
-    upcomingExams: [
-      { id: "EX-111", subject: "Economics", date: "2026-07-02", type: "Macro-economics Revision Quiz", weightage: "5%" }
-    ],
-    pendingAssignments: [
-      { id: "AS-111", title: "Ledger Book Balancing Assignment", due: "In 3 Days", submissions: "40/45" }
-    ],
-    weeklyAttendanceTrend: [
-      { day: "Mon", rate: 88 }, { day: "Tue", rate: 89 }, { day: "Wed", rate: 90 }, { day: "Thu", rate: 91 }, { day: "Fri", rate: 87 }
-    ]
-  }
-};
-
 export default function TeacherClassDashboard() {
-  const [activeClassKey, setActiveClassKey] = useState("10-A");
+  const [classesData, setClassesData] = useState({});
+  const [activeClassKey, setActiveClassKey] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Read active records securely bound to cards or drop-down selection
+  // API se database mapping fetch karna
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch("/api/school/teacher/classes");
+        if (!response.ok) {
+          throw new Error(`Server responded with a ${response.status} error.`);
+        }
+        const result = await response.json();
+        if (result.success && result.data) {
+          setClassesData(result.data);
+          // By default, list ki pehli class ko active set karein
+          const firstKey = Object.keys(result.data)[0];
+          if (firstKey) setActiveClassKey(firstKey);
+        }
+      } catch (error) {
+        console.error("Failed to fetch classes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClasses();
+  }, []);
+
   const activeClassData = useMemo(() => {
-    return CLASS_DATABASE_MOCK[activeClassKey];
-  }, [activeClassKey]);
+    return classesData[activeClassKey] || null;
+  }, [classesData, activeClassKey]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div className="h-8 w-8 bg-teal-500 rounded-full animate-bounce"></div>
+          <p className="text-slate-500 font-bold tracking-wider uppercase text-sm">Loading Database Matrices...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!activeClassData) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans">
+        <p className="text-slate-500 font-bold">No assigned classes found in the system.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 sm:p-8 text-slate-800 font-sans antialiased">
@@ -103,7 +82,7 @@ export default function TeacherClassDashboard() {
 
         {/* ================= USER-DEFINED PREMIUM CLASS CARDS GRID ================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(CLASS_DATABASE_MOCK).map(([key, data]) => {
+          {Object.entries(classesData).map(([key, data]) => {
             const isCurrentlySelected = activeClassKey === key;
             return (
               <div 
@@ -114,7 +93,6 @@ export default function TeacherClassDashboard() {
                     : "border-slate-200 hover:border-slate-300"
                 }`}
               >
-                {/* Card Top Strip */}
                 <div className={`p-4 border-b ${isCurrentlySelected ? 'bg-teal-50/50 border-teal-100' : 'bg-slate-50 border-slate-100'}`}>
                   <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center justify-between">
                     {data.className}
@@ -126,7 +104,6 @@ export default function TeacherClassDashboard() {
                   </h3>
                 </div>
 
-                {/* Card Inner Core Attributes */}
                 <div className="p-5 space-y-3.5 flex-1">
                   <div className="flex items-center gap-3 font-semibold text-sm text-slate-700">
                     <span className="text-base">👨‍🎓</span>
@@ -136,8 +113,10 @@ export default function TeacherClassDashboard() {
                   <div className="flex items-center gap-3 font-semibold text-sm text-slate-700">
                     <span className="text-base">📅</span>
                     <span className="flex items-center gap-2">
-                      {data.avgAttendance}% Average Attendance 
-                      <span className={`w-2 h-2 rounded-full ${data.avgAttendance >= 92 ? 'bg-emerald-500' : 'bg-amber-400'}`}></span>
+                      {data.avgAttendance === "N/A" ? "Attendance N/A" : `${data.avgAttendance}% Average Attendance`}
+                      {data.avgAttendance !== "N/A" && (
+                        <span className={`w-2 h-2 rounded-full ${data.avgAttendance >= 92 ? 'bg-emerald-500' : 'bg-amber-400'}`}></span>
+                      )}
                     </span>
                   </div>
 
@@ -147,7 +126,6 @@ export default function TeacherClassDashboard() {
                   </div>
                 </div>
 
-                {/* Card Interactive Trigger Action Footer Button */}
                 <div className="p-4 bg-slate-50/50 border-t border-slate-100">
                   <button
                     onClick={() => setActiveClassKey(key)}
@@ -168,7 +146,7 @@ export default function TeacherClassDashboard() {
         <hr className="border-slate-200 my-8" />
 
         {/* ================= SELECTED CLASS OPERATIONAL MATRIX VIEWPORT ================= */}
-        <div className="space-y-6">
+        <div className="space-y-6 animate-in fade-in duration-300">
           <div className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200">
             <div className="w-3 h-6 bg-teal-600 rounded-md"></div>
             <h2 className="text-lg font-black text-slate-900 uppercase tracking-wide">
@@ -188,11 +166,13 @@ export default function TeacherClassDashboard() {
             </div>
             <div className="bg-white p-4 rounded-xl border border-slate-200 text-center space-y-1">
               <span className="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Avg Attendance</span>
-              <span className="text-2xl font-black text-emerald-600 font-mono">{activeClassData.avgAttendance}%</span>
+              <span className="text-2xl font-black text-emerald-600 font-mono">
+                {activeClassData.avgAttendance === "N/A" ? "N/A" : `${activeClassData.avgAttendance}%`}
+              </span>
             </div>
             <div className="bg-white p-4 rounded-xl border border-slate-200 text-center space-y-1">
               <span className="block text-[10px] font-black text-slate-400 uppercase tracking-wider">Performance Index</span>
-              <span className="text-2xl font-black text-indigo-600 font-mono">{activeClassData.classPerformance}%</span>
+              <span className="text-2xl font-black text-indigo-600 font-mono">{activeClassData.classPerformance}</span>
             </div>
           </div>
 
@@ -212,7 +192,7 @@ export default function TeacherClassDashboard() {
                   <LineChart data={activeClassData.weeklyAttendanceTrend} margin={{ top: 5, right: 10, left: -25, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                     <XAxis dataKey="day" stroke="#94a3b8" style={{ fontSize: "11px", fontWeight: "bold" }} />
-                    <YAxis domain={[80, 100]} stroke="#94a3b8" style={{ fontSize: "11px", fontFamily: "monospace" }} />
+                    <YAxis domain={[0, 100]} stroke="#94a3b8" style={{ fontSize: "11px", fontFamily: "monospace" }} />
                     <Tooltip contentStyle={{ background: "#0f172a", borderRadius: "12px", border: "none", color: "#fff", fontSize: "12px" }} />
                     <Line type="monotone" dataKey="rate" name="Attendance Rate" stroke="#0d9488" strokeWidth={3} activeDot={{ r: 6 }} />
                   </LineChart>
@@ -228,18 +208,25 @@ export default function TeacherClassDashboard() {
                   {activeClassData.upcomingExams.length} Active
                 </span>
               </div>
-              <div className="space-y-3">
-                {activeClassData.upcomingExams.map((exam) => (
-                  <div key={exam.id} className="p-3 bg-slate-50 border rounded-xl text-xs space-y-1">
-                    <div className="flex justify-between font-bold text-slate-900">
-                      <span>{exam.subject}</span>
-                      <span className="text-indigo-600">{exam.weightage}</span>
+              
+              {activeClassData.upcomingExams.length > 0 ? (
+                <div className="space-y-3">
+                  {activeClassData.upcomingExams.map((exam) => (
+                    <div key={exam.id} className="p-3 bg-slate-50 border rounded-xl text-xs space-y-1">
+                      <div className="flex justify-between font-bold text-slate-900">
+                        <span>{exam.subject}</span>
+                        <span className="text-indigo-600">{exam.weightage}</span>
+                      </div>
+                      <p className="text-slate-400 text-[11px] font-medium">{exam.type}</p>
+                      <p className="text-slate-500 font-mono text-[10px] pt-1 border-t border-slate-200/60 mt-1">📅 Target Date: {exam.date}</p>
                     </div>
-                    <p className="text-slate-400 text-[11px] font-medium">{exam.type}</p>
-                    <p className="text-slate-500 font-mono text-[10px] pt-1 border-t border-slate-200/60 mt-1">📅 Target Date: {exam.date}</p>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                 <div className="p-8 text-center text-slate-400 font-semibold text-sm border-2 border-dashed rounded-xl">
+                   No scheduled exams mapped in database.
+                 </div>
+              )}
             </div>
 
             {/* Assignments Allocation Tracker Workflow */}
@@ -247,27 +234,34 @@ export default function TeacherClassDashboard() {
               <div className="flex justify-between items-center border-b pb-2">
                 <span className="text-xs font-black text-slate-900 uppercase tracking-wider">Pending Assignments & Submissions Checklist</span>
                 <span className="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded font-mono">
-                  Action Required
+                  {activeClassData.pendingAssignments.length > 0 ? "Action Required" : "Up To Date"}
                 </span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {activeClassData.pendingAssignments.map((assign) => (
-                  <div key={assign.id} className="p-4 bg-slate-50 border rounded-xl flex flex-col justify-between gap-3 hover:bg-slate-100/50 transition">
-                    <div>
-                      <div className="flex justify-between items-start gap-2">
-                        <h4 className="font-bold text-xs text-slate-800 leading-tight">{assign.title}</h4>
-                        <span className="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-md flex items-center gap-1 shrink-0">
-                          <Clock size={10} /> {assign.due}
-                        </span>
+              
+              {activeClassData.pendingAssignments.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {activeClassData.pendingAssignments.map((assign) => (
+                    <div key={assign.id} className="p-4 bg-slate-50 border rounded-xl flex flex-col justify-between gap-3 hover:bg-slate-100/50 transition">
+                      <div>
+                        <div className="flex justify-between items-start gap-2">
+                          <h4 className="font-bold text-xs text-slate-800 leading-tight">{assign.title}</h4>
+                          <span className="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-md flex items-center gap-1 shrink-0">
+                            <Clock size={10} /> {assign.due}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center text-[11px] bg-white p-2 rounded-lg border font-bold">
+                        <span className="text-slate-400 font-medium">Submissions:</span>
+                        <span className="text-teal-700 font-mono">{assign.submissions}</span>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center text-[11px] bg-white p-2 rounded-lg border font-bold">
-                      <span className="text-slate-400 font-medium">Submissions:</span>
-                      <span className="text-teal-700 font-mono">{assign.submissions}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-8 text-center text-slate-400 font-semibold text-sm border-2 border-dashed rounded-xl">
+                  No active assignments documented for this class.
+                </div>
+              )}
             </div>
 
           </div>
@@ -277,7 +271,7 @@ export default function TeacherClassDashboard() {
         <div className="bg-slate-900 text-slate-400 p-4 rounded-xl text-xs font-semibold flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="flex items-center gap-2 text-slate-300">
             <BrainCircuit size={14} className="text-teal-400" />
-            Class Cards dynamically map to API core structures. Component code safely optimized.
+            Class Cards dynamically mapped to database configurations.
           </span>
           <button 
             onClick={() => window.print()}

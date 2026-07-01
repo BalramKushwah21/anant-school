@@ -1,31 +1,58 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { User, ShieldCheck, Eye, Search, Filter, Layers, CreditCard, HeartPulse } from "lucide-react";
 
 export default function TeacherStudentDirectory() {
 	const [students, setStudents] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// Filter states
+	// Exact Filter states matched with Admin page
 	const [searchTerm, setSearchTerm] = useState("");
-	const [classFilter, setClassFilter] = useState("All");
+	const [selectedClass, setSelectedClass] = useState("All");
+	const [selectedSection, setSelectedSection] = useState("All");
 	const [routeFilter, setRouteFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 
-	// Modal & Tab control states
+	// Modal & Tab control states (No isEditing or isSaving)
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedStudent, setSelectedStudent] = useState(null);
 	const [loadingDetails, setLoadingDetails] = useState(false);
 	const [activeTab, setActiveTab] = useState("studentInfo");
 	const [formData, setFormData] = useState({});
 
-	// Fetch master list from backend matching your API layer
+	const CLASSES = [
+		"All",
+		"Nursery",
+		"LKG",
+		"UKG",
+		"Class 1",
+		"Class 2",
+		"Class 3",
+		"Class 4",
+		"Class 5",
+		"Class 6",
+		"Class 7",
+		"Class 8",
+		"Class 9",
+		"Class 10",
+		"Class 11",
+		"Class 12",
+	];
+	const SECTIONS = [
+		"All",
+		"Section A",
+		"Section B",
+		"Section C",
+		"Section D",
+		"Section E",
+	];
+
+	// Fetch master table list (Same working endpoint as Admin)
 	const fetchStudents = async () => {
 		try {
 			setLoading(true);
-			const response = await fetch("/api/school/admin/students/get");
+			const response = await fetch("/api/school/students/get");
 			if (!response.ok) throw new Error("Failed to fetch records.");
 			const result = await response.json();
 			setStudents(result.data || []);
@@ -40,20 +67,24 @@ export default function TeacherStudentDirectory() {
 		fetchStudents();
 	}, []);
 
-	// Load full read-only dataset for the student on view click
+	// Load full dataset for the student on view click
 	const handleViewClick = async (studentId) => {
 		setIsModalOpen(true);
 		setLoadingDetails(true);
 		setActiveTab("studentInfo");
 
 		try {
-			const response = await fetch(`/api/school/admin/students/${studentId}`);
+			// Using the exact working API route from Admin code
+			const response = await fetch(`/api/school/students/${studentId}`);
 			if (!response.ok) throw new Error("Failed to get admission dossier.");
 			const result = await response.json();
 			const std = result.data;
 			setSelectedStudent(std);
 
-			// Map exact database values to read-only layout variables
+			// Safely extracting arrays just like Admin code
+			const academic = std.academicProfiles?.[0] || {};
+
+			// Map values securely. REMOVED ALL FINANCIAL AND INCOME FIELDS
 			setFormData({
 				admissionDate: std.admissionDate ? new Date(std.admissionDate).toISOString().split("T")[0] : "N/A",
 				rollNumber: std.rollNumber || "N/A",
@@ -67,26 +98,24 @@ export default function TeacherStudentDirectory() {
 				nationality: std.nationality || "Indian",
 				isStaffChild: std.isStaffChild ? "Yes" : "No",
 				identificationMark: std.identificationMark || "None",
-				aadhar: std.nationalIdNumber || "N/A",
+				aadhar: std.aadharNumber || "N/A",
 				abcId: std.abcId || "N/A",
-				panNumber: std.panNumber || "N/A",
 
-				classApplyingFor: std.academicProfile?.currentClass || "N/A",
-				section: std.academicProfile?.section || "Not Assigned",
-				previousSchool: std.academicProfile?.previousSchool || "N/A",
-				previousClass: std.academicProfile?.previousClass || "N/A",
-				tcNumber: std.academicProfile?.tcNumber || "N/A",
-				previousUdiseCode: std.academicProfile?.previousUdiseCode || "N/A",
-				academicSession: std.academicProfile?.academicSession || "N/A",
-				previousMediumOfInstruction: std.academicProfile?.previousSchoolMedium || "English",
-				boardRegistrationNumber: std.academicProfile?.boardRegistrationNo || "N/A",
+				classApplyingFor: academic.currentClass || "N/A",
+				section: academic.section || "Not Assigned",
+				previousSchool: academic.previousSchool || "N/A",
+				previousClass: academic.previousClass || "N/A",
+				tcNumber: academic.tcNumber || "N/A",
+				previousUdiseCode: academic.previousUdiseCode || "N/A",
+				academicSession: academic.academicSession || "N/A",
+				previousMediumOfInstruction: academic.previousSchoolMedium || "English",
+				boardRegistrationNumber: academic.boardRegistrationNo || "N/A",
 
 				parentsMaritalStatus: std.family?.parentsMaritalStatus || "Married",
 				legalCustodyHolder: std.family?.legalCustodyHolder || "Both",
 				fatherName: std.family?.fatherName || "N/A",
 				fatherMobile: std.family?.fatherMobile || "N/A",
 				fatherOccupation: std.family?.fatherOccupation || "N/A",
-				fatherIncome: std.family?.fatherIncome || "N/A",
 				fatherEmail: std.family?.fatherEmail || "N/A",
 				motherName: std.family?.motherName || "N/A",
 				motherMobile: std.family?.motherMobile || "N/A",
@@ -108,21 +137,8 @@ export default function TeacherStudentDirectory() {
 				familyDoctorName: std.medicalProfile?.familyDoctorName || "N/A",
 				familyDoctorMobile: std.medicalProfile?.familyDoctorContactNumber || "N/A",
 				preferredHospital: std.medicalProfile?.preferredHospital || "N/A",
-				medicalConditions: std.medicalProfile?.medicalConditions || "None Enlisted",
-				allergies: std.medicalProfile?.allergies || "None Enlisted",
-
-				feeCategory: std.feeRecord?.feeCategory || "GENERAL",
-				scholarship: std.feeRecord?.scholarship ? "Yes" : "No",
-				concessionDetails: std.feeRecord?.concessionDetails || "N/A",
-				admissionFeePaid: std.feeRecord?.admissionFeePaid || "0",
-				transportFeePaid: std.feeRecord?.transportFeePaid || "0",
-				securityDepositPaid: std.feeRecord?.securityDepositPaid || "0",
-				tuitionFeeCycle: std.feeRecord?.tuitionFeeCycle || "QUARTERLY",
-				paymentMode: std.feeRecord?.paymentMode || "CASH",
-				bankName: std.feeRecord?.bankName || "N/A",
-				accountNumber: std.feeRecord?.accountNumber || "N/A",
-				ifscCode: std.ifscCode || "N/A",
-				branchNameAndCode: std.feeRecord?.branchNameAndCode || "N/A",
+				medicalConditions: std.medicalProfile?.medicalConditions || "None",
+				allergies: std.medicalProfile?.allergies || "None",
 
 				needTransport: std.transportProfile?.needTransport ? "Yes" : "No",
 				pickupPoint: std.transportProfile?.pickupPoint || "N/A",
@@ -141,169 +157,175 @@ export default function TeacherStudentDirectory() {
 		setTimeout(() => setSelectedStudent(null), 300);
 	};
 
-	// Client side dynamic filters
+	// Exact working filter logic from your Admin code
 	const filteredStudents = useMemo(() => {
 		return students.filter((student) => {
+			const safeName = student?.name || "";
+			const safeRoll = student?.rollNumber || "";
+
 			const matchesSearch =
-				student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				student.rollNumber.toLowerCase().includes(searchTerm.toLowerCase());
-			const matchesClass = classFilter === "All" || student.class.includes(classFilter);
+				safeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				safeRoll.toLowerCase().includes(searchTerm.toLowerCase());
+
+			const matchesClass =
+				selectedClass === "All" || student.class === selectedClass;
+
+			const matchesSection =
+				selectedSection === "All" || student.section === selectedSection;
+
 			const matchesRoute =
 				routeFilter === "All" ||
 				(routeFilter === "Transport" && student.route !== "Self / Private") ||
 				(routeFilter === "Self" && student.route === "Self / Private");
-			const matchesStatus = statusFilter === "All" || student.status === statusFilter;
-			return matchesSearch && matchesClass && matchesRoute && matchesStatus;
-		});
-	}, [students, searchTerm, classFilter, routeFilter, statusFilter]);
 
-	const uniqueClasses = useMemo(() => {
-		return [
-			"All",
-			...new Set(students.map((s) => s.class.split(" ")[0]).filter((c) => c !== "N/A")),
-		].sort();
-	}, [students]);
+			const matchesStatus =
+				statusFilter === "All" || student.status === statusFilter;
+
+			return (
+				matchesSearch &&
+				matchesClass &&
+				matchesSection &&
+				matchesRoute &&
+				matchesStatus
+			);
+		});
+	}, [students, searchTerm, selectedClass, selectedSection, routeFilter, statusFilter]);
 
 	return (
-		<div className="min-h-screen bg-slate-50 p-4 sm:p-8 animate-in fade-in duration-500">
+		<div className="min-h-screen bg-slate-50 p-4 sm:p-8 animate-in fade-in duration-500 relative">
 			<div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6 max-w-7xl mx-auto">
-				
-				{/* Premium Teacher Section Header */}
+				{/* Header Section */}
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
 					<div>
 						<h2 className="text-2xl font-bold text-slate-800 tracking-tight">
-							Student Roster Directory
+							Student Directory (Teacher View)
 						</h2>
 						<p className="text-sm text-slate-500 mt-1">
-							Authorized view access to student profiles, familial dynamics, and medical logs.
+							View student academic, medical, and contact information safely.
 						</p>
-					</div>
-					<div className="bg-teal-50 border border-teal-200 text-teal-800 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-2 self-start sm:self-auto">
-						<ShieldCheck size={14} /> Faculty Portal Active
 					</div>
 				</div>
 
-				{/* Custom Filters Context Controller */}
+				{/* Filters Utility Grid */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50/60 p-4 rounded-xl border border-slate-100">
 					<div>
-						<label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+						<label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
 							Search Records
 						</label>
 						<input
 							type="text"
-							placeholder="Type Student Name or Roll..."
+							placeholder="Name or Roll No..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
-							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-teal-500 bg-white outline-none transition-all"
+							className="w-full text-sm p-2.5 rounded-lg border focus:ring-2 focus:ring-teal-500 bg-white outline-none"
 						/>
 					</div>
 					<div>
-						<label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
-							Grade Stream
+						<label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+							Class
 						</label>
 						<select
-							value={classFilter}
-							onChange={(e) => setClassFilter(e.target.value)}
-							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-teal-500 bg-white outline-none transition-all"
+							value={selectedClass}
+							onChange={(e) => setSelectedClass(e.target.value)}
+							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 bg-slate-50 font-bold outline-none focus:ring-2 focus:ring-teal-500 transition-all cursor-pointer"
 						>
-							{uniqueClasses.map((cls) => (
+							{CLASSES.map((cls) => (
 								<option key={cls} value={cls}>
-									{cls === "All" ? "All Assigned Grades" : `Class ${cls}`}
+									{cls}
 								</option>
 							))}
 						</select>
 					</div>
 					<div>
-						<label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
-							Transit Route
+						<label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+							Section
+						</label>
+						<select
+							value={selectedSection}
+							onChange={(e) => setSelectedSection(e.target.value)}
+							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 bg-slate-50 font-bold outline-none focus:ring-2 focus:ring-teal-500 transition-all cursor-pointer"
+						>
+							{SECTIONS.map((sec) => (
+								<option key={sec} value={sec}>
+									{sec}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+							Route Status
 						</label>
 						<select
 							value={routeFilter}
 							onChange={(e) => setRouteFilter(e.target.value)}
-							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-teal-500 bg-white outline-none transition-all"
+							className="w-full text-sm p-2.5 rounded-lg border focus:ring-2 focus:ring-teal-500 bg-white outline-none"
 						>
 							<option value="All">All Routes</option>
-							<option value="Transport">School Bus Transit</option>
-							<option value="Self">Self / Private Commute</option>
-						</select>
-					</div>
-					<div>
-						<label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">
-							Enrollment Status
-						</label>
-						<select
-							value={statusFilter}
-							onChange={(e) => setStatusFilter(e.target.value)}
-							className="w-full text-sm p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-teal-500 bg-white outline-none transition-all"
-						>
-							<option value="All">All Statuses</option>
-							<option value="Active">Active Enrolments</option>
+							<option value="Transport">School Bus</option>
+							<option value="Self">Self / Private</option>
 						</select>
 					</div>
 				</div>
 
-				{/* High Density Roster Data Table */}
+				{/* Table Layout */}
 				<div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
 					<table className="w-full text-left border-collapse">
 						<thead>
-							<tr className="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-slate-200">
-								<th className="p-4 w-28">Roll No</th>
-								<th className="p-4">Student Profile Name</th>
-								<th className="p-4">Assigned Class</th>
-								<th className="p-4">Guardian Contact</th>
-								<th className="p-4 text-center">Attendance %</th>
-								<th className="p-4">Date of Birth</th>
-								<th className="p-4 text-right">Fee Dues Summary</th>
-								<th className="p-4 text-center">Action Ledger</th>
+							<tr className="bg-slate-50 text-slate-600 text-xs font-bold uppercase tracking-wider border-b border-slate-200">
+								<th className="p-4">Roll Number</th>
+								<th className="p-4">Student Name</th>
+								<th className="p-4">Class</th>
+								<th className="p-4">Section</th>
+								<th className="p-4">Parent Phone</th>
+								<th className="p-4 text-center">Attendance</th>
+								<th className="p-4 text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-slate-100 text-sm text-slate-700 bg-white">
 							{loading ? (
 								<tr>
-									<td colSpan="8" className="p-12 text-center text-teal-600 font-medium animate-pulse">
-										Synchronizing school cluster roster ledger...
+									<td colSpan="7" className="p-12 text-center text-slate-400 animate-pulse">
+										Syncing student database...
 									</td>
 								</tr>
 							) : filteredStudents.length > 0 ? (
 								filteredStudents.map((student) => (
-									<tr key={student.id} className="hover:bg-slate-50/60 transition-colors group">
-										<td className="p-4 font-mono font-bold text-slate-600">
+									<tr key={student.id} className="hover:bg-slate-50/80 transition-colors group">
+										<td className="p-4 font-mono font-bold text-slate-700">
 											{student.rollNumber}
 										</td>
-										<td className="p-4 font-semibold text-slate-900">
-											{student.name}
+										<td className="p-4 font-semibold text-slate-800">
+											{student?.name}
 										</td>
 										<td className="p-4 font-medium text-slate-600">
 											{student.class}
 										</td>
-										<td className="p-4 text-slate-500 font-mono">
+										<td className="p-4 font-medium text-slate-600">
+											{student.section}
+										</td>
+										<td className="p-4 text-slate-600">
 											{student.phone}
 										</td>
 										<td className="p-4 text-center">
-											<span className="bg-teal-50 text-teal-700 border border-teal-100 px-2.5 py-1 rounded-md text-xs font-bold">
-												{student.attendance}
+											<span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md text-xs font-bold">
+												{student.attendance}%
 											</span>
-										</td>
-										<td className="p-4 text-slate-500 font-mono">
-											{student.dob}
-										</td>
-										<td className="p-4 text-right font-bold text-slate-900">
-											₹{student.dueAmount.toLocaleString("en-IN")}
 										</td>
 										<td className="p-4 text-center">
 											<button
 												onClick={() => handleViewClick(student.id)}
-												className="text-xs font-bold text-teal-700 hover:text-white border border-teal-100 bg-teal-50 hover:bg-teal-600 rounded-lg px-3 py-1.5 transition-all flex items-center gap-1.5 mx-auto shadow-xs"
+												className="text-xs font-bold text-teal-700 hover:text-white border border-teal-100 bg-teal-50 hover:bg-teal-600 rounded-lg px-3 py-1.5 transition-all"
 											>
-												<Eye size={12} /> View Dossier
+												View Details
 											</button>
 										</td>
 									</tr>
 								))
 							) : (
 								<tr>
-									<td colSpan="8" className="p-12 text-center text-slate-400 italic">
-										No student matching criteria found inside your assigned cohort map.
+									<td colSpan="7" className="p-12 text-center text-slate-500 font-medium">
+										No matching student rows found.
 									</td>
 								</tr>
 							)}
@@ -312,281 +334,225 @@ export default function TeacherStudentDirectory() {
 				</div>
 			</div>
 
-			{/* --- SAFE READ-ONLY 5-TAB PROFILE CONFIGURATOR MODAL --- */}
+			{/* --- COMPREHENSIVE READ-ONLY MODAL --- */}
 			{isModalOpen && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
-					<div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-200">
+				<div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+					<div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
 						
-						{/* Modal Header */}
-						<div className="flex justify-between items-center p-5 border-b border-slate-100 bg-slate-50/80">
-							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold shadow-md shadow-teal-100">
-									<User size={20} />
-								</div>
-								<div>
-									<h3 className="font-bold text-xl text-slate-900">
-										Student Full Admission Dossier
-									</h3>
-									<p className="text-xs text-slate-400 mt-0.5 font-medium">
-										System UID Mapping Key: <span className="font-mono text-slate-700 font-bold">{selectedStudent?.id || "N/A"}</span>
-									</p>
-								</div>
+						{/* Modal Top Header */}
+						<div className="flex justify-between items-center p-5 border-b border-slate-100 bg-slate-50">
+							<div>
+								<h3 className="font-bold text-xl text-slate-800">
+									👁️ Student Dossier (Read Only)
+								</h3>
+								<p className="text-xs text-slate-400 mt-0.5">
+									Roll Number: <span className="font-mono text-slate-700 font-bold">{formData.rollNumber}</span>
+								</p>
 							</div>
 							<button
 								onClick={handleCloseModal}
-								className="text-slate-400 hover:text-rose-600 transition-colors bg-white border border-slate-200 p-2 rounded-full hover:shadow-xs"
+								className="text-slate-400 hover:text-rose-500 transition-colors bg-white border p-1.5 rounded-full"
 							>
 								✕
 							</button>
 						</div>
 
-						{/* Read-Only Tab Controller */}
-						<div className="flex border-b border-slate-200 bg-slate-50/50 px-5 gap-1 overflow-x-auto text-xs font-bold uppercase tracking-wider text-slate-500 scrollbar-none">
+						{/* Navigation Tabs Bar - Removed Financials completely, Kept Transport */}
+						<div className="flex border-b border-slate-100 bg-slate-50/50 px-5 gap-2 overflow-x-auto text-xs font-bold uppercase tracking-wider text-slate-500">
 							{[
-								{ id: "studentInfo", label: "👤 Personal Profile Data" },
-								{ id: "academic", label: "📚 Academic Framework" },
-								{ id: "family", label: "👨‍👩‍👦 Core Parent Identity" },
-								{ id: "address", label: "🏠 Infrastructure & Health" },
-								{ id: "financial", label: "💰 Financials & Route mapping" },
+								{ id: "studentInfo", label: "Student Details" },
+								{ id: "academic", label: "Academic Info" },
+								{ id: "family", label: "Parent Details" },
+								{ id: "address", label: "Address & Medical" },
+								{ id: "transport", label: "Transport Info" },
 							].map((tab) => (
 								<button
 									key={tab.id}
 									onClick={() => setActiveTab(tab.id)}
-									className={`py-4 px-4 border-b-2 transition-all whitespace-nowrap font-bold text-[11px] ${
-										activeTab === tab.id 
-											? "border-teal-600 text-teal-700 bg-white" 
-											: "border-transparent hover:text-slate-800 hover:bg-slate-100/50"
-									}`}
+									className={`py-3.5 px-3 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id ? "border-teal-600 text-teal-700" : "border-transparent hover:text-slate-700"}`}
 								>
 									{tab.label}
 								</button>
 							))}
 						</div>
 
-						{/* Read-Only Information Presentation View */}
-						<div className="p-6 overflow-y-auto flex-1 bg-white">
+						{/* Dynamic Content Layout - Fully Read-Only (p tags instead of inputs) */}
+						<div className="p-6 overflow-y-auto flex-1 bg-white space-y-6">
 							{loadingDetails ? (
-								<div className="flex flex-col justify-center items-center h-48 space-y-2">
-									<div className="animate-spin rounded-full h-8 w-8 border-2 border-teal-600 border-t-transparent"></div>
-									<span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Parsing Profile Binders...</span>
+								<div className="flex justify-center items-center h-40">
+									<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
 								</div>
 							) : (
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
 									
-									{/* TAB 1: Student Core Profile Data */}
+									{/* TAB 1: Student Core Info */}
 									{activeTab === "studentInfo" && (
 										<>
 											{[
-												{ label: "Official Admission Date", value: formData.admissionDate },
-												{ label: "Assigned Roll Number", value: formData.rollNumber },
+												{ label: "Admission Date", value: formData.admissionDate },
+												{ label: "Roll Number", value: formData.rollNumber },
 												{ label: "First Name", value: formData.firstName },
 												{ label: "Last Name", value: formData.lastName },
-												{ label: "Gender Parameter", value: formData.gender },
-												{ label: "Date of Birth (DOB)", value: formData.dob },
-												{ label: "Blood Group Matrix", value: formData.bloodGroup },
-												{ label: "Category Block", value: formData.category },
-												{ label: "Religion Index", value: formData.religion },
-												{ label: "Nationality Profile", value: formData.nationality },
-												{ label: "National ID / Aadhar Card", value: formData.aadhar },
-												{ label: "Academic Bank of Credits (ABC ID)", value: formData.abcId },
-												{ label: "PAN Card Number", value: formData.panNumber },
-												{ label: "Faculty / Staff Child Status", value: formData.isStaffChild },
-												{ label: "Visible Identification Mark", value: formData.identificationMark },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
-													<p className="text-sm font-semibold text-slate-800 font-mono">{item.value}</p>
+												{ label: "Gender", value: formData.gender },
+												{ label: "Date of Birth", value: formData.dob },
+												{ label: "Blood Group", value: formData.bloodGroup },
+												{ label: "Category", value: formData.category },
+												{ label: "Religion", value: formData.religion },
+												{ label: "Nationality", value: formData.nationality },
+												{ label: "Aadhar Card", value: formData.aadhar },
+												{ label: "ABC ID", value: formData.abcId },
+												{ label: "Staff Child?", value: formData.isStaffChild },
+												{ label: "Identification Mark", value: formData.identificationMark },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
+													<p className="text-sm font-semibold text-slate-800">{item.value}</p>
 												</div>
 											))}
 										</>
 									)}
 
-									{/* TAB 2: Academic History Framework */}
+									{/* TAB 2: Academic Info */}
 									{activeTab === "academic" && (
 										<>
 											{[
-												{ label: "Current Class Allocation", value: formData.classApplyingFor },
-												{ label: "Allocated Classroom Section", value: formData.section },
-												{ label: "Active Academic Session Year", value: formData.academicSession },
-												{ label: "Previous Attended School Name", value: formData.previousSchool },
-												{ label: "Previous Attended Grade Level", value: formData.previousClass },
-												{ label: "Transfer Certificate (TC) Number", value: formData.tcNumber },
-												{ label: "Previous Institutional UDISE Code", value: formData.previousUdiseCode },
+												{ label: "Class Assigned", value: formData.classApplyingFor },
+												{ label: "Section", value: formData.section },
+												{ label: "Academic Session", value: formData.academicSession },
 												{ label: "Medium of Instruction", value: formData.previousMediumOfInstruction },
-												{ label: "Affiliated Board Registration Number", value: formData.boardRegistrationNumber },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
+												{ label: "Board Registration No", value: formData.boardRegistrationNumber },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
 													<p className="text-sm font-semibold text-slate-800">{item.value}</p>
 												</div>
 											))}
 										</>
 									)}
 
-									{/* TAB 3: Parent Identity Portals */}
+									{/* TAB 3: Parent Context Details (No Income details) */}
 									{activeTab === "family" && (
 										<>
-											<div className="md:col-span-3 bg-teal-50/40 p-3 rounded-xl border border-teal-100 text-teal-800 font-bold text-xs uppercase tracking-wider flex items-center gap-2">
-												<Layers size={14} /> Marital & Custody Matrix Setup
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2">
+												Guardian Details
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1heading">Parents Marital Status</span>
-												<p className="text-sm font-semibold text-slate-800">{formData.parentsMaritalStatus}</p>
-											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 md:col-span-2">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Legal Custody Holder Profile</span>
-												<p className="text-sm font-semibold text-slate-800">{formData.legalCustodyHolder}</p>
-											</div>
+											
+											
 
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider mt-2">
-												Father Demographics Ledger
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2 mt-2">
+												Father Profiles
 											</div>
 											{[
-												{ label: "Father's Full Legal Name", value: formData.fatherName },
-												{ label: "Primary Mobile Number", value: formData.fatherMobile },
-												{ label: "Professional Occupation", value: formData.fatherOccupation },
-												{ label: "Declared Annual Income", value: formData.fatherIncome },
-												{ label: "Registered Email ID", value: formData.fatherEmail },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
+												{ label: "Father's Full Name", value: formData.fatherName },
+												{ label: "Father's Mobile No", value: formData.fatherMobile },
+												{ label: "Father's Occupation", value: formData.fatherOccupation },
+												{ label: "Father's Email ID", value: formData.fatherEmail },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
 													<p className="text-sm font-semibold text-slate-800">{item.value}</p>
 												</div>
 											))}
 
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider mt-2">
-												Mother Demographics Ledger
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2 mt-2">
+												Mother Profiles
 											</div>
 											{[
-												{ label: "Mother's Full Legal Name", value: formData.motherName },
-												{ label: "Primary Mobile Number", value: formData.motherMobile },
-												{ label: "Professional Occupation", value: formData.motherOccupation },
-												{ label: "Registered Email ID", value: formData.motherEmail },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
+												{ label: "Mother's Full Name", value: formData.motherName },
+												{ label: "Mother's Mobile No", value: formData.motherMobile },
+												{ label: "Mother's Occupation", value: formData.motherOccupation },
+												{ label: "Mother's Email ID", value: formData.motherEmail },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
 													<p className="text-sm font-semibold text-slate-800">{item.value}</p>
 												</div>
 											))}
 
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider mt-2">
-												Siblings Tracking Ledger
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2 mt-2">
+												Siblings Tracker
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1heading">Sibling Enrolled Here?</span>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Sibling Studying Here?</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.siblingStudyingHere}</p>
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 md:col-span-2">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1heading">Sibling Names & Academic Cohorts</span>
+											<div className="sm:col-span-2 bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Sibling Details</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.siblingDetails}</p>
 											</div>
 										</>
 									)}
 
-									{/* TAB 4: Address Map & Medical Logs */}
+									{/* TAB 4: Address & Medical Fields */}
 									{activeTab === "address" && (
 										<>
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider">
-												Permanent / Residential Address Records
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2">
+												Residential Address Info
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">House / Apartment No</span>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">House / Flat No</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.houseNo || "N/A"}</p>
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 md:col-span-2">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Street Layout / Locality</span>
+											<div className="sm:col-span-2 bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Street / Locality</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.street || "N/A"}</p>
 											</div>
 											{[
 												{ label: "City / Town", value: formData.city },
-												{ label: "District Block", value: formData.district },
-												{ label: "State Territory", value: formData.state },
-												{ label: "Postal Pincode", value: formData.pincode },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
+												{ label: "District", value: formData.district },
+												{ label: "State", value: formData.state },
+												{ label: "Pincode", value: formData.pincode },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
 													<p className="text-sm font-semibold text-slate-800">{item.value || "N/A"}</p>
 												</div>
 											))}
 
-											<div className="md:col-span-3 bg-teal-50/40 p-3 rounded-xl border border-teal-100 text-teal-800 font-bold text-xs uppercase tracking-wider mt-2 flex items-center gap-2">
-												<HeartPulse size={14} /> Emergency Medical File
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2 mt-2">
+												Emergency & Medical Profile
 											</div>
 											{[
 												{ label: "Emergency Contact Person", value: formData.emergencyContact },
-												{ label: "Emergency Contact Mobile", value: formData.emergencyMobile },
+												{ label: "Emergency Mobile No", value: formData.emergencyMobile },
 												{ label: "Relation with Student", value: formData.emergencyRelation },
 												{ label: "Family Doctor Name", value: formData.familyDoctorName },
-												{ label: "Doctor Primary Contact", value: formData.familyDoctorMobile },
-												{ label: "Preferred Emergency Hospital", value: formData.preferredHospital },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
+												{ label: "Doctor Mobile No", value: formData.familyDoctorMobile },
+												{ label: "Preferred Hospital", value: formData.preferredHospital },
+											].map((item, idx) => (
+												<div key={idx} className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+													<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">{item.label}</label>
 													<p className="text-sm font-semibold text-slate-800">{item.value}</p>
 												</div>
 											))}
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100 md:col-span-2">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Chronic Medical Conditions / History</span>
+											<div className="sm:col-span-2 bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Medical Conditions</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.medicalConditions}</p>
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Identified Allergies</span>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Known Allergies</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.allergies}</p>
 											</div>
 										</>
 									)}
 
-									{/* TAB 5: Financial Allocations & Bus Routes */}
-									{activeTab === "financial" && (
+									{/* TAB 5: Only Transport Info (Replaced Financial Tab) */}
+									{activeTab === "transport" && (
 										<>
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider">
-												Fee Structure Setup & Ledger Audit
+											<div className="sm:col-span-3 font-bold text-slate-700 text-xs uppercase tracking-wide border-b pb-2">
+												School Bus Transport Setup
 											</div>
-											{[
-												{ label: "Fee Allocation Category", value: formData.feeCategory },
-												{ label: "Scholarship Status", value: formData.scholarship },
-												{ label: "Concession Reference Scope", value: formData.concessionDetails },
-												{ label: "Admission Fee Collected", value: `₹${parseFloat(formData.admissionFeePaid).toLocaleString("en-IN")}` },
-												{ label: "Transport Fee Collected", value: `₹${parseFloat(formData.transportFeePaid).toLocaleString("en-IN")}` },
-												{ label: "Security Deposit Vault Status", value: `₹${parseFloat(formData.securityDepositPaid).toLocaleString("en-IN")}` },
-												{ label: "Tuition Invoice Billing Cycle", value: formData.tuitionFeeCycle },
-												{ label: "Payment Mode Method", value: formData.paymentMode },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
-													<p className="text-sm font-semibold text-slate-800 font-mono">{item.value}</p>
-												</div>
-											))}
-
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider mt-2 flex items-center gap-2">
-												<CreditCard size={14} /> Linked Bank Remittance Account
-											</div>
-											{[
-												{ label: "Bank Institution Name", value: formData.bankName },
-												{ label: "Account Number", value: formData.accountNumber },
-												{ label: "IFSC Code", value: formData.ifscCode },
-												{ label: "Branch Name & System Code", value: formData.branchNameAndCode },
-											].map((item, index) => (
-												<div key={index} className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-													<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">{item.label}</span>
-													<p className="text-sm font-semibold text-slate-800 font-mono">{item.value}</p>
-												</div>
-											))}
-
-											<div className="md:col-span-3 bg-slate-100 p-2.5 rounded-xl text-slate-700 font-bold text-xs uppercase tracking-wider mt-2">
-												School Transit & Fleet Parameters
-											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Requires School Transport?</span>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Requires Transport?</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.needTransport}</p>
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Pickup Station / Point</span>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Pickup Point Station</label>
 												<p className="text-sm font-semibold text-slate-800">{formData.pickupPoint}</p>
 											</div>
-											<div className="bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
-												<span className="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Allocated Transport Route Code</span>
-												<p className="text-sm font-semibold text-slate-800 font-mono">{formData.route}</p>
+											<div className="bg-slate-50/50 p-3 rounded-lg border border-slate-100">
+												<label className="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wide">Allocated Route Code</label>
+												<p className="text-sm font-semibold text-slate-800">{formData.route}</p>
 											</div>
 										</>
 									)}
@@ -594,16 +560,16 @@ export default function TeacherStudentDirectory() {
 							)}
 						</div>
 
-						{/* Modal Footer Controls */}
+						{/* Modal Action Controls Footer */}
 						<div className="p-5 border-t border-slate-100 flex justify-between items-center bg-slate-50">
-							<span className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-								<span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span> Authorized Faculty Mode • Read Only Security Locked
+							<span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+								<span className="w-2 h-2 rounded-full bg-teal-500"></span> Read-Only View
 							</span>
 							<button
 								onClick={handleCloseModal}
 								className="px-6 py-2 text-sm font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-xl transition-all shadow-md"
 							>
-								Dismiss Dossier File
+								Close Dossier
 							</button>
 						</div>
 					</div>

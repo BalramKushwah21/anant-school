@@ -133,6 +133,8 @@ export async function POST(request) {
 						fatherName: getStr("fatherName"),
 						motherName: getStr("motherName"),
 						fatherMobile: getStr("fatherMobile"),
+						fatherDOB: getStr("fatherDob"),
+						motherDOB: getStr("motherDob"),
 						parentsMaritalStatus: getStr("parentsMaritalStatus")
 							? getStr("parentsMaritalStatus")
 									.toUpperCase()
