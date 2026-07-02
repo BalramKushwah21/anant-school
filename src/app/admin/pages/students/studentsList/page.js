@@ -100,11 +100,13 @@ export default function StudentList() {
 				legalCustodyHolder: std.family?.legalCustodyHolder || "Both",
 				fatherName: std.family?.fatherName || "",
 				fatherMobile: std.family?.fatherMobile || "",
+				fatherDOB: std.family?.fatherDOB || "",
 				fatherOccupation: std.family?.fatherOccupation || "",
 				fatherIncome: std.family?.fatherIncome || "",
 				fatherEmail: std.family?.fatherEmail || "",
 				motherName: std.family?.motherName || "",
 				motherMobile: std.family?.motherMobile || "",
+				motherDOB: std.family?.motherDOB || "",
 				motherOccupation: std.family?.motherOccupation || "",
 				motherEmail: std.family?.motherEmail || "",
 				siblingStudyingHere: std.family?.siblingStudyingHere
@@ -1091,6 +1093,26 @@ console.log(students);
 											</div>
 											<div>
 												<label className="text-xs font-bold text-slate-400 block mb-1">
+													Father's DOB
+												</label>
+												{isEditing ? (
+													<input
+														name="fatherDOB"
+														value={
+															formData.DOB
+														}
+														onChange={handleChange}
+														className="w-full p-2 border rounded-md text-sm"
+													/>
+												) : (
+													<p className="text-sm font-semibold">
+														{formData.DOB ||
+															"N/A"}
+													</p>
+												)}
+											</div>
+											<div>
+												<label className="text-xs font-bold text-slate-400 block mb-1">
 													Father's Occupation
 												</label>
 												{isEditing ? (
@@ -1189,6 +1211,26 @@ console.log(students);
 												) : (
 													<p className="text-sm font-semibold">
 														{formData.motherMobile ||
+															"N/A"}
+													</p>
+												)}
+											</div>
+											<div>
+												<label className="text-xs font-bold text-slate-400 block mb-1">
+													Mother's DOB
+												</label>
+												{isEditing ? (
+													<input
+														name="motherDOB"
+														value={
+															formData.motherDOB
+														}
+														onChange={handleChange}
+														className="w-full p-2 border rounded-md text-sm"
+													/>
+												) : (
+													<p className="text-sm font-semibold">
+														{formData.motherDOB ||
 															"N/A"}
 													</p>
 												)}
