@@ -1,130 +1,104 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Apna actual path check karein
-import{ prisma } from "@/lib/prisma"; // Aapke Prisma client ka path
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/lib/prisma";
 
-
-// ✅ Add this line to prevent Next.js Build crashes
 export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
-	try {
-		// ==========================================
-		// 1. SECURITY & MULTI-TENANCY CHECK
-		// ==========================================
-		const session = await getServerSession(authOptions);
+  try {
+    // 1. Authenticate and extract multi-tenant School ID
+    const session = await getServerSession(authOptions);
+    const schoolId = session?.user?.schoolId;
 
-		if (!session || !session.user || !session.user.schoolId) {
-			return NextResponse.json(
-				{
-					success: false,
-					message:
-						"Unauthorized Request. Session or School ID missing.",
-				},
-				{ status: 401 }, // 401 Unauthorized
-			);
-		}
+    if (!session || !schoolId) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized access. Session or School ID missing." },
+        { status: 401 }
+      );
+    }
 
-		const schoolId = session.user.schoolId; // Tenant isolation
+    // 2. Fetch Query Parameters (Class & Section filters)
+    const { searchParams } = new URL(request.url);
+    const targetClass = searchParams.get("class");
+    const targetSection = searchParams.get("section");
 
-		// ==========================================
-		// 2. INPUT VALIDATION
-		// ==========================================
-		const { searchParams } = new URL(request.url);
-		const targetClass = searchParams.get("class");
-		const targetSection = searchParams.get("section");
+    if (!targetClass || !targetSection) {
+      return NextResponse.json(
+        { success: false, message: "Class and section parameters are required." },
+        { status: 400 }
+      );
+    }
 
-		if (!targetClass || !targetSection) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Class and Section parameters are required.",
-				},
-				{ status: 400 }, // 400 Bad Request
-			);
-		}
+    // 3. Fetch school metadata for the official banner title
+    const schoolData = await prisma.school.findUnique({
+      where: { id: schoolId },
+      select: { schoolName: true }
+    });
+    const officialSchoolName = schoolData?.schoolName || "Greenwood Int. School";
 
-		// ==========================================
-		// 3. DATABASE FETCHING (PRISMA ORM)
-		// ==========================================
-		// Assume kar rahe hain ki aapka schema relational hai (Students -> Family, Address, Academic)
-		const studentsRaw = await prisma.student.findMany({
-			where: {
-				schoolId: schoolId, // 🔒 Tenant Level Isolation (Most Important)
-				academicProfiles: {
-					some: {
-						currentClass: targetClass,
-						section: targetSection,
-						// academicYear: "2026-27" // Optional: Current session filter
-					},
-				},
-			},
-			// Include lagakar hum related tables (Family, Address) ka data bhi laa rahe hain
-			include: {
-				academicProfiles: {
-					where: { currentClass: targetClass, section: targetSection },
-					take: 1,
-				},
-				family: true,
-				addresses: true,
-			},
-			orderBy: {
-				// Roll number ya First Name se sort karne ka best practice
-				firstName: "asc",
-			},
-		});
+    // 4. Query students with all unified relational payloads needed for the card layout
+    const studentsRaw = await prisma.student.findMany({
+      where: {
+        schoolId: schoolId,
+        academicProfiles: {
+          some: {
+            currentClass: targetClass,
+            section: targetSection,
+          }
+        }
+      },
+      include: {
+        academicProfiles: {
+          orderBy: { createdAt: 'desc' },
+          take: 1
+        },
+        family: true,
+        addresses: {
+          take: 1
+        }
+      }
+    });
 
-		// ==========================================
-		// 4. DATA FORMATTING (Mapping for Frontend)
-		// ==========================================
-		// Frontend ko wahi flat structure bhejenge jiske hisaab se ID card design kiya gaya hai
-		const formattedStudents = studentsRaw.map((student) => {
-			const academic = student.academicProfiles?.[0] || {};
-			const family = student.family || {};
-			const address = student.addresses?.[0] || {};
+    // 5. Clean Mapping Pipeline to mirror Parents Dashboard structure perfectly
+    const formattedStudents = studentsRaw.map((student) => {
+      const academic = student.academicProfiles?.[0] || {};
+      const family = student.family || {};
+      const address = student.addresses?.[0] || {};
 
-			return {
-				id: student.id,
-				name: `${student.firstName || ""} ${student.lastName || ""}`.trim(),
-				fatherName: family.fatherName || "Not Provided",
-				class: academic.class || targetClass,
-				section: academic.section || targetSection,
-				rollNumber: student.rollNumber || "N/A",
-				phone:
-					family.fatherMobile ||
-					family.motherMobile ||
-					"Not Provided",
-				// Address ko combine karna (Flat -> City)
-				address: address.city
-					? `${address.city}, ${address.district}, ${address.state}, ${address.pincode}`.trim()
-					: "Address not available",
-				gender: student.gender || "Unknown",
-			};
-		});
+      const formattedDob = student.dob 
+        ? new Date(student.dob).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) 
+        : "N/A";
 
-		// ==========================================
-		// 5. SUCCESS RESPONSE
-		// ==========================================
-		return NextResponse.json(
-			{
-				success: true,
-				count: formattedStudents.length,
-				data: formattedStudents,
-			},
-			{ status: 200 },
-		);
-	} catch (error) {
-		// ==========================================
-		// 6. ERROR HANDLING
-		// ==========================================
-		console.error("API Error - /fetch-roster:", error);
+      const combinedAddressStr = address.city
+        ? `${address.city}, ${address.district || ''}`.trim()
+        : "N/A";
 
-		return NextResponse.json(
-			{
-				success: false,
-				message: "Internal Server Error while fetching student roster.",
-			},
-			{ status: 500 },
-		);
-	}
+      return {
+        id: student.id, // Absolute unique db id used for secure scan actions
+        rollNumber: student.rollNumber || "N/A",
+        name: `${student.firstName} ${student.lastName || ''}`.trim(),
+        class: targetClass,
+        section: targetSection,
+        dob: formattedDob,
+        gender: student.gender || "N/A",
+        bloodGroup: student.bloodGroup || "N/A",
+        schoolName: officialSchoolName,
+        fatherName: family.fatherName || "Not Provided",
+        phone: family.fatherMobile || family.motherMobile || "Not Provided",
+        address: combinedAddressStr,
+        avatar: `https://ui-avatars.com/api/?name=${student.firstName}+${student.lastName || ''}&background=4F46E5&color=fff&size=150`
+      };
+    });
+
+    return NextResponse.json({
+      success: true,
+      count: formattedStudents.length,
+      data: formattedStudents
+    }, { status: 200 });
+
+  } catch (error) {
+    console.error("Admin ID Card Batch Fetch Error:", error);
+    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+  }
 }

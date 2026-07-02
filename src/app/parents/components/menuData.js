@@ -52,25 +52,12 @@ export const parentMenuData = [
 		subItems: [
 			{
 				label: "Attendance Summary",
-				link: "/parents/attendance/summary",
+				link: "/parents/pages/attendance/summary",
 			},
-			{
-				label: "Monthly Attendance",
-				link: "/parents/attendance/monthly",
-			},
+			
 		],
 	},
-	{
-		name: "Activities",
-		icon: Trophy,
-		isDropdown: true,
-		subItems: [
-			{ label: "Events", link: "/parents/activities/events" },
-			{ label: "Competitions", link: "/parents/activities/competitions" },
-			{ label: "Sports", link: "/parents/activities/sports" },
-			{ label: "Achievements", link: "/parents/activities/achievements" },
-		],
-	},
+	
 	{
 		name: "Services",
 		icon: Library,
@@ -89,7 +76,7 @@ export const parentMenuData = [
 			{ label: "Report Cards", link: "/parents/downloads/report-cards" },
 			{ label: "Certificates", link: "/parents/downloads/certificates" },
 			{ label: "Fee Receipts", link: "/parents/downloads/receipts" },
-			{ label: "ID Card", link: "/parents/downloads/id-card" },
+			{ label: "ID Card", link: "/parents/pages/downloads/id-cards" },
 			{ label: "School Documents", link: "/parents/downloads/documents" },
 		],
 	},
