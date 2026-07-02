@@ -21,7 +21,7 @@ export const parentMenuData = [
 		icon: User,
 		isDropdown: true,
 		subItems: [
-			{ label: "Student Profile", link: "/parents/child/profile" },
+			{ label: "Student Profile", link: "/parents/pages/myChild/profile" },
 			{
 				label: "Academic Information",
 				link: "/parents/child/academic-info",

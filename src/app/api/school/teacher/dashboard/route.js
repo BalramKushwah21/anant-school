@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import {prisma} from "@/lib/prisma"
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust this path if your NextAuth config is elsewhere
+// Apne authOptions ka path verify kar lein
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"; 
+
 
 export async function GET(request) {
 	try {
@@ -10,8 +12,8 @@ export async function GET(request) {
 
 		if (!session || !session.user || !session.user.schoolId) {
 			return NextResponse.json(
-				{ error: "Unauthorized access or invalid session." },
-				{ status: 401 },
+				{ success: false, error: "Unauthorized access or invalid session." },
+				{ status: 401 }
 			);
 		}
 
@@ -21,60 +23,45 @@ export async function GET(request) {
 		// 2. Fetch Teacher Profile using UserId
 		const teacher = await prisma.teacher.findUnique({
 			where: {
-				userId: userId,
+				userId: userId, // Aapke schema ke mutabiq userId unique hai
 			},
 		});
 
 		if (!teacher) {
 			return NextResponse.json(
-				{ error: "Teacher profile not found for this user." },
-				{ status: 404 },
+				{ success: false, error: "Teacher profile not found for this user." },
+				{ status: 404 }
 			);
 		}
 
-		// 3. Get Current Day for Timetable (0 = Sunday, 1 = Monday ... 6 = Saturday)
-		const currentDay = new Date().getDay();
+        // 3. Get Total Students for stats (from schema)
+        const totalStudents = await prisma.student.count({
+            where: { schoolId: schoolId }
+        });
 
-		// 4. Parallel Database Queries (Optimized Performance)
-		// Hum `Promise.all` use kar rahe hain taaki queries ek sath chalein aur API fast ho.
-		const [todaysSchedule, notices] = await Promise.all([
-			// Query A: Fetch today's schedule for this specific teacher
-			prisma.timetablePeriod.findMany({
-				where: {
-					teacherId: teacher.id,
-					schoolId: schoolId,
-					dayOfWeek: currentDay,
-				},
-				orderBy: {
-					startTime: "asc", // Format: "08:30"
-				},
-			}),
+		// 4. Fallback Data for Missing Schema Models
+		// Aapke schema.prisma me 'timetablePeriod' aur 'Notice' models nahi hain.
+        // Jab tak aap unhe schema mein add nahi karte, UI ko chalane ke liye hum mock data bhej rahe hain.
+        const todaysSchedule = [
+            { id: 1, startTime: "08:30", endTime: "09:15", className: "Class 10", section: "A", subjectName: teacher.department || "Mathematics", roomNumber: "Room 101" },
+            { id: 2, startTime: "09:15", endTime: "10:00", className: "Class 9", section: "B", subjectName: teacher.department || "Mathematics", roomNumber: "Room 104" },
+        ];
 
-			// Query B: Fetch latest notices for this school
-			prisma.notice.findMany({
-				where: {
-					schoolId: schoolId,
-					isActive: true,
-					// Aap chahein toh yahan filtering laga sakte hain: targetAudience: 'TEACHER'
-				},
-				orderBy: {
-					createdAt: "desc",
-				},
-				take: 4, // Top 4 latest notices
-			}),
-		]);
+        const notices = [
+            { id: 1, title: "Staff Meeting at 3 PM", createdAt: new Date(), priority: "URGENT" },
+            { id: 2, title: "Submit Mid-Term Grades", createdAt: new Date(Date.now() - 86400000), priority: "REMINDER" },
+        ];
 
 		// 5. Structure the Data for the Frontend
 		const formattedData = {
 			teacher: {
 				name: `${teacher.firstName} ${teacher.lastName}`,
-				subject: teacher.specialization || "General Subject",
+				subject: teacher.department || "General Faculty", // Schema me specialization nahi, department hai
 				stats: {
 					classesToday: todaysSchedule.length,
-					// MOCK VALUES for complex aggregations. In production, add specific Prisma counts here:
-					pendingGrading: 12,
-					attendancePending: 2,
-					totalStudents: 145,
+					pendingGrading: 12, // Dummy
+					attendancePending: 2, // Dummy
+					totalStudents: totalStudents, // Real data from DB
 				},
 				todaysSchedule: todaysSchedule.map((period) => ({
 					id: period.id,
@@ -83,7 +70,6 @@ export async function GET(request) {
 					class: `${period.className} - ${period.section}`,
 					subject: period.subjectName,
 					room: period.roomNumber || "N/A",
-					// Basic logic to determine status based on current time (Simplified for UI)
 					status: determineStatus(period.startTime, period.endTime),
 				})),
 			},
@@ -94,23 +80,22 @@ export async function GET(request) {
 					month: "short",
 					day: "numeric",
 				}),
-				type: notice.priority || "GENERAL", // e.g., 'URGENT', 'REMINDER'
+				type: notice.priority || "GENERAL",
 			})),
 		};
 
 		// 6. Return standard JSON response
-		return NextResponse.json(formattedData, { status: 200 });
+		return NextResponse.json({ success: true, data: formattedData }, { status: 200 });
 	} catch (error) {
 		console.error("[TEACHER_DASHBOARD_GET] Error:", error);
 		return NextResponse.json(
-			{ error: "Internal Server Error. Could not fetch dashboard data." },
-			{ status: 500 },
+			{ success: false, error: "Internal Server Error. Could not fetch dashboard data." },
+			{ status: 500 }
 		);
 	}
 }
 
 // --- Helper Function ---
-// Real-time schedule status (active/upcoming/completed) calculate karne ke liye
 function determineStatus(startTimeStr, endTimeStr) {
 	if (!startTimeStr || !endTimeStr) return "upcoming";
 

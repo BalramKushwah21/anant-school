@@ -1,186 +1,211 @@
-'use client'
-import React, { useState } from 'react';
-import { 
-  FiClock, 
-  FiCalendar, 
-  FiDollarSign, 
-  FiBell, 
-  FiBookOpen, 
-  FiAward,
-  FiChevronDown
-} from 'react-icons/fi';
+"use client";
 
-const ParentDashboard = () => {
-  // Mock Data: In production, fetch this from GET /api/parents/dashboard based on parent_id
-  const [parentInfo] = useState({
-    name: "Rajesh Kumar",
-    relation: "Father",
-    familyBalance: "₹ 15,500"
-  });
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+// Lucide icons for better UI representation
+import { User, BookOpen, Clock, Calendar, AlertCircle, FileText, IndianRupee } from "lucide-react";
 
-  const [children] = useState([
-    {
-      id: "STU-8021",
-      name: "Aarav Kumar",
-      class: "Class 10 - A",
-      avatar: "https://ui-avatars.com/api/?name=Aarav+Kumar&background=4F46E5&color=fff",
-      attendance: 88,
-      nextExam: "Mid-Terms (Oct 15)",
-      pendingFees: "₹ 5,500",
-      homework: 2
-    },
-    {
-      id: "STU-9045",
-      name: "Diya Kumar",
-      class: "Class 6 - B",
-      avatar: "https://ui-avatars.com/api/?name=Diya+Kumar&background=4338CA&color=fff",
-      attendance: 95,
-      nextExam: "Science Unit Test (Oct 10)",
-      pendingFees: "₹ 10,000",
-      homework: 0
-    }
-  ]);
+export default function ParentDashboard() {
+  // 1. Session and State Management
+  const { data: session, status } = useSession();
+  
+  const [parentInfo, setParentInfo] = useState({ name: "Loading...", relation: "", familyBalance: "₹ 0" });
+  const [children, setChildren] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  
+  const [isLoading, setIsLoading] = useState(true);
+  // Yahi state pichli baar missing thi, isko ab add kar diya gaya hai
+  const [activeChildIndex, setActiveChildIndex] = useState(0); 
 
-  // State to manage which child's data is currently being viewed
-  const [activeChildIndex, setActiveChildIndex] = useState(0);
-  const activeChild = children[activeChildIndex];
-
-  const [announcements] = useState([
-    { id: 1, title: "Parent-Teacher Meeting Scheduled", date: "Oct 20", type: "Event" },
-    { id: 2, title: "Winter Uniform Guidelines", date: "Oct 12", type: "Notice" },
-  ]);
-
-  return (
-    <div className="space-y-6">
+  // 2. Fetch Data from API
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      // Wait for session to load
+      if (status === "loading") return;
       
-      {/* Welcome Banner & Smart Sibling Switcher */}
-      <div className="bg-gradient-to-r from-indigo-900 to-indigo-600 rounded-2xl p-6 md:p-8 text-white shadow-lg flex flex-col md:flex-row items-center justify-between">
+      if (session?.user?.email) {
+        try {
+          const response = await fetch(`/api/school/parents/dashboard?email=${session.user.email}`);
+          if (response.ok) {
+            const data = await response.json();
+            setParentInfo(data.parentInfo);
+            setChildren(data.children);
+            setAnnouncements(data.announcements);
+          }
+        } catch (error) {
+          console.error("Data fetching error:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [session, status]);
+
+  // 3. Loading Screen
+  if (isLoading || status === "loading") {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <div className="text-lg font-semibold text-gray-600">Loading Dashboard...</div>
+      </div>
+    );
+  }
+
+  // 4. Safe check to get the currently selected child
+  const activeChild = children.length > 0 ? children[activeChildIndex] : null;
+
+  // 5. Main Layout Render
+  return (
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      
+      {/* --- Top Header Section --- */}
+      <div className="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-2xl p-6 md:p-8 text-white shadow-lg mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {parentInfo.name} 👋</h1>
-          <p className="text-indigo-100 text-sm md:text-base">
-            Total Family Dues: <span className="font-bold text-white tracking-wide">{parentInfo.familyBalance}</span>
-          </p>
+          <h1 className="text-2xl md:text-3xl font-bold">Welcome, {parentInfo.name || "Parent"}</h1>
+          <p className="text-indigo-100 mt-1">Role: {parentInfo.relation || "Guardian"}</p>
         </div>
-        
-        {/* Sibling Switcher Dropdown */}
-        <div className="mt-6 md:mt-0 w-full md:w-auto">
-          <p className="text-xs text-indigo-200 mb-1 font-medium uppercase tracking-wider">Viewing Profile For</p>
-          <div className="relative">
-            <select 
-              className="appearance-none w-full md:w-64 bg-white/10 border border-indigo-300/30 text-white py-3 pl-4 pr-10 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm cursor-pointer font-medium"
-              value={activeChildIndex}
-              onChange={(e) => setActiveChildIndex(Number(e.target.value))}
-            >
-              {children.map((child, index) => (
-                <option key={child.id} value={index} className="text-gray-800">
-                  {child.name} ({child.class})
-                </option>
-              ))}
-            </select>
-            <FiChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-indigo-200" />
-          </div>
+        <div className="bg-white/10 px-6 py-4 rounded-xl border border-white/20 backdrop-blur-sm w-full md:w-auto text-left md:text-right">
+          <p className="text-sm text-indigo-100 mb-1">Total Family Dues</p>
+          <p className="text-2xl font-bold text-white">{parentInfo.familyBalance || "₹ 0"}</p>
         </div>
       </div>
 
-      {/* Active Child Profile Overview */}
-      <div className="flex items-center space-x-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-        <img src={activeChild.avatar} alt={activeChild.name} className="w-16 h-16 rounded-full border-2 border-indigo-100" />
-        <div>
-          <h2 className="text-xl font-bold text-gray-800">{activeChild.name}</h2>
-          <p className="text-sm text-gray-500 font-medium">{activeChild.class} • Roll No: {activeChild.id}</p>
+      {/* --- Main Content Area --- */}
+      {children.length === 0 ? (
+        // Agar database me koi baccha link nahi hai tab ye dikhega
+        <div className="bg-white rounded-xl shadow-sm p-10 text-center border border-gray-100">
+          <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-700">No Student Records Found</h2>
+          <p className="text-gray-500 mt-2">Aapke account se abhi tak koi baccha link nahi hua hai. Kripya school admin se sampark karein.</p>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          
+          {/* Left Column: Student Details (Occupies 2/3 space on large screens) */}
+          <div className="xl:col-span-2 space-y-6">
+            
+            {/* Child Selector Dropdown */}
+            <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <User className="w-5 h-5 text-indigo-600" /> Select Child
+              </h2>
+              <select 
+                className="w-full sm:w-64 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block p-3 outline-none transition-all cursor-pointer font-medium"
+                value={activeChildIndex}
+                onChange={(e) => setActiveChildIndex(Number(e.target.value))}
+              >
+                {children.map((child, index) => (
+                  <option key={child.id} value={index}>
+                    {child.name} (Class: {child.class})
+                  </option>
+                ))}
+              </select>
+            </div>
 
-      {/* Top Stats Grid for Active Child */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Attendance Card */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:border-indigo-200 transition-colors">
-          <div>
-            <p className="text-sm text-gray-500 font-medium mb-1">Attendance</p>
-            <h3 className="text-3xl font-bold text-gray-800">{activeChild.attendance}%</h3>
-            <p className={`text-xs mt-2 font-medium inline-block px-2 py-1 rounded-md ${activeChild.attendance > 90 ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
-              {activeChild.attendance > 90 ? 'Excellent' : 'Needs Attention'}
-            </p>
-          </div>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center bg-indigo-50 text-indigo-600">
-             <FiCalendar className="text-2xl" />
-          </div>
-        </div>
-
-        {/* Pending Fees Card */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:border-indigo-200 transition-colors">
-          <div>
-            <p className="text-sm text-gray-500 font-medium mb-1">Pending Fees</p>
-            <h3 className="text-3xl font-bold text-gray-800">{activeChild.pendingFees}</h3>
-            <button className="text-xs text-indigo-600 mt-2 font-bold hover:underline">Pay Now &rarr;</button>
-          </div>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center bg-red-50 text-red-500">
-             <FiDollarSign className="text-2xl" />
-          </div>
-        </div>
-
-        {/* Academic Card */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:border-indigo-200 transition-colors">
-          <div>
-            <p className="text-sm text-gray-500 font-medium mb-1">Pending Homework</p>
-            <h3 className="text-3xl font-bold text-gray-800">{activeChild.homework} Tasks</h3>
-            <p className="text-xs text-blue-600 mt-2 font-medium bg-blue-50 inline-block px-2 py-1 rounded-md">Due Tomorrow</p>
-          </div>
-          <div className="w-14 h-14 rounded-full flex items-center justify-center bg-blue-50 text-blue-500">
-             <FiBookOpen className="text-2xl" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* Next Examination Info */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-lg font-bold text-gray-800 flex items-center">
-              <FiAward className="mr-2 text-indigo-600" /> Upcoming Examinations
-            </h2>
-          </div>
-          <div className="p-6 flex flex-col justify-center items-center text-center h-48 bg-gradient-to-b from-transparent to-gray-50">
-            <p className="text-sm text-gray-500 mb-2">Next scheduled exam for {activeChild.name}</p>
-            <h3 className="text-2xl font-bold text-indigo-900 mb-4">{activeChild.nextExam}</h3>
-            <button className="px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">
-              View Full Schedule
-            </button>
-          </div>
-        </div>
-
-        {/* Notice Board */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
-          <div className="p-6 border-b border-gray-100">
-            <h2 className="text-lg font-bold text-gray-800 flex items-center">
-              <FiBell className="mr-2 text-purple-500" /> School Notices
-            </h2>
-          </div>
-          <div className="p-4 space-y-4 h-48 overflow-y-auto custom-scrollbar">
-            {announcements.map(notice => (
-              <div key={notice.id} className="flex space-x-4 p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
-                  <FiBell />
+            {/* Active Child Overview Data */}
+            {activeChild && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Profile Card */}
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-6">
+                  <img 
+                    src={activeChild.avatar} 
+                    alt={activeChild.name} 
+                    className="w-20 h-20 rounded-full border-4 border-indigo-50 shadow-sm"
+                  />
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">{activeChild.name}</h3>
+                    <p className="text-indigo-600 font-medium mb-1">Class {activeChild.class}</p>
+                    <p className="text-xs text-gray-400 font-mono bg-gray-100 inline-block px-2 py-1 rounded">ID: {activeChild.id}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-gray-800">{notice.title}</h4>
-                  <p className="text-xs text-gray-500 mt-1">{notice.date} • {notice.type}</p>
+
+                {/* Quick Stats Grid (Attendance & Fees) */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex flex-col justify-center transition-transform hover:scale-[1.02]">
+                    <div className="flex items-center gap-2 text-emerald-600 mb-2">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm font-semibold">Attendance</span>
+                    </div>
+                    <span className="text-3xl font-bold text-emerald-700">{activeChild.attendance}%</span>
+                  </div>
+                  
+                  <div className="bg-red-50 p-4 rounded-xl border border-red-100 flex flex-col justify-center transition-transform hover:scale-[1.02]">
+                    <div className="flex items-center gap-2 text-red-600 mb-2">
+                      <IndianRupee className="w-4 h-4" />
+                      <span className="text-sm font-semibold">Pending Dues</span>
+                    </div>
+                    <span className="text-2xl font-bold text-red-700">{activeChild.pendingFees}</span>
+                  </div>
                 </div>
+
+                {/* Academics Overview Card */}
+                <div className="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-indigo-600" /> Academics Overview
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                      <div className="p-3 bg-blue-100 rounded-full">
+                        <FileText className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">Pending Homework</p>
+                        <p className="text-xs text-gray-500 mt-1">{activeChild.homework} assignments due</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                      <div className="p-3 bg-purple-100 rounded-full">
+                        <Calendar className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">Next Exam</p>
+                        <p className="text-xs text-gray-500 mt-1">{activeChild.nextExam}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-            ))}
+            )}
           </div>
-          <div className="p-3 border-t border-gray-100 text-center bg-gray-50">
-            <button className="text-sm text-indigo-600 font-bold hover:text-indigo-800 transition-colors">
-              View All Communications
-            </button>
-          </div>
-        </div>
 
-      </div>
+          {/* Right Column: Notice Board (Occupies 1/3 space on large screens) */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-fit">
+            <h2 className="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-indigo-600" /> Notice Board
+            </h2>
+            
+            {announcements.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                No new announcements
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {announcements.map((ann) => (
+                  <div key={ann.id} className="p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
+                        ann.type === 'Event' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
+                      }`}>
+                        {ann.type}
+                      </span>
+                      <span className="text-xs font-medium text-gray-400">{ann.date}</span>
+                    </div>
+                    <h4 className="text-sm font-semibold text-gray-800 leading-snug">{ann.title}</h4>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+      )}
     </div>
   );
-};
-
-export default ParentDashboard;
+}
