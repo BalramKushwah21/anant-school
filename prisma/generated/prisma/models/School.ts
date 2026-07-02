@@ -301,6 +301,7 @@ export type SchoolWhereInput = {
   feeStructures?: Prisma.FeeStructureListRelationFilter
   examResults?: Prisma.ExamResultListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
+  adminProfiles?: Prisma.AdminProfileListRelationFilter
 }
 
 export type SchoolOrderByWithRelationInput = {
@@ -337,6 +338,7 @@ export type SchoolOrderByWithRelationInput = {
   feeStructures?: Prisma.FeeStructureOrderByRelationAggregateInput
   examResults?: Prisma.ExamResultOrderByRelationAggregateInput
   vehicles?: Prisma.VehicleOrderByRelationAggregateInput
+  adminProfiles?: Prisma.AdminProfileOrderByRelationAggregateInput
 }
 
 export type SchoolWhereUniqueInput = Prisma.AtLeast<{
@@ -376,6 +378,7 @@ export type SchoolWhereUniqueInput = Prisma.AtLeast<{
   feeStructures?: Prisma.FeeStructureListRelationFilter
   examResults?: Prisma.ExamResultListRelationFilter
   vehicles?: Prisma.VehicleListRelationFilter
+  adminProfiles?: Prisma.AdminProfileListRelationFilter
 }, "id" | "subdomain" | "udiseCode" | "email">
 
 export type SchoolOrderByWithAggregationInput = {
@@ -460,6 +463,7 @@ export type SchoolCreateInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateInput = {
@@ -496,6 +500,7 @@ export type SchoolUncheckedCreateInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUpdateInput = {
@@ -532,6 +537,7 @@ export type SchoolUpdateInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateInput = {
@@ -568,6 +574,7 @@ export type SchoolUncheckedUpdateInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateManyInput = {
@@ -633,6 +640,11 @@ export type SchoolUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type SchoolScalarRelationFilter = {
+  is?: Prisma.SchoolWhereInput
+  isNot?: Prisma.SchoolWhereInput
+}
+
 export type SchoolCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   schoolName?: Prisma.SortOrder
@@ -696,25 +708,22 @@ export type SchoolMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type SchoolScalarRelationFilter = {
-  is?: Prisma.SchoolWhereInput
-  isNot?: Prisma.SchoolWhereInput
+export type SchoolCreateNestedOneWithoutAdminProfilesInput = {
+  create?: Prisma.XOR<Prisma.SchoolCreateWithoutAdminProfilesInput, Prisma.SchoolUncheckedCreateWithoutAdminProfilesInput>
+  connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutAdminProfilesInput
+  connect?: Prisma.SchoolWhereUniqueInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type SchoolUpdateOneRequiredWithoutAdminProfilesNestedInput = {
+  create?: Prisma.XOR<Prisma.SchoolCreateWithoutAdminProfilesInput, Prisma.SchoolUncheckedCreateWithoutAdminProfilesInput>
+  connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutAdminProfilesInput
+  upsert?: Prisma.SchoolUpsertWithoutAdminProfilesInput
+  connect?: Prisma.SchoolWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutAdminProfilesInput, Prisma.SchoolUpdateWithoutAdminProfilesInput>, Prisma.SchoolUncheckedUpdateWithoutAdminProfilesInput>
 }
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type SchoolCreateNestedOneWithoutAcademicYearsInput = {
@@ -927,6 +936,166 @@ export type SchoolUpdateOneRequiredWithoutExamResultsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutExamResultsInput, Prisma.SchoolUpdateWithoutExamResultsInput>, Prisma.SchoolUncheckedUpdateWithoutExamResultsInput>
 }
 
+export type SchoolCreateWithoutAdminProfilesInput = {
+  id?: string
+  schoolName: string
+  subdomain: string
+  schoolType: string
+  adminName?: string | null
+  udiseCode: string
+  phone: string
+  email: string
+  city: string
+  district: string
+  state: string
+  address: string
+  pincode: string
+  logo?: string | null
+  subscriptionPlan?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  teacherAttendances?: Prisma.TeacherAttendanceCreateNestedManyWithoutSchoolInput
+  academicYears?: Prisma.AcademicYearCreateNestedManyWithoutSchoolInput
+  users?: Prisma.UserCreateNestedManyWithoutSchoolInput
+  teachers?: Prisma.TeacherCreateNestedManyWithoutSchoolInput
+  students?: Prisma.StudentCreateNestedManyWithoutSchoolInput
+  families?: Prisma.FamilyCreateNestedManyWithoutSchoolInput
+  academicProfiles?: Prisma.AcademicProfileCreateNestedManyWithoutSchoolInput
+  medicalProfiles?: Prisma.MedicalProfileCreateNestedManyWithoutSchoolInput
+  feeRecords?: Prisma.FeeRecordCreateNestedManyWithoutSchoolInput
+  transportProfiles?: Prisma.TransportProfileCreateNestedManyWithoutSchoolInput
+  documentArchives?: Prisma.DocumentArchiveCreateNestedManyWithoutSchoolInput
+  attendances?: Prisma.AttendanceCreateNestedManyWithoutSchoolInput
+  feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
+  examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
+  vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+}
+
+export type SchoolUncheckedCreateWithoutAdminProfilesInput = {
+  id?: string
+  schoolName: string
+  subdomain: string
+  schoolType: string
+  adminName?: string | null
+  udiseCode: string
+  phone: string
+  email: string
+  city: string
+  district: string
+  state: string
+  address: string
+  pincode: string
+  logo?: string | null
+  subscriptionPlan?: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedCreateNestedManyWithoutSchoolInput
+  academicYears?: Prisma.AcademicYearUncheckedCreateNestedManyWithoutSchoolInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutSchoolInput
+  teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutSchoolInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutSchoolInput
+  families?: Prisma.FamilyUncheckedCreateNestedManyWithoutSchoolInput
+  academicProfiles?: Prisma.AcademicProfileUncheckedCreateNestedManyWithoutSchoolInput
+  medicalProfiles?: Prisma.MedicalProfileUncheckedCreateNestedManyWithoutSchoolInput
+  feeRecords?: Prisma.FeeRecordUncheckedCreateNestedManyWithoutSchoolInput
+  transportProfiles?: Prisma.TransportProfileUncheckedCreateNestedManyWithoutSchoolInput
+  documentArchives?: Prisma.DocumentArchiveUncheckedCreateNestedManyWithoutSchoolInput
+  attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSchoolInput
+  feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
+  examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
+  vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+}
+
+export type SchoolCreateOrConnectWithoutAdminProfilesInput = {
+  where: Prisma.SchoolWhereUniqueInput
+  create: Prisma.XOR<Prisma.SchoolCreateWithoutAdminProfilesInput, Prisma.SchoolUncheckedCreateWithoutAdminProfilesInput>
+}
+
+export type SchoolUpsertWithoutAdminProfilesInput = {
+  update: Prisma.XOR<Prisma.SchoolUpdateWithoutAdminProfilesInput, Prisma.SchoolUncheckedUpdateWithoutAdminProfilesInput>
+  create: Prisma.XOR<Prisma.SchoolCreateWithoutAdminProfilesInput, Prisma.SchoolUncheckedCreateWithoutAdminProfilesInput>
+  where?: Prisma.SchoolWhereInput
+}
+
+export type SchoolUpdateToOneWithWhereWithoutAdminProfilesInput = {
+  where?: Prisma.SchoolWhereInput
+  data: Prisma.XOR<Prisma.SchoolUpdateWithoutAdminProfilesInput, Prisma.SchoolUncheckedUpdateWithoutAdminProfilesInput>
+}
+
+export type SchoolUpdateWithoutAdminProfilesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolType?: Prisma.StringFieldUpdateOperationsInput | string
+  adminName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  udiseCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  district?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  pincode?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  teacherAttendances?: Prisma.TeacherAttendanceUpdateManyWithoutSchoolNestedInput
+  academicYears?: Prisma.AcademicYearUpdateManyWithoutSchoolNestedInput
+  users?: Prisma.UserUpdateManyWithoutSchoolNestedInput
+  teachers?: Prisma.TeacherUpdateManyWithoutSchoolNestedInput
+  students?: Prisma.StudentUpdateManyWithoutSchoolNestedInput
+  families?: Prisma.FamilyUpdateManyWithoutSchoolNestedInput
+  academicProfiles?: Prisma.AcademicProfileUpdateManyWithoutSchoolNestedInput
+  medicalProfiles?: Prisma.MedicalProfileUpdateManyWithoutSchoolNestedInput
+  feeRecords?: Prisma.FeeRecordUpdateManyWithoutSchoolNestedInput
+  transportProfiles?: Prisma.TransportProfileUpdateManyWithoutSchoolNestedInput
+  documentArchives?: Prisma.DocumentArchiveUpdateManyWithoutSchoolNestedInput
+  attendances?: Prisma.AttendanceUpdateManyWithoutSchoolNestedInput
+  feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
+  examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
+  vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+}
+
+export type SchoolUncheckedUpdateWithoutAdminProfilesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolName?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  schoolType?: Prisma.StringFieldUpdateOperationsInput | string
+  adminName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  udiseCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  district?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.StringFieldUpdateOperationsInput | string
+  pincode?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  teacherAttendances?: Prisma.TeacherAttendanceUncheckedUpdateManyWithoutSchoolNestedInput
+  academicYears?: Prisma.AcademicYearUncheckedUpdateManyWithoutSchoolNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutSchoolNestedInput
+  teachers?: Prisma.TeacherUncheckedUpdateManyWithoutSchoolNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutSchoolNestedInput
+  families?: Prisma.FamilyUncheckedUpdateManyWithoutSchoolNestedInput
+  academicProfiles?: Prisma.AcademicProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  medicalProfiles?: Prisma.MedicalProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  feeRecords?: Prisma.FeeRecordUncheckedUpdateManyWithoutSchoolNestedInput
+  transportProfiles?: Prisma.TransportProfileUncheckedUpdateManyWithoutSchoolNestedInput
+  documentArchives?: Prisma.DocumentArchiveUncheckedUpdateManyWithoutSchoolNestedInput
+  attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutSchoolNestedInput
+  feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
+  examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
+  vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+}
+
 export type SchoolCreateWithoutAcademicYearsInput = {
   id?: string
   schoolName: string
@@ -960,6 +1129,7 @@ export type SchoolCreateWithoutAcademicYearsInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutAcademicYearsInput = {
@@ -995,6 +1165,7 @@ export type SchoolUncheckedCreateWithoutAcademicYearsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutAcademicYearsInput = {
@@ -1046,6 +1217,7 @@ export type SchoolUpdateWithoutAcademicYearsInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutAcademicYearsInput = {
@@ -1081,6 +1253,7 @@ export type SchoolUncheckedUpdateWithoutAcademicYearsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutUsersInput = {
@@ -1116,6 +1289,7 @@ export type SchoolCreateWithoutUsersInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutUsersInput = {
@@ -1151,6 +1325,7 @@ export type SchoolUncheckedCreateWithoutUsersInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutUsersInput = {
@@ -1202,6 +1377,7 @@ export type SchoolUpdateWithoutUsersInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutUsersInput = {
@@ -1237,6 +1413,7 @@ export type SchoolUncheckedUpdateWithoutUsersInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutTeachersInput = {
@@ -1272,6 +1449,7 @@ export type SchoolCreateWithoutTeachersInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutTeachersInput = {
@@ -1307,6 +1485,7 @@ export type SchoolUncheckedCreateWithoutTeachersInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutTeachersInput = {
@@ -1358,6 +1537,7 @@ export type SchoolUpdateWithoutTeachersInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutTeachersInput = {
@@ -1393,6 +1573,7 @@ export type SchoolUncheckedUpdateWithoutTeachersInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutTeacherAttendancesInput = {
@@ -1428,6 +1609,7 @@ export type SchoolCreateWithoutTeacherAttendancesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutTeacherAttendancesInput = {
@@ -1463,6 +1645,7 @@ export type SchoolUncheckedCreateWithoutTeacherAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutTeacherAttendancesInput = {
@@ -1514,6 +1697,7 @@ export type SchoolUpdateWithoutTeacherAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutTeacherAttendancesInput = {
@@ -1549,6 +1733,7 @@ export type SchoolUncheckedUpdateWithoutTeacherAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutFamiliesInput = {
@@ -1584,6 +1769,7 @@ export type SchoolCreateWithoutFamiliesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutFamiliesInput = {
@@ -1619,6 +1805,7 @@ export type SchoolUncheckedCreateWithoutFamiliesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutFamiliesInput = {
@@ -1670,6 +1857,7 @@ export type SchoolUpdateWithoutFamiliesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutFamiliesInput = {
@@ -1705,6 +1893,7 @@ export type SchoolUncheckedUpdateWithoutFamiliesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutStudentsInput = {
@@ -1740,6 +1929,7 @@ export type SchoolCreateWithoutStudentsInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutStudentsInput = {
@@ -1775,6 +1965,7 @@ export type SchoolUncheckedCreateWithoutStudentsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutStudentsInput = {
@@ -1826,6 +2017,7 @@ export type SchoolUpdateWithoutStudentsInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutStudentsInput = {
@@ -1861,6 +2053,7 @@ export type SchoolUncheckedUpdateWithoutStudentsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutAcademicProfilesInput = {
@@ -1896,6 +2089,7 @@ export type SchoolCreateWithoutAcademicProfilesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutAcademicProfilesInput = {
@@ -1931,6 +2125,7 @@ export type SchoolUncheckedCreateWithoutAcademicProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutAcademicProfilesInput = {
@@ -1982,6 +2177,7 @@ export type SchoolUpdateWithoutAcademicProfilesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutAcademicProfilesInput = {
@@ -2017,6 +2213,7 @@ export type SchoolUncheckedUpdateWithoutAcademicProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutFeeStructuresInput = {
@@ -2052,6 +2249,7 @@ export type SchoolCreateWithoutFeeStructuresInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutFeeStructuresInput = {
@@ -2087,6 +2285,7 @@ export type SchoolUncheckedCreateWithoutFeeStructuresInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutFeeStructuresInput = {
@@ -2138,6 +2337,7 @@ export type SchoolUpdateWithoutFeeStructuresInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutFeeStructuresInput = {
@@ -2173,6 +2373,7 @@ export type SchoolUncheckedUpdateWithoutFeeStructuresInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutFeeRecordsInput = {
@@ -2208,6 +2409,7 @@ export type SchoolCreateWithoutFeeRecordsInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutFeeRecordsInput = {
@@ -2243,6 +2445,7 @@ export type SchoolUncheckedCreateWithoutFeeRecordsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutFeeRecordsInput = {
@@ -2294,6 +2497,7 @@ export type SchoolUpdateWithoutFeeRecordsInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutFeeRecordsInput = {
@@ -2329,6 +2533,7 @@ export type SchoolUncheckedUpdateWithoutFeeRecordsInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutAttendancesInput = {
@@ -2364,6 +2569,7 @@ export type SchoolCreateWithoutAttendancesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutAttendancesInput = {
@@ -2399,6 +2605,7 @@ export type SchoolUncheckedCreateWithoutAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutAttendancesInput = {
@@ -2450,6 +2657,7 @@ export type SchoolUpdateWithoutAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutAttendancesInput = {
@@ -2485,6 +2693,7 @@ export type SchoolUncheckedUpdateWithoutAttendancesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutMedicalProfilesInput = {
@@ -2520,6 +2729,7 @@ export type SchoolCreateWithoutMedicalProfilesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutMedicalProfilesInput = {
@@ -2555,6 +2765,7 @@ export type SchoolUncheckedCreateWithoutMedicalProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutMedicalProfilesInput = {
@@ -2606,6 +2817,7 @@ export type SchoolUpdateWithoutMedicalProfilesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutMedicalProfilesInput = {
@@ -2641,6 +2853,7 @@ export type SchoolUncheckedUpdateWithoutMedicalProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutTransportProfilesInput = {
@@ -2676,6 +2889,7 @@ export type SchoolCreateWithoutTransportProfilesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutTransportProfilesInput = {
@@ -2711,6 +2925,7 @@ export type SchoolUncheckedCreateWithoutTransportProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutTransportProfilesInput = {
@@ -2762,6 +2977,7 @@ export type SchoolUpdateWithoutTransportProfilesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutTransportProfilesInput = {
@@ -2797,6 +3013,7 @@ export type SchoolUncheckedUpdateWithoutTransportProfilesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutDocumentArchivesInput = {
@@ -2832,6 +3049,7 @@ export type SchoolCreateWithoutDocumentArchivesInput = {
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutDocumentArchivesInput = {
@@ -2867,6 +3085,7 @@ export type SchoolUncheckedCreateWithoutDocumentArchivesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutDocumentArchivesInput = {
@@ -2918,6 +3137,7 @@ export type SchoolUpdateWithoutDocumentArchivesInput = {
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutDocumentArchivesInput = {
@@ -2953,6 +3173,7 @@ export type SchoolUncheckedUpdateWithoutDocumentArchivesInput = {
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutVehiclesInput = {
@@ -2988,6 +3209,7 @@ export type SchoolCreateWithoutVehiclesInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutSchoolInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutVehiclesInput = {
@@ -3023,6 +3245,7 @@ export type SchoolUncheckedCreateWithoutVehiclesInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSchoolInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   examResults?: Prisma.ExamResultUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutVehiclesInput = {
@@ -3074,6 +3297,7 @@ export type SchoolUpdateWithoutVehiclesInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutSchoolNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutVehiclesInput = {
@@ -3109,6 +3333,7 @@ export type SchoolUncheckedUpdateWithoutVehiclesInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutSchoolNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   examResults?: Prisma.ExamResultUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolCreateWithoutExamResultsInput = {
@@ -3144,6 +3369,7 @@ export type SchoolCreateWithoutExamResultsInput = {
   attendances?: Prisma.AttendanceCreateNestedManyWithoutSchoolInput
   feeStructures?: Prisma.FeeStructureCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolUncheckedCreateWithoutExamResultsInput = {
@@ -3179,6 +3405,7 @@ export type SchoolUncheckedCreateWithoutExamResultsInput = {
   attendances?: Prisma.AttendanceUncheckedCreateNestedManyWithoutSchoolInput
   feeStructures?: Prisma.FeeStructureUncheckedCreateNestedManyWithoutSchoolInput
   vehicles?: Prisma.VehicleUncheckedCreateNestedManyWithoutSchoolInput
+  adminProfiles?: Prisma.AdminProfileUncheckedCreateNestedManyWithoutSchoolInput
 }
 
 export type SchoolCreateOrConnectWithoutExamResultsInput = {
@@ -3230,6 +3457,7 @@ export type SchoolUpdateWithoutExamResultsInput = {
   attendances?: Prisma.AttendanceUpdateManyWithoutSchoolNestedInput
   feeStructures?: Prisma.FeeStructureUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUpdateManyWithoutSchoolNestedInput
 }
 
 export type SchoolUncheckedUpdateWithoutExamResultsInput = {
@@ -3265,6 +3493,7 @@ export type SchoolUncheckedUpdateWithoutExamResultsInput = {
   attendances?: Prisma.AttendanceUncheckedUpdateManyWithoutSchoolNestedInput
   feeStructures?: Prisma.FeeStructureUncheckedUpdateManyWithoutSchoolNestedInput
   vehicles?: Prisma.VehicleUncheckedUpdateManyWithoutSchoolNestedInput
+  adminProfiles?: Prisma.AdminProfileUncheckedUpdateManyWithoutSchoolNestedInput
 }
 
 
@@ -3288,6 +3517,7 @@ export type SchoolCountOutputType = {
   feeStructures: number
   examResults: number
   vehicles: number
+  adminProfiles: number
 }
 
 export type SchoolCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3306,6 +3536,7 @@ export type SchoolCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   feeStructures?: boolean | SchoolCountOutputTypeCountFeeStructuresArgs
   examResults?: boolean | SchoolCountOutputTypeCountExamResultsArgs
   vehicles?: boolean | SchoolCountOutputTypeCountVehiclesArgs
+  adminProfiles?: boolean | SchoolCountOutputTypeCountAdminProfilesArgs
 }
 
 /**
@@ -3423,6 +3654,13 @@ export type SchoolCountOutputTypeCountVehiclesArgs<ExtArgs extends runtime.Types
   where?: Prisma.VehicleWhereInput
 }
 
+/**
+ * SchoolCountOutputType without action
+ */
+export type SchoolCountOutputTypeCountAdminProfilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdminProfileWhereInput
+}
+
 
 export type SchoolSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3458,6 +3696,7 @@ export type SchoolSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   feeStructures?: boolean | Prisma.School$feeStructuresArgs<ExtArgs>
   examResults?: boolean | Prisma.School$examResultsArgs<ExtArgs>
   vehicles?: boolean | Prisma.School$vehiclesArgs<ExtArgs>
+  adminProfiles?: boolean | Prisma.School$adminProfilesArgs<ExtArgs>
   _count?: boolean | Prisma.SchoolCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["school"]>
 
@@ -3541,6 +3780,7 @@ export type SchoolInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   feeStructures?: boolean | Prisma.School$feeStructuresArgs<ExtArgs>
   examResults?: boolean | Prisma.School$examResultsArgs<ExtArgs>
   vehicles?: boolean | Prisma.School$vehiclesArgs<ExtArgs>
+  adminProfiles?: boolean | Prisma.School$adminProfilesArgs<ExtArgs>
   _count?: boolean | Prisma.SchoolCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SchoolIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3564,6 +3804,7 @@ export type $SchoolPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     feeStructures: Prisma.$FeeStructurePayload<ExtArgs>[]
     examResults: Prisma.$ExamResultPayload<ExtArgs>[]
     vehicles: Prisma.$VehiclePayload<ExtArgs>[]
+    adminProfiles: Prisma.$AdminProfilePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3993,6 +4234,7 @@ export interface Prisma__SchoolClient<T, Null = never, ExtArgs extends runtime.T
   feeStructures<T extends Prisma.School$feeStructuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$feeStructuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeeStructurePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   examResults<T extends Prisma.School$examResultsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$examResultsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicles<T extends Prisma.School$vehiclesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$vehiclesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adminProfiles<T extends Prisma.School$adminProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.School$adminProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4790,6 +5032,30 @@ export type School$vehiclesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.VehicleScalarFieldEnum | Prisma.VehicleScalarFieldEnum[]
+}
+
+/**
+ * School.adminProfiles
+ */
+export type School$adminProfilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminProfile
+   */
+  select?: Prisma.AdminProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminProfile
+   */
+  omit?: Prisma.AdminProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminProfileInclude<ExtArgs> | null
+  where?: Prisma.AdminProfileWhereInput
+  orderBy?: Prisma.AdminProfileOrderByWithRelationInput | Prisma.AdminProfileOrderByWithRelationInput[]
+  cursor?: Prisma.AdminProfileWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdminProfileScalarFieldEnum | Prisma.AdminProfileScalarFieldEnum[]
 }
 
 /**

@@ -9,9 +9,66 @@ generator client {
   output   = "../prisma/generated/prisma"
 }
 
+
+
+
+// ==========================================
+// 1. ADMIN PROFILE MODEL
+// ==========================================
+model AdminProfile {
+  id              String   @id @default(cuid())
+  profilePhoto    String?  @db.Text  // Text type for long image URLs/Base64
+  
+  // Personal Information
+  firstName       String
+  lastName        String?
+  gender          Gender?
+  dob             DateTime? @db.Date
+  bloodGroup      String?   // Can be Enum: A+, O-, etc.
+  maritalStatus   MaritalStatus?
+
+  // Contact & Address
+  mobileNumber    String
+  alternateMobile String?
+  address         String?
+  city            String?
+  state           String?
+  pincode         String?
+
+  // Professional Specs
+  designation     String?   // e.g., "Principal & Chief Administrator"
+  department      String?   // e.g., "Institutional Operations"
+  qualification   String?
+  experience      String?
+  specialization  String?
+  status          AdminStatus @default(ACTIVE)
+
+  // ----------------------------------------
+  // RELATIONS & SAAS MULTI-TENANCY
+  // ----------------------------------------
+  
+  // Link to User table (1-to-1 relation for authentication)
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Link to School table (Multi-tenancy isolation)
+  schoolId        String
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Indexes for fast querying in large SaaS DB
+  @@index([schoolId])
+
+
+}
+
 // ==========================================
 // 2. SYSTEM & MULTI-TENANCY (SAAS CORE)
 // ==========================================
+
 
 model School {
   id               String   @id @default(cuid())
@@ -47,7 +104,10 @@ model School {
   feeStructures    FeeStructure[]
   examResults      ExamResult[]
   vehicles         Vehicle[]
-  
+  adminProfiles   AdminProfile[]
+
+
+
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
@@ -93,6 +153,12 @@ model User {
   school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 
   teacherProfile Teacher?
+  adminProfile    AdminProfile?
+
+
+
+
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -601,4 +667,12 @@ enum PaymentMode {
   BANK_TRANSFER
   CARD
   CHEQUE
+}
+
+
+enum AdminStatus {
+  ACTIVE
+  ON_LEAVE
+  SUSPENDED
+  INACTIVE
 }

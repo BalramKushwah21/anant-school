@@ -8,6 +8,7 @@ export async function POST(request) {
 	try {
 		const session = await getServerSession(authOptions);
 		const schoolId = session?.user?.schoolId;
+		const userId = session?.user?.id;
 
 		if (!session || !schoolId) {
 			return NextResponse.json(
@@ -20,7 +21,7 @@ export async function POST(request) {
 		const file = formData.get("photo");
 		const moduleName = formData.get("module");
 		const type = formData.get("type"); // 'teachers' aayega
-		const userId = formData.get("userId"); // teacher ki id aayegi
+		
 
 		if (!file || !moduleName || !userId) {
 			return NextResponse.json(
@@ -43,13 +44,13 @@ export async function POST(request) {
 
 		// 4. Clean filename aur save karein
 		const extension = file.name.split(".").pop();
-		const fileName = `${userId}-profile-${Date.now()}.${extension}`;
+		const fileName = `profile-${userId}.${extension}`;
 		const filePath = path.join(targetDir, fileName);
 
 		await fs.writeFile(filePath, buffer);
 
 		// 5. Generate secure serve URL
-		const fileUrl = `/api/school/teacher/media/${schoolId}/${moduleName}/${type}/${fileName}`;;
+		const fileUrl = `/api/school/media/${schoolId}/${moduleName}/${type}/${fileName}`;;
 
 		return NextResponse.json(
 			{

@@ -94,7 +94,7 @@ export default function TeacherProfile() {
 
 		try {
 			// 1. Upload file to VPS
-			const uploadRes = await fetch("/api/school/teacher/media/upload", {
+			const uploadRes = await fetch("/api/school/media/upload", {
 				method: "POST",
 				body: formData,
 			});

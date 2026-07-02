@@ -62,6 +62,7 @@ export const authOptions = {
 				token.id = user.id;
 				token.role = user.userRole;
 				token.schoolId = user.schoolId; // Embedding Tenant ID
+				token.email = user.email; // Embedding Tenant ID
 			}
 			return token;
 		},
@@ -71,6 +72,7 @@ export const authOptions = {
 				session.user.id = token.id;
 				session.user.role = token.role;
 				session.user.schoolId = token.schoolId; // Making it accessible everywhere
+				session.user.email = token.email; // Making it accessible everywhere
 			}
 			return session;
 		},

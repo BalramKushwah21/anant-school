@@ -563,10 +563,6 @@ export type VehicleUncheckedUpdateManyWithoutSchoolNestedInput = {
   deleteMany?: Prisma.VehicleScalarWhereInput | Prisma.VehicleScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type VehicleCreateWithoutSchoolInput = {
   id?: string
   vehicleNumber: string

@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/AdminProfile.ts'
 export type * from './models/School.ts'
 export type * from './models/AcademicYear.ts'
 export type * from './models/User.ts'

@@ -87,3 +87,13 @@ export const PaymentMode = {
 } as const
 
 export type PaymentMode = (typeof PaymentMode)[keyof typeof PaymentMode]
+
+
+export const AdminStatus = {
+  ACTIVE: 'ACTIVE',
+  ON_LEAVE: 'ON_LEAVE',
+  SUSPENDED: 'SUSPENDED',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type AdminStatus = (typeof AdminStatus)[keyof typeof AdminStatus]
