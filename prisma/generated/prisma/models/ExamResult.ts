@@ -316,6 +316,7 @@ export type ExamResultOrderByWithRelationInput = {
 
 export type ExamResultWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  studentId_academicYearId_examTerm?: Prisma.ExamResultStudentIdAcademicYearIdExamTermCompoundUniqueInput
   AND?: Prisma.ExamResultWhereInput | Prisma.ExamResultWhereInput[]
   OR?: Prisma.ExamResultWhereInput[]
   NOT?: Prisma.ExamResultWhereInput | Prisma.ExamResultWhereInput[]
@@ -335,7 +336,7 @@ export type ExamResultWhereUniqueInput = Prisma.AtLeast<{
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   academicYear?: Prisma.XOR<Prisma.AcademicYearScalarRelationFilter, Prisma.AcademicYearWhereInput>
   subjectMarks?: Prisma.SubjectMarkListRelationFilter
-}, "id">
+}, "id" | "studentId_academicYearId_examTerm">
 
 export type ExamResultOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -498,6 +499,12 @@ export type ExamResultListRelationFilter = {
 
 export type ExamResultOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ExamResultStudentIdAcademicYearIdExamTermCompoundUniqueInput = {
+  studentId: string
+  academicYearId: string
+  examTerm: string
 }
 
 export type ExamResultCountOrderByAggregateInput = {

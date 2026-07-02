@@ -34,10 +34,12 @@ export type FamilyMinAggregateOutputType = {
   fatherOccupation: string | null
   fatherIncome: string | null
   fatherEmail: string | null
+  fatherDOB: string | null
   motherName: string | null
   motherMobile: string | null
   motherOccupation: string | null
   motherEmail: string | null
+  motherDOB: string | null
   siblingStudyingHere: boolean | null
   siblingDetails: string | null
   createdAt: Date | null
@@ -53,10 +55,12 @@ export type FamilyMaxAggregateOutputType = {
   fatherOccupation: string | null
   fatherIncome: string | null
   fatherEmail: string | null
+  fatherDOB: string | null
   motherName: string | null
   motherMobile: string | null
   motherOccupation: string | null
   motherEmail: string | null
+  motherDOB: string | null
   siblingStudyingHere: boolean | null
   siblingDetails: string | null
   createdAt: Date | null
@@ -72,10 +76,12 @@ export type FamilyCountAggregateOutputType = {
   fatherOccupation: number
   fatherIncome: number
   fatherEmail: number
+  fatherDOB: number
   motherName: number
   motherMobile: number
   motherOccupation: number
   motherEmail: number
+  motherDOB: number
   siblingStudyingHere: number
   siblingDetails: number
   createdAt: number
@@ -93,10 +99,12 @@ export type FamilyMinAggregateInputType = {
   fatherOccupation?: true
   fatherIncome?: true
   fatherEmail?: true
+  fatherDOB?: true
   motherName?: true
   motherMobile?: true
   motherOccupation?: true
   motherEmail?: true
+  motherDOB?: true
   siblingStudyingHere?: true
   siblingDetails?: true
   createdAt?: true
@@ -112,10 +120,12 @@ export type FamilyMaxAggregateInputType = {
   fatherOccupation?: true
   fatherIncome?: true
   fatherEmail?: true
+  fatherDOB?: true
   motherName?: true
   motherMobile?: true
   motherOccupation?: true
   motherEmail?: true
+  motherDOB?: true
   siblingStudyingHere?: true
   siblingDetails?: true
   createdAt?: true
@@ -131,10 +141,12 @@ export type FamilyCountAggregateInputType = {
   fatherOccupation?: true
   fatherIncome?: true
   fatherEmail?: true
+  fatherDOB?: true
   motherName?: true
   motherMobile?: true
   motherOccupation?: true
   motherEmail?: true
+  motherDOB?: true
   siblingStudyingHere?: true
   siblingDetails?: true
   createdAt?: true
@@ -223,10 +235,12 @@ export type FamilyGroupByOutputType = {
   fatherOccupation: string | null
   fatherIncome: string | null
   fatherEmail: string | null
+  fatherDOB: string | null
   motherName: string
   motherMobile: string | null
   motherOccupation: string | null
   motherEmail: string | null
+  motherDOB: string | null
   siblingStudyingHere: boolean
   siblingDetails: string | null
   createdAt: Date
@@ -263,10 +277,12 @@ export type FamilyWhereInput = {
   fatherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherIncome?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  fatherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   motherName?: Prisma.StringFilter<"Family"> | string
   motherMobile?: Prisma.StringNullableFilter<"Family"> | string | null
   motherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   motherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  motherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   siblingStudyingHere?: Prisma.BoolFilter<"Family"> | boolean
   siblingDetails?: Prisma.StringNullableFilter<"Family"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Family"> | Date | string
@@ -285,10 +301,12 @@ export type FamilyOrderByWithRelationInput = {
   fatherOccupation?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherIncome?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  fatherDOB?: Prisma.SortOrderInput | Prisma.SortOrder
   motherName?: Prisma.SortOrder
   motherMobile?: Prisma.SortOrderInput | Prisma.SortOrder
   motherOccupation?: Prisma.SortOrderInput | Prisma.SortOrder
   motherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  motherDOB?: Prisma.SortOrderInput | Prisma.SortOrder
   siblingStudyingHere?: Prisma.SortOrder
   siblingDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -310,10 +328,12 @@ export type FamilyWhereUniqueInput = Prisma.AtLeast<{
   fatherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherIncome?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  fatherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   motherName?: Prisma.StringFilter<"Family"> | string
   motherMobile?: Prisma.StringNullableFilter<"Family"> | string | null
   motherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   motherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  motherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   siblingStudyingHere?: Prisma.BoolFilter<"Family"> | boolean
   siblingDetails?: Prisma.StringNullableFilter<"Family"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Family"> | Date | string
@@ -332,10 +352,12 @@ export type FamilyOrderByWithAggregationInput = {
   fatherOccupation?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherIncome?: Prisma.SortOrderInput | Prisma.SortOrder
   fatherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  fatherDOB?: Prisma.SortOrderInput | Prisma.SortOrder
   motherName?: Prisma.SortOrder
   motherMobile?: Prisma.SortOrderInput | Prisma.SortOrder
   motherOccupation?: Prisma.SortOrderInput | Prisma.SortOrder
   motherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  motherDOB?: Prisma.SortOrderInput | Prisma.SortOrder
   siblingStudyingHere?: Prisma.SortOrder
   siblingDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -357,10 +379,12 @@ export type FamilyScalarWhereWithAggregatesInput = {
   fatherOccupation?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   fatherIncome?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   fatherEmail?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
+  fatherDOB?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   motherName?: Prisma.StringWithAggregatesFilter<"Family"> | string
   motherMobile?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   motherOccupation?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   motherEmail?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
+  motherDOB?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   siblingStudyingHere?: Prisma.BoolWithAggregatesFilter<"Family"> | boolean
   siblingDetails?: Prisma.StringNullableWithAggregatesFilter<"Family"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Family"> | Date | string
@@ -375,10 +399,12 @@ export type FamilyCreateInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -397,10 +423,12 @@ export type FamilyUncheckedCreateInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -417,10 +445,12 @@ export type FamilyUpdateInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -439,10 +469,12 @@ export type FamilyUncheckedUpdateInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -460,10 +492,12 @@ export type FamilyCreateManyInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -478,10 +512,12 @@ export type FamilyUpdateManyMutationInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -497,10 +533,12 @@ export type FamilyUncheckedUpdateManyInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -526,10 +564,12 @@ export type FamilyCountOrderByAggregateInput = {
   fatherOccupation?: Prisma.SortOrder
   fatherIncome?: Prisma.SortOrder
   fatherEmail?: Prisma.SortOrder
+  fatherDOB?: Prisma.SortOrder
   motherName?: Prisma.SortOrder
   motherMobile?: Prisma.SortOrder
   motherOccupation?: Prisma.SortOrder
   motherEmail?: Prisma.SortOrder
+  motherDOB?: Prisma.SortOrder
   siblingStudyingHere?: Prisma.SortOrder
   siblingDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -545,10 +585,12 @@ export type FamilyMaxOrderByAggregateInput = {
   fatherOccupation?: Prisma.SortOrder
   fatherIncome?: Prisma.SortOrder
   fatherEmail?: Prisma.SortOrder
+  fatherDOB?: Prisma.SortOrder
   motherName?: Prisma.SortOrder
   motherMobile?: Prisma.SortOrder
   motherOccupation?: Prisma.SortOrder
   motherEmail?: Prisma.SortOrder
+  motherDOB?: Prisma.SortOrder
   siblingStudyingHere?: Prisma.SortOrder
   siblingDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -564,10 +606,12 @@ export type FamilyMinOrderByAggregateInput = {
   fatherOccupation?: Prisma.SortOrder
   fatherIncome?: Prisma.SortOrder
   fatherEmail?: Prisma.SortOrder
+  fatherDOB?: Prisma.SortOrder
   motherName?: Prisma.SortOrder
   motherMobile?: Prisma.SortOrder
   motherOccupation?: Prisma.SortOrder
   motherEmail?: Prisma.SortOrder
+  motherDOB?: Prisma.SortOrder
   siblingStudyingHere?: Prisma.SortOrder
   siblingDetails?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -665,10 +709,12 @@ export type FamilyCreateWithoutSchoolInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -685,10 +731,12 @@ export type FamilyUncheckedCreateWithoutSchoolInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -735,10 +783,12 @@ export type FamilyScalarWhereInput = {
   fatherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherIncome?: Prisma.StringNullableFilter<"Family"> | string | null
   fatherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  fatherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   motherName?: Prisma.StringFilter<"Family"> | string
   motherMobile?: Prisma.StringNullableFilter<"Family"> | string | null
   motherOccupation?: Prisma.StringNullableFilter<"Family"> | string | null
   motherEmail?: Prisma.StringNullableFilter<"Family"> | string | null
+  motherDOB?: Prisma.StringNullableFilter<"Family"> | string | null
   siblingStudyingHere?: Prisma.BoolFilter<"Family"> | boolean
   siblingDetails?: Prisma.StringNullableFilter<"Family"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Family"> | Date | string
@@ -753,10 +803,12 @@ export type FamilyCreateWithoutAddressInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -774,10 +826,12 @@ export type FamilyUncheckedCreateWithoutAddressInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -809,10 +863,12 @@ export type FamilyUpdateWithoutAddressInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -830,10 +886,12 @@ export type FamilyUncheckedUpdateWithoutAddressInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -849,10 +907,12 @@ export type FamilyCreateWithoutStudentsInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -870,10 +930,12 @@ export type FamilyUncheckedCreateWithoutStudentsInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -905,10 +967,12 @@ export type FamilyUpdateWithoutStudentsInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -926,10 +990,12 @@ export type FamilyUncheckedUpdateWithoutStudentsInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -945,10 +1011,12 @@ export type FamilyCreateManySchoolInput = {
   fatherOccupation?: string | null
   fatherIncome?: string | null
   fatherEmail?: string | null
+  fatherDOB?: string | null
   motherName: string
   motherMobile?: string | null
   motherOccupation?: string | null
   motherEmail?: string | null
+  motherDOB?: string | null
   siblingStudyingHere?: boolean
   siblingDetails?: string | null
   createdAt?: Date | string
@@ -963,10 +1031,12 @@ export type FamilyUpdateWithoutSchoolInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -983,10 +1053,12 @@ export type FamilyUncheckedUpdateWithoutSchoolInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1003,10 +1075,12 @@ export type FamilyUncheckedUpdateManyWithoutSchoolInput = {
   fatherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherIncome?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fatherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fatherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherName?: Prisma.StringFieldUpdateOperationsInput | string
   motherMobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherOccupation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   motherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  motherDOB?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   siblingStudyingHere?: Prisma.BoolFieldUpdateOperationsInput | boolean
   siblingDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1053,10 +1127,12 @@ export type FamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   fatherOccupation?: boolean
   fatherIncome?: boolean
   fatherEmail?: boolean
+  fatherDOB?: boolean
   motherName?: boolean
   motherMobile?: boolean
   motherOccupation?: boolean
   motherEmail?: boolean
+  motherDOB?: boolean
   siblingStudyingHere?: boolean
   siblingDetails?: boolean
   createdAt?: boolean
@@ -1076,10 +1152,12 @@ export type FamilySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   fatherOccupation?: boolean
   fatherIncome?: boolean
   fatherEmail?: boolean
+  fatherDOB?: boolean
   motherName?: boolean
   motherMobile?: boolean
   motherOccupation?: boolean
   motherEmail?: boolean
+  motherDOB?: boolean
   siblingStudyingHere?: boolean
   siblingDetails?: boolean
   createdAt?: boolean
@@ -1096,10 +1174,12 @@ export type FamilySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   fatherOccupation?: boolean
   fatherIncome?: boolean
   fatherEmail?: boolean
+  fatherDOB?: boolean
   motherName?: boolean
   motherMobile?: boolean
   motherOccupation?: boolean
   motherEmail?: boolean
+  motherDOB?: boolean
   siblingStudyingHere?: boolean
   siblingDetails?: boolean
   createdAt?: boolean
@@ -1116,16 +1196,18 @@ export type FamilySelectScalar = {
   fatherOccupation?: boolean
   fatherIncome?: boolean
   fatherEmail?: boolean
+  fatherDOB?: boolean
   motherName?: boolean
   motherMobile?: boolean
   motherOccupation?: boolean
   motherEmail?: boolean
+  motherDOB?: boolean
   siblingStudyingHere?: boolean
   siblingDetails?: boolean
   createdAt?: boolean
 }
 
-export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "schoolId" | "parentsMaritalStatus" | "legalCustodyHolder" | "fatherName" | "fatherMobile" | "fatherOccupation" | "fatherIncome" | "fatherEmail" | "motherName" | "motherMobile" | "motherOccupation" | "motherEmail" | "siblingStudyingHere" | "siblingDetails" | "createdAt", ExtArgs["result"]["family"]>
+export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "schoolId" | "parentsMaritalStatus" | "legalCustodyHolder" | "fatherName" | "fatherMobile" | "fatherOccupation" | "fatherIncome" | "fatherEmail" | "fatherDOB" | "motherName" | "motherMobile" | "motherOccupation" | "motherEmail" | "motherDOB" | "siblingStudyingHere" | "siblingDetails" | "createdAt", ExtArgs["result"]["family"]>
 export type FamilyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   school?: boolean | Prisma.SchoolDefaultArgs<ExtArgs>
   address?: boolean | Prisma.Family$addressArgs<ExtArgs>
@@ -1156,10 +1238,12 @@ export type $FamilyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     fatherOccupation: string | null
     fatherIncome: string | null
     fatherEmail: string | null
+    fatherDOB: string | null
     motherName: string
     motherMobile: string | null
     motherOccupation: string | null
     motherEmail: string | null
+    motherDOB: string | null
     siblingStudyingHere: boolean
     siblingDetails: string | null
     createdAt: Date
@@ -1598,10 +1682,12 @@ export interface FamilyFieldRefs {
   readonly fatherOccupation: Prisma.FieldRef<"Family", 'String'>
   readonly fatherIncome: Prisma.FieldRef<"Family", 'String'>
   readonly fatherEmail: Prisma.FieldRef<"Family", 'String'>
+  readonly fatherDOB: Prisma.FieldRef<"Family", 'String'>
   readonly motherName: Prisma.FieldRef<"Family", 'String'>
   readonly motherMobile: Prisma.FieldRef<"Family", 'String'>
   readonly motherOccupation: Prisma.FieldRef<"Family", 'String'>
   readonly motherEmail: Prisma.FieldRef<"Family", 'String'>
+  readonly motherDOB: Prisma.FieldRef<"Family", 'String'>
   readonly siblingStudyingHere: Prisma.FieldRef<"Family", 'Boolean'>
   readonly siblingDetails: Prisma.FieldRef<"Family", 'String'>
   readonly createdAt: Prisma.FieldRef<"Family", 'DateTime'>

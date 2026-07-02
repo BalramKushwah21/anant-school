@@ -126,19 +126,16 @@ export const menuConfig = [
 		subItems: [
 			{
 				label: "Generate Marksheet",
-				link: "/admin/pages/reportCards/generateReportCard",
+				link: "/admin/pages/marksheet/singleMarksheet",
 			},
 			{
 				label: "Bulk Generate",
-				link: "/admin/pages/reportCards/bulkGenerate",
+				link: "/admin/pages/marksheet/bulkGenerate",
 			},
-			{
-				label: "My Templates",
-				link: "/admin/pages/reportCards/my-templates",
-			},
+
 			{
 				label: "Templates",
-				link: "/admin/pages/reportCards/templates",
+				link: "/admin/pages/marksheet/templates",
 			},
 		],
 	},

@@ -196,10 +196,12 @@ export const FamilyScalarFieldEnum = {
   fatherOccupation: 'fatherOccupation',
   fatherIncome: 'fatherIncome',
   fatherEmail: 'fatherEmail',
+  fatherDOB: 'fatherDOB',
   motherName: 'motherName',
   motherMobile: 'motherMobile',
   motherOccupation: 'motherOccupation',
   motherEmail: 'motherEmail',
+  motherDOB: 'motherDOB',
   siblingStudyingHere: 'siblingStudyingHere',
   siblingDetails: 'siblingDetails',
   createdAt: 'createdAt'

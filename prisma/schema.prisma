@@ -185,10 +185,12 @@ model Family {
   fatherOccupation     String?
   fatherIncome         String?
   fatherEmail          String?
+  fatherDOB            String?
   motherName           String
   motherMobile         String?
   motherOccupation     String?
   motherEmail          String?
+  motherDOB            String?
   siblingStudyingHere  Boolean @default(false)
   siblingDetails       String?
   address              Address?
@@ -253,7 +255,7 @@ model Student {
   feeRecords         FeeRecord[]
   attendances        Attendance[]
   addresses          Address[]
-  examResults      ExamResult[]
+  examResults       ExamResult[]
 
 
   createdAt          DateTime @default(now())
@@ -491,6 +493,7 @@ model ExamResult {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
+  @@unique([studentId, academicYearId, examTerm])
   // Indexes for fast fetching in SaaS dashboard
   @@index([schoolId, academicYearId])
   @@index([studentId])
