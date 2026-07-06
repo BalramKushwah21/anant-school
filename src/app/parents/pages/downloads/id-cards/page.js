@@ -84,7 +84,7 @@ export default function ParentIDCardViewer() {
     );
   }
 
-  const activeStudent = students[activeChildIndex];
+  const  activeStudent = students[activeChildIndex];
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8">
