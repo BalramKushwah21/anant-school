@@ -14,27 +14,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-	title: "School Grid",
-	description: "This is school management system",
+	title: "Anant School",
+	description:
+		"Anant School is the ultimate multi-tenant School Management System. Securely manage students, teachers, fees, and attendance online from a single platform.",
 };
 
-let user = "admin";
-let isLogin = true;
-
-export default function RootLayout({children}) {
-   
-
-	
-		return (
-			<html lang="en">
-				<body>
-					<Providers>
-
-					{children}
-
-					</Providers>
-				</body>
-			</html>
-		);
-	
+export default function RootLayout({ children }) {
+	return (
+		<html lang="en">
+			<body>
+				<Providers>{children}</Providers>
+			</body>
+		</html>
+	);
 }

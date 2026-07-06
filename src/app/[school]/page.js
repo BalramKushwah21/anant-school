@@ -54,7 +54,7 @@ export default async function LandingPage({params}) {
 							{school.schoolName}
 						</h1>
 						<p className="text-xs text-gray-500 font-medium mt-1">
-							School Management System
+							Anant School Management System
 						</p>
 					</div>
 				</div>
@@ -106,7 +106,7 @@ export default async function LandingPage({params}) {
 					</h2>
 
 					<p className="text-gray-600 mb-10 text-lg leading-relaxed max-w-lg">
-						EduManage is a complete solution to manage students,
+						Anant School is a complete solution to manage students,
 						teachers, classes, attendance, exams, fees and more –
 						all in one place.
 					</p>
