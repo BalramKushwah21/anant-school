@@ -331,7 +331,7 @@ export default function HomePage() {
 							<ul className="mt-4 space-y-3">
 								<li>
 									<Link
-										href="/terms-and-conditions"
+										href="/term-and-conditions/term-conditions"
 										className="text-sm text-gray-400 hover:text-white transition-colors"
 									>
 										Terms and Conditions
@@ -339,7 +339,7 @@ export default function HomePage() {
 								</li>
 								<li>
 									<Link
-										href="/privacy-policy"
+										href="/term-and-conditions/privacy-policy"
 										className="text-sm text-gray-400 hover:text-white transition-colors"
 									>
 										Privacy Policy
@@ -347,7 +347,7 @@ export default function HomePage() {
 								</li>
 								<li>
 									<Link
-										href="/refund-policy"
+										href="/term-and-conditions/refund-and-cancelation"
 										className="text-sm text-gray-400 hover:text-white transition-colors"
 									>
 										Refund & Cancellation

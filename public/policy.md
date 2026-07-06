@@ -2,7 +2,7 @@ Privacy Policy (गोपनीयता नीति)
 Last Updated: June 2026
 
 
-At SCHOOL-GRID, we respect your privacy and are committed to protecting the personal data of schools, administrators, teachers, parents, and students.
+At ANANT SCHOOL, we respect your privacy and are committed to protecting the personal data of schools, administrators, teachers, parents, and students.
 
 1. Information We Collect
 We collect data at different levels to run the software smoothly:
