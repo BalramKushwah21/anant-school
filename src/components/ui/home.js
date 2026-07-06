@@ -196,7 +196,7 @@ export default function HomePage() {
 							</div>
 
 							<Link
-								href="/register-school"
+								href="/auth/school/register"
 								className="block text-center mt-8 bg-blue-600 hover:bg-blue-700 py-3 rounded-xl"
 							>
 								Get Started
@@ -314,7 +314,7 @@ export default function HomePage() {
 								</li>
 								<li>
 									<Link
-										href="/register"
+										href="/auth/school/register"
 										className="text-sm text-gray-400 hover:text-white transition-colors"
 									>
 										Register Your School
