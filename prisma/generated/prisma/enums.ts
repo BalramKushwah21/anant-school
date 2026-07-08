@@ -83,7 +83,8 @@ export const PaymentMode = {
   CASH: 'CASH',
   BANK_TRANSFER: 'BANK_TRANSFER',
   CARD: 'CARD',
-  CHEQUE: 'CHEQUE'
+  CHEQUE: 'CHEQUE',
+  UPI: 'UPI'
 } as const
 
 export type PaymentMode = (typeof PaymentMode)[keyof typeof PaymentMode]

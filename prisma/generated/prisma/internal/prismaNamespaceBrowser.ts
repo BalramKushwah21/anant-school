@@ -51,22 +51,22 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  AdminProfile: 'AdminProfile',
   School: 'School',
   AcademicYear: 'AcademicYear',
   User: 'User',
+  AdminProfile: 'AdminProfile',
   Teacher: 'Teacher',
   TeacherAttendance: 'TeacherAttendance',
   Family: 'Family',
   Address: 'Address',
   Student: 'Student',
   AcademicProfile: 'AcademicProfile',
+  Attendance: 'Attendance',
   FeeStructure: 'FeeStructure',
   FeeRecord: 'FeeRecord',
-  Attendance: 'Attendance',
   MedicalProfile: 'MedicalProfile',
   TransportProfile: 'TransportProfile',
-  DocumentArchive: 'DocumentArchive',
+  StudentDocument: 'StudentDocument',
   Vehicle: 'Vehicle',
   ExamResult: 'ExamResult',
   SubjectMark: 'SubjectMark'
@@ -86,36 +86,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-export const AdminProfileScalarFieldEnum = {
-  id: 'id',
-  profilePhoto: 'profilePhoto',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  gender: 'gender',
-  dob: 'dob',
-  bloodGroup: 'bloodGroup',
-  maritalStatus: 'maritalStatus',
-  mobileNumber: 'mobileNumber',
-  alternateMobile: 'alternateMobile',
-  address: 'address',
-  city: 'city',
-  state: 'state',
-  pincode: 'pincode',
-  designation: 'designation',
-  department: 'department',
-  qualification: 'qualification',
-  experience: 'experience',
-  specialization: 'specialization',
-  status: 'status',
-  userId: 'userId',
-  schoolId: 'schoolId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AdminProfileScalarFieldEnum = (typeof AdminProfileScalarFieldEnum)[keyof typeof AdminProfileScalarFieldEnum]
 
 
 export const SchoolScalarFieldEnum = {
@@ -168,6 +138,36 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AdminProfileScalarFieldEnum = {
+  id: 'id',
+  profilePhoto: 'profilePhoto',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  gender: 'gender',
+  dob: 'dob',
+  bloodGroup: 'bloodGroup',
+  maritalStatus: 'maritalStatus',
+  mobileNumber: 'mobileNumber',
+  alternateMobile: 'alternateMobile',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  pincode: 'pincode',
+  designation: 'designation',
+  department: 'department',
+  qualification: 'qualification',
+  experience: 'experience',
+  specialization: 'specialization',
+  status: 'status',
+  userId: 'userId',
+  schoolId: 'schoolId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminProfileScalarFieldEnum = (typeof AdminProfileScalarFieldEnum)[keyof typeof AdminProfileScalarFieldEnum]
 
 
 export const TeacherScalarFieldEnum = {
@@ -228,11 +228,13 @@ export const FamilyScalarFieldEnum = {
   fatherIncome: 'fatherIncome',
   fatherEmail: 'fatherEmail',
   fatherDOB: 'fatherDOB',
+  fatherUserId: 'fatherUserId',
   motherName: 'motherName',
   motherMobile: 'motherMobile',
   motherOccupation: 'motherOccupation',
   motherEmail: 'motherEmail',
   motherDOB: 'motherDOB',
+  motherUserId: 'motherUserId',
   siblingStudyingHere: 'siblingStudyingHere',
   siblingDetails: 'siblingDetails',
   createdAt: 'createdAt'
@@ -244,7 +246,6 @@ export type FamilyScalarFieldEnum = (typeof FamilyScalarFieldEnum)[keyof typeof 
 export const AddressScalarFieldEnum = {
   id: 'id',
   familyId: 'familyId',
-  studentId: 'studentId',
   houseNo: 'houseNo',
   street: 'street',
   city: 'city',
@@ -308,6 +309,21 @@ export const AcademicProfileScalarFieldEnum = {
 export type AcademicProfileScalarFieldEnum = (typeof AcademicProfileScalarFieldEnum)[keyof typeof AcademicProfileScalarFieldEnum]
 
 
+export const AttendanceScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  status: 'status',
+  remarks: 'remarks',
+  studentId: 'studentId',
+  schoolId: 'schoolId',
+  academicYearId: 'academicYearId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
 export const FeeStructureScalarFieldEnum = {
   id: 'id',
   className: 'className',
@@ -317,9 +333,9 @@ export const FeeStructureScalarFieldEnum = {
   transportFee: 'transportFee',
   activityFee: 'activityFee',
   totalFee: 'totalFee',
+  schoolId: 'schoolId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  schoolId: 'schoolId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type FeeStructureScalarFieldEnum = (typeof FeeStructureScalarFieldEnum)[keyof typeof FeeStructureScalarFieldEnum]
@@ -347,21 +363,6 @@ export const FeeRecordScalarFieldEnum = {
 } as const
 
 export type FeeRecordScalarFieldEnum = (typeof FeeRecordScalarFieldEnum)[keyof typeof FeeRecordScalarFieldEnum]
-
-
-export const AttendanceScalarFieldEnum = {
-  id: 'id',
-  date: 'date',
-  status: 'status',
-  remarks: 'remarks',
-  studentId: 'studentId',
-  schoolId: 'schoolId',
-  academicYearId: 'academicYearId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
 
 
 export const MedicalProfileScalarFieldEnum = {
@@ -393,19 +394,25 @@ export const TransportProfileScalarFieldEnum = {
 export type TransportProfileScalarFieldEnum = (typeof TransportProfileScalarFieldEnum)[keyof typeof TransportProfileScalarFieldEnum]
 
 
-export const DocumentArchiveScalarFieldEnum = {
+export const StudentDocumentScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
   studentId: 'studentId',
-  studentPhotoUrl: 'studentPhotoUrl',
-  birthCertificateUrl: 'birthCertificateUrl',
-  idCardCopyUrl: 'idCardCopyUrl',
-  previousMarksheetUrl: 'previousMarksheetUrl',
-  transferCertificateUrl: 'transferCertificateUrl',
-  parentIdCopyUrl: 'parentIdCopyUrl'
+  studentPhoto: 'studentPhoto',
+  birthCertificate: 'birthCertificate',
+  studentAadhar: 'studentAadhar',
+  fatherAadhar: 'fatherAadhar',
+  motherAadhar: 'motherAadhar',
+  previousMarksheet: 'previousMarksheet',
+  transferCertificate: 'transferCertificate',
+  casteCertificate: 'casteCertificate',
+  incomeCertificate: 'incomeCertificate',
+  bplCertificate: 'bplCertificate',
+  domicileCertificate: 'domicileCertificate',
+  familyId: 'familyId'
 } as const
 
-export type DocumentArchiveScalarFieldEnum = (typeof DocumentArchiveScalarFieldEnum)[keyof typeof DocumentArchiveScalarFieldEnum]
+export type StudentDocumentScalarFieldEnum = (typeof StudentDocumentScalarFieldEnum)[keyof typeof StudentDocumentScalarFieldEnum]
 
 
 export const VehicleScalarFieldEnum = {

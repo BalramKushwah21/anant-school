@@ -646,6 +646,21 @@ export type AdminProfileUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type AdminProfileListRelationFilter = {
+  every?: Prisma.AdminProfileWhereInput
+  some?: Prisma.AdminProfileWhereInput
+  none?: Prisma.AdminProfileWhereInput
+}
+
+export type AdminProfileOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type AdminProfileNullableScalarRelationFilter = {
+  is?: Prisma.AdminProfileWhereInput | null
+  isNot?: Prisma.AdminProfileWhereInput | null
+}
+
 export type AdminProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profilePhoto?: Prisma.SortOrder
@@ -727,49 +742,6 @@ export type AdminProfileMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type AdminProfileListRelationFilter = {
-  every?: Prisma.AdminProfileWhereInput
-  some?: Prisma.AdminProfileWhereInput
-  none?: Prisma.AdminProfileWhereInput
-}
-
-export type AdminProfileOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type AdminProfileNullableScalarRelationFilter = {
-  is?: Prisma.AdminProfileWhereInput | null
-  isNot?: Prisma.AdminProfileWhereInput | null
-}
-
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableEnumGenderFieldUpdateOperationsInput = {
-  set?: $Enums.Gender | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type NullableEnumMaritalStatusFieldUpdateOperationsInput = {
-  set?: $Enums.MaritalStatus | null
-}
-
-export type EnumAdminStatusFieldUpdateOperationsInput = {
-  set?: $Enums.AdminStatus
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type AdminProfileCreateNestedManyWithoutSchoolInput = {
   create?: Prisma.XOR<Prisma.AdminProfileCreateWithoutSchoolInput, Prisma.AdminProfileUncheckedCreateWithoutSchoolInput> | Prisma.AdminProfileCreateWithoutSchoolInput[] | Prisma.AdminProfileUncheckedCreateWithoutSchoolInput[]
   connectOrCreate?: Prisma.AdminProfileCreateOrConnectWithoutSchoolInput | Prisma.AdminProfileCreateOrConnectWithoutSchoolInput[]
@@ -842,6 +814,22 @@ export type AdminProfileUncheckedUpdateOneWithoutUserNestedInput = {
   delete?: Prisma.AdminProfileWhereInput | boolean
   connect?: Prisma.AdminProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminProfileUpdateToOneWithWhereWithoutUserInput, Prisma.AdminProfileUpdateWithoutUserInput>, Prisma.AdminProfileUncheckedUpdateWithoutUserInput>
+}
+
+export type NullableEnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type NullableEnumMaritalStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MaritalStatus | null
+}
+
+export type EnumAdminStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AdminStatus
 }
 
 export type AdminProfileCreateWithoutSchoolInput = {

@@ -136,17 +136,17 @@ export default function AdminProfile() {
 				// 2. Set new image URL to UI instantly
 				setProfile((prev) => ({
 					...prev,
-					profilePhoto: uploadData.url,
+					profilePhoto: uploadData.profilePhoto,// Ya jo bhi response me aaye
 				}));
 
-				// 3. Save URL to Database
+				// 3. Save URL TO Database
 				const dbRes = await fetch("/api/school/admin/profile", {
 					method: "PUT",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						actionType: "UPDATE_PROFILE",
 						...profile,
-						profilePhoto: uploadData.url, // New URL saving to DB
+						profilePhoto: uploadData.profilePhoto || uploadData.url, // New URL saving to DB
 					}),
 				});
 
@@ -270,6 +270,7 @@ export default function AdminProfile() {
 							Profile updates safely committed to your SQL
 							database!
 						</p>
+						
 					</div>
 				)}
 
@@ -289,9 +290,9 @@ export default function AdminProfile() {
 								<label className="absolute bottom-1 right-1 bg-indigo-600 hover:bg-indigo-700 p-1.5 rounded-lg cursor-pointer shadow-md transition-transform hover:scale-105">
 									<Camera size={14} className="text-white" />
 									<input
-										
+										accept="image/png, image/jpeg, image/jpg"
 										type="file"
-										accept="image/*"
+										value=""
 										className="hidden"
 										onChange={handlePhotoUpload}
 									/>

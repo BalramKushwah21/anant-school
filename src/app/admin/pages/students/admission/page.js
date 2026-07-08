@@ -575,16 +575,16 @@ export default function StudentAdmissionForm() {
 
 	const initialFiles = {
 		studentPhoto: null,
+		studentAadhar: null,
 		fatherAadhar: null,
 		motherAadhar: null,
-		studentAadhar: null,
-		studentDobCert: null,
-		studentCasteCert: null,
-		parentDomicile: null,
-		samagraIdDoc: null,
+		studentBirthCertificate: null,
+		studentCasteCertificate: null,
+		domicileCertificate: null,
+		familyId: null,
 		studentTc: null,
-		incomeCert: null,
-		bplCert: null,
+		incomeCertificate: null,
+		bplCertificate: null,
 		previousMarksheet: null,
 	};
 
@@ -898,6 +898,8 @@ export default function StudentAdmissionForm() {
 	// Calculate Form Progress
 	const calculateProgress = () => {
 		const sections = [
+			null
+			, // 0. Placeholder for 1-based indexing
 			!!formData.firstName && !!formData.aadhar, // 1. Student
 			!!formData.classApplyingFor, // 2. Academic
 			!!formData.fatherName && !!formData.fatherMobile, // 3. Parent
@@ -927,7 +929,7 @@ export default function StudentAdmissionForm() {
 							New Enrollment Dossier
 						</h1>
 						<p className="text-sm text-slate-500 font-medium mt-1">
-							School Grid Standard Operating Procedure for
+							Anant School Standard Operating Procedure for
 							Admissions
 						</p>
 					</div>
@@ -1788,7 +1790,7 @@ export default function StudentAdmissionForm() {
 							</div>
 							<div>
 								<h2 className="text-xl font-bold text-white">
-									8. School Grid Ecosystem Logins
+									8. Anant School Ecosystem Logins
 								</h2>
 								<p className="text-xs text-slate-400 mt-1">
 									Our engine has auto-generated secure
@@ -1880,10 +1882,10 @@ export default function StudentAdmissionForm() {
 								/>
 								<FormFile
 									label="Birth Certificate"
-									name="studentDobCert"
+									name="studentBirthCertificate"
 									onChange={handleFileChange}
-									error={fileErrors.studentDobCert}
-									fileData={files.studentDobCert}
+									error={fileErrors.studentBirthCertificate}
+									fileData={files.studentBirthCertificate}
 								/>
 								<FormFile
 									label="Student Aadhar Card"
@@ -1924,41 +1926,41 @@ export default function StudentAdmissionForm() {
 								/>
 								<FormFile
 									label="Caste Certificate"
-									name="studentCasteCert"
+									name="studentCasteCertificate"
 									onChange={handleFileChange}
-									error={fileErrors.studentCasteCert}
-									fileData={files.studentCasteCert}
+									error={fileErrors.studentCasteCertificate}
+									fileData={files.studentCasteCertificate}
 									hint="Required if not General category"
 								/>
 								<FormFile
-									label="Samagra ID Document"
-									name="samagraIdDoc"
+									label="Family ID Document"
+									name="familyId"
 									onChange={handleFileChange}
-									error={fileErrors.samagraIdDoc}
-									fileData={files.samagraIdDoc}
+									error={fileErrors.familyId}
+									fileData={files.familyId}
 								/>
 
 								<FormFile
 									label="Income Certificate"
-									name="incomeCert"
+									name="incomeCertificate"
 									onChange={handleFileChange}
-									error={fileErrors.incomeCert}
-									fileData={files.incomeCert}
+									error={fileErrors.incomeCertificate}
+									fileData={files.incomeCertificate}
 									hint="For fee concessions"
 								/>
 								<FormFile
 									label="BPL Ration Card"
-									name="bplCert"
+									name="bplCertificate"
 									onChange={handleFileChange}
-									error={fileErrors.bplCert}
-									fileData={files.bplCert}
+									error={fileErrors.bplCertificate}
+									fileData={files.bplCertificate}
 								/>
 								<FormFile
 									label="Parent Domicile"
-									name="parentDomicile"
+									name="domicileCertificate"
 									onChange={handleFileChange}
-									error={fileErrors.parentDomicile}
-									fileData={files.parentDomicile}
+									error={fileErrors.domicileCertificate}
+									fileData={files.domicileCertificate}
 								/>
 							</div>
 						</div>
