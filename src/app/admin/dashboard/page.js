@@ -101,7 +101,7 @@ export default function PrincipalDashboard() {
 			label: "Students List",
 			icon: Users,
 			bg: "bg-orange-500",
-			link: "/admin/pages/students/record",
+			link: "/admin/pages/students/studentsList",
 		},
 		{
 			label: "Teacher",

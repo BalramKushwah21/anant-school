@@ -104,8 +104,8 @@ export default function PrivacyPolicy() {
           In compliance with the Information Technology Act and the Digital Personal Data Protection Act, 2023, if you have any questions, concerns, or grievances regarding this Privacy Policy or your data, please contact our designated Grievance Officer at:
         </p>
         <div className="bg-slate-100 p-6 rounded-lg border border-slate-200 text-slate-800">
-          <p className="mb-2"><strong className="text-slate-900">Email:</strong> support@anantschool.com</p>
-          <p><strong className="text-slate-900">Address:</strong> ANANT SCHOOL Operations, Bhopal, Madhya Pradesh, India</p>
+          <p className="mb-2"><strong className="text-slate-900">Email:</strong> bkushwah1081@gmail.com, dangiramdas09@gmail.com</p>
+          <p><strong className="text-slate-900">Address:</strong> Anand Nagar, Bhopal, Madhya Pradesh, India</p>
         </div>
 
       </div>

@@ -132,7 +132,7 @@ export default function TermsAndConditions() {
         </h2>
         <div className="space-y-4 mb-8 text-base">
           <p><strong className="text-slate-900 font-semibold">10.1 Governing Law:</strong> These compiled Terms and Conditions shall be systematically construed, governed, and interpreted exclusively under the prevailing national laws of the Republic of India.</p>
-          <p><strong className="text-slate-900 font-semibold">10.2 Exclusive Jurisdiction:</strong> Any legal dispute, arbitration procedure, or court litigation arising out of or related to this SaaS agreement shall be filed exclusively within the territorial jurisdiction of the competent courts located in the city of the corporate headquarters of ANANT SCHOOL (e.g., New Delhi, India).</p>
+          <p><strong className="text-slate-900 font-semibold">10.2 Exclusive Jurisdiction:</strong> Any legal dispute, arbitration procedure, or court litigation arising out of or related to this SaaS agreement shall be filed exclusively within the territorial jurisdiction of the competent courts located in the city of the corporate headquarters of ANANT SCHOOL (e.g., Bhopal, India).</p>
         </div>
 
       </div>
