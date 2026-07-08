@@ -98,6 +98,12 @@ export default function PrincipalDashboard() {
 			link: "/admin/pages/students/admission",
 		},
 		{
+			label: "Students List",
+			icon: Users,
+			bg: "bg-orange-500",
+			link: "/admin/pages/students/record",
+		},
+		{
 			label: "Teacher",
 			icon: UserCheck,
 			bg: "bg-indigo-500",
