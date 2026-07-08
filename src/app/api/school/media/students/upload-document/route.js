@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { promises as fs } from "fs";
 import path from "path";
+// 👇 1. Prisma ko import karein
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
@@ -21,8 +22,8 @@ export async function POST(request) {
 		const formData = await request.formData();
 		const file = formData.get("photo");
 		const moduleName = formData.get("module");
-		const type = formData.get("type"); // 'teachers' aayega
-
+		const type = formData.get("firstName") + formData.get("studentAadhar").slice(0, 4); // 'teachers' aayega
+        console.log("Type:", type);
 		if (!file || !moduleName || !userId) {
 			return NextResponse.json(
 				{ error: "Missing required fields" },
@@ -35,67 +36,49 @@ export async function POST(request) {
 		const buffer = Buffer.from(bytes);
 
 		// 2. Define VPS Path (Adjacent to your Next.js project)
-		// Agar project /var/www/school-grid hai, toh media /var/www/school-media mein jayega
 		const baseUploadDir = path.join(process.cwd(), "..", "school-media");
 		const targetDir = path.join(baseUploadDir, schoolId, moduleName, type);
 
 		// 3. Auto-create folder securely
 		await fs.mkdir(targetDir, { recursive: true });
 
-		// deleting old profile photo if exists
-		const admin = await prisma.adminProfile.findUnique({
-			where: { id: userId },
-			select: {
-				profilePhoto: true,
-			},
-		});
-
-		const oldPhoto = admin?.profilePhoto;
-
-		if (oldPhoto) {
-			try {
-				const oldFilePath = path.join(
-					baseUploadDir,
-					schoolId,
-					moduleName,
-					type,
-					path.basename(oldPhoto),
-				);
-
-				await fs.unlink(oldFilePath);
-			} catch (err) {
-				if (err.code !== "ENOENT") {
-					console.error(err);
-				}
-			}
-		}
-
-		// 4. Clean filename aur save karein
+		// 4. Clean filename aur Directory me save karein (FILE DIR ME SAVE)
 		const extension = file.name.split(".").pop();
-		const fileName = `profile-${Date.now()}.${extension}`;
+		const fileName = `profile-${userId}.${extension}`;
 		const filePath = path.join(targetDir, fileName);
-		if(extension === "png" || extension === "jpg" || extension === "jpeg") {
+
 		await fs.writeFile(filePath, buffer);
-		}
-		else {
-			return NextResponse.json(
-				{ error: "Invalid file type. Only PNG, JPG, and JPEG are allowed." },
-				{ status: 400 },
-			);
-		}
+
 		// 5. Generate secure serve URL
 		const fileUrl = `/api/school/media/${schoolId}/${moduleName}/${type}/${fileName}`;
-		
+
+		// =========================================================
+		// 🚀 6. DATABASE (DB) ME PATH SAVE KARNA
+		// =========================================================
+		// Yahan hum Database me us particular user ya teacher ka record update kar rahe hain
+		// Aapne 'Teacher' profile ke liye pucha tha, toh hum wahi table update karenge
+
+		await prisma.studentDocument.update({
+			where: {
+				userId: userId, // Ya id: userId (Aapke schema ke according)
+			},
+			data: {
+				studentPhoto: fileUrl, // DB me jo column name hai, usme url pass kar diya
+			},
+		});
+		// (Note: Agar ye User table me save karna hai toh prisma.user.update likhein)
 
 		return NextResponse.json(
 			{
-				message: "File uploaded successfully",
-				profilePhoto: fileUrl, // Include the profile photo URL in the response
+				success: true,
+				message:
+					"File uploaded and path saved to database successfully!",
+				fileUrl: fileUrl,
 			},
 			{ status: 200 },
 		);
 	} catch (error) {
-		console.error("Upload error:", error);
+		console.error("File upload error:", error);
 		return NextResponse.json(
 			{ error: "Internal Server Error" },
 			{ status: 500 },

@@ -31,8 +31,8 @@ export * from "./enums.ts"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more AdminProfiles
- * const adminProfiles = await prisma.adminProfile.findMany()
+ * // Fetch zero or more Schools
+ * const schools = await prisma.school.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -41,11 +41,6 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
-/**
- * Model AdminProfile
- * 
- */
-export type AdminProfile = Prisma.AdminProfileModel
 /**
  * Model School
  * 
@@ -61,6 +56,11 @@ export type AcademicYear = Prisma.AcademicYearModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model AdminProfile
+ * 
+ */
+export type AdminProfile = Prisma.AdminProfileModel
 /**
  * Model Teacher
  * 
@@ -92,6 +92,11 @@ export type Student = Prisma.StudentModel
  */
 export type AcademicProfile = Prisma.AcademicProfileModel
 /**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel
+/**
  * Model FeeStructure
  * 
  */
@@ -101,11 +106,6 @@ export type FeeStructure = Prisma.FeeStructureModel
  * 
  */
 export type FeeRecord = Prisma.FeeRecordModel
-/**
- * Model Attendance
- * 
- */
-export type Attendance = Prisma.AttendanceModel
 /**
  * Model MedicalProfile
  * 
@@ -117,10 +117,10 @@ export type MedicalProfile = Prisma.MedicalProfileModel
  */
 export type TransportProfile = Prisma.TransportProfileModel
 /**
- * Model DocumentArchive
+ * Model StudentDocument
  * 
  */
-export type DocumentArchive = Prisma.DocumentArchiveModel
+export type StudentDocument = Prisma.StudentDocumentModel
 /**
  * Model Vehicle
  * 

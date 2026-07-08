@@ -18,11 +18,6 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
- * Model AdminProfile
- * 
- */
-export type AdminProfile = Prisma.AdminProfileModel
-/**
  * Model School
  * 
  */
@@ -37,6 +32,11 @@ export type AcademicYear = Prisma.AcademicYearModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model AdminProfile
+ * 
+ */
+export type AdminProfile = Prisma.AdminProfileModel
 /**
  * Model Teacher
  * 
@@ -68,6 +68,11 @@ export type Student = Prisma.StudentModel
  */
 export type AcademicProfile = Prisma.AcademicProfileModel
 /**
+ * Model Attendance
+ * 
+ */
+export type Attendance = Prisma.AttendanceModel
+/**
  * Model FeeStructure
  * 
  */
@@ -77,11 +82,6 @@ export type FeeStructure = Prisma.FeeStructureModel
  * 
  */
 export type FeeRecord = Prisma.FeeRecordModel
-/**
- * Model Attendance
- * 
- */
-export type Attendance = Prisma.AttendanceModel
 /**
  * Model MedicalProfile
  * 
@@ -93,10 +93,10 @@ export type MedicalProfile = Prisma.MedicalProfileModel
  */
 export type TransportProfile = Prisma.TransportProfileModel
 /**
- * Model DocumentArchive
+ * Model StudentDocument
  * 
  */
-export type DocumentArchive = Prisma.DocumentArchiveModel
+export type StudentDocument = Prisma.StudentDocumentModel
 /**
  * Model Vehicle
  * 

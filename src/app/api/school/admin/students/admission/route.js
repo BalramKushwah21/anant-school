@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { promises as fs } from "fs";
+import path from "path";
 import bcrypt from "bcryptjs";
+import { u } from "framer-motion/client";
 
 export async function POST(request) {
 	try {
@@ -56,13 +59,13 @@ export async function POST(request) {
 			"fatherAadhar",
 			"motherAadhar",
 			"studentAadhar",
-			"studentDobCert",
-			"studentCasteCert",
-			"parentDomicile",
-			"samagraIdDoc",
+			"studentBirthCertificate",
+			"studentCasteCertificate",
+			"domicileCertificate",
+			"familyId",
 			"studentTc",
-			"incomeCert",
-			"bplCert",
+			"incomeCertificate",
+			"bplCertificate",
 			"previousMarksheet",
 		];
 
@@ -70,10 +73,47 @@ export async function POST(request) {
 		for (const field of fileFields) {
 			const file = formData.get(field);
 			if (file && typeof file === "object" && file.size > 0) {
-				uploadedDocuments[field] =
-					`/uploads/${schoolId}/${Date.now()}-${file.name}`;
+				// 1. Convert File to Buffer
+				const bytes = await file.arrayBuffer();
+				const buffer = Buffer.from(bytes);
+
+				// 2. Define VPS Path (Adjacent to your Next.js project)
+				const baseUploadDir = path.join(
+					process.cwd(),
+					"..",
+					"school-media",
+				);
+				const moduleName = "studentDocuments"; // Assuming module is 'students' for student document
+				const firstName = formData.get("firstName");
+				const aadharNumber = formData.get("aadhar");
+
+
+				const type = `${firstName}${aadharNumber.slice(-4)}`;
+
+				const targetDir = path.join(
+					baseUploadDir,
+					schoolId,
+					moduleName,
+					type,
+				);
+
+				// 3. Auto-create folder securely
+				await fs.mkdir(targetDir, { recursive: true });
+
+				// 4. Clean filename aur Directory me save karein (FILE DIR ME SAVE)
+				const extension = file.name.split(".").pop();
+				const fileName = `document-${field}.${extension}`;
+				const filePath = path.join(targetDir, fileName);
+
+				await fs.writeFile(filePath, buffer);
+
+				// 5. Generate secure serve URL
+				const fileUrl = `/api/school/media/${schoolId}/${moduleName}/${type}/${fileName}`;
+
+				uploadedDocuments[field] = fileUrl;
 			}
 		}
+
 
 		// 4. Passwords
 		const saltRounds = 10;
@@ -159,11 +199,14 @@ export async function POST(request) {
 
 				// STEP 4: Complete Student Profile
 				const studentProfile = await tx.student.create({
+					include: {
+						documents: true,
+					},
 					data: {
 						// Core Relations
 						school: { connect: { id: schoolId } },
 						family: { connect: { id: familyRecord.id } },
-						userId: studentUser.id,
+						user: { connect: { id: studentUser.id } },
 
 						// Personal Info
 						firstName,
@@ -184,7 +227,43 @@ export async function POST(request) {
 						admissionDate: getStr("admissionDate")
 							? new Date(getStr("admissionDate"))
 							: new Date(),
-						documents: uploadedDocuments,
+
+						documents: {
+							create: {
+								school: { connect: { id: schoolId } },
+
+								studentPhoto:
+									uploadedDocuments.studentPhoto || null,
+								fatherAadhar:
+									uploadedDocuments.fatherAadhar || null,
+								motherAadhar:
+									uploadedDocuments.motherAadhar || null,
+								birthCertificate:
+									uploadedDocuments.studentBirthCertificate ||
+									null,
+								studentAadhar:
+									uploadedDocuments.studentAadhar || null,
+
+								previousMarksheet:
+									uploadedDocuments.previousMarksheet || null,
+								casteCertificate:
+									uploadedDocuments.casteCertificate || null,
+								domicileCertificate:
+									uploadedDocuments.domicileCertificate ||
+									null,
+								transferCertificate:
+									uploadedDocuments.transferCertificate ||
+									null,
+
+								familyId: uploadedDocuments.familyId || null,
+								incomeCertificate:
+									uploadedDocuments.incomeCertificate || null,
+								bplCertificate:
+									uploadedDocuments.bplCertificate || null,
+
+								// Uploaded documents stored here
+							},
+						},
 
 						// Academic Profile
 						academicProfiles: {
@@ -279,7 +358,7 @@ export async function POST(request) {
 			},
 			{
 				maxWait: 5000,
-				timeout: 20000,
+				timeout: 30000,
 			},
 		);
 

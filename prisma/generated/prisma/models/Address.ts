@@ -27,7 +27,6 @@ export type AggregateAddress = {
 export type AddressMinAggregateOutputType = {
   id: string | null
   familyId: string | null
-  studentId: string | null
   houseNo: string | null
   street: string | null
   city: string | null
@@ -39,7 +38,6 @@ export type AddressMinAggregateOutputType = {
 export type AddressMaxAggregateOutputType = {
   id: string | null
   familyId: string | null
-  studentId: string | null
   houseNo: string | null
   street: string | null
   city: string | null
@@ -51,7 +49,6 @@ export type AddressMaxAggregateOutputType = {
 export type AddressCountAggregateOutputType = {
   id: number
   familyId: number
-  studentId: number
   houseNo: number
   street: number
   city: number
@@ -65,7 +62,6 @@ export type AddressCountAggregateOutputType = {
 export type AddressMinAggregateInputType = {
   id?: true
   familyId?: true
-  studentId?: true
   houseNo?: true
   street?: true
   city?: true
@@ -77,7 +73,6 @@ export type AddressMinAggregateInputType = {
 export type AddressMaxAggregateInputType = {
   id?: true
   familyId?: true
-  studentId?: true
   houseNo?: true
   street?: true
   city?: true
@@ -89,7 +84,6 @@ export type AddressMaxAggregateInputType = {
 export type AddressCountAggregateInputType = {
   id?: true
   familyId?: true
-  studentId?: true
   houseNo?: true
   street?: true
   city?: true
@@ -174,7 +168,6 @@ export type AddressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type AddressGroupByOutputType = {
   id: string
   familyId: string
-  studentId: string
   houseNo: string | null
   street: string
   city: string
@@ -207,7 +200,6 @@ export type AddressWhereInput = {
   NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
   id?: Prisma.StringFilter<"Address"> | string
   familyId?: Prisma.StringFilter<"Address"> | string
-  studentId?: Prisma.StringFilter<"Address"> | string
   houseNo?: Prisma.StringNullableFilter<"Address"> | string | null
   street?: Prisma.StringFilter<"Address"> | string
   city?: Prisma.StringFilter<"Address"> | string
@@ -215,13 +207,12 @@ export type AddressWhereInput = {
   state?: Prisma.StringFilter<"Address"> | string
   pincode?: Prisma.StringFilter<"Address"> | string
   family?: Prisma.XOR<Prisma.FamilyScalarRelationFilter, Prisma.FamilyWhereInput>
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  students?: Prisma.StudentListRelationFilter
 }
 
 export type AddressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   familyId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   houseNo?: Prisma.SortOrderInput | Prisma.SortOrder
   street?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -229,13 +220,12 @@ export type AddressOrderByWithRelationInput = {
   state?: Prisma.SortOrder
   pincode?: Prisma.SortOrder
   family?: Prisma.FamilyOrderByWithRelationInput
-  student?: Prisma.StudentOrderByWithRelationInput
+  students?: Prisma.StudentOrderByRelationAggregateInput
 }
 
 export type AddressWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   familyId?: string
-  studentId?: string
   AND?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
   OR?: Prisma.AddressWhereInput[]
   NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
@@ -246,13 +236,12 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
   state?: Prisma.StringFilter<"Address"> | string
   pincode?: Prisma.StringFilter<"Address"> | string
   family?: Prisma.XOR<Prisma.FamilyScalarRelationFilter, Prisma.FamilyWhereInput>
-  student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
-}, "id" | "familyId" | "studentId">
+  students?: Prisma.StudentListRelationFilter
+}, "id" | "familyId">
 
 export type AddressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   familyId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   houseNo?: Prisma.SortOrderInput | Prisma.SortOrder
   street?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -270,7 +259,6 @@ export type AddressScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AddressScalarWhereWithAggregatesInput | Prisma.AddressScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Address"> | string
   familyId?: Prisma.StringWithAggregatesFilter<"Address"> | string
-  studentId?: Prisma.StringWithAggregatesFilter<"Address"> | string
   houseNo?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
   street?: Prisma.StringWithAggregatesFilter<"Address"> | string
   city?: Prisma.StringWithAggregatesFilter<"Address"> | string
@@ -288,19 +276,19 @@ export type AddressCreateInput = {
   state: string
   pincode: string
   family: Prisma.FamilyCreateNestedOneWithoutAddressInput
-  student: Prisma.StudentCreateNestedOneWithoutAddressesInput
+  students?: Prisma.StudentCreateNestedManyWithoutAddressesInput
 }
 
 export type AddressUncheckedCreateInput = {
   id?: string
   familyId: string
-  studentId: string
   houseNo?: string | null
   street: string
   city: string
   district: string
   state: string
   pincode: string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutAddressesInput
 }
 
 export type AddressUpdateInput = {
@@ -312,25 +300,24 @@ export type AddressUpdateInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.FamilyUpdateOneRequiredWithoutAddressNestedInput
-  student?: Prisma.StudentUpdateOneRequiredWithoutAddressesNestedInput
+  students?: Prisma.StudentUpdateManyWithoutAddressesNestedInput
 }
 
 export type AddressUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   familyId?: Prisma.StringFieldUpdateOperationsInput | string
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   street?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutAddressesNestedInput
 }
 
 export type AddressCreateManyInput = {
   id?: string
   familyId: string
-  studentId: string
   houseNo?: string | null
   street: string
   city: string
@@ -352,7 +339,6 @@ export type AddressUpdateManyMutationInput = {
 export type AddressUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   familyId?: Prisma.StringFieldUpdateOperationsInput | string
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   street?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -369,7 +355,6 @@ export type AddressNullableScalarRelationFilter = {
 export type AddressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   familyId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   houseNo?: Prisma.SortOrder
   street?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -381,7 +366,6 @@ export type AddressCountOrderByAggregateInput = {
 export type AddressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   familyId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   houseNo?: Prisma.SortOrder
   street?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -393,7 +377,6 @@ export type AddressMaxOrderByAggregateInput = {
 export type AddressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   familyId?: Prisma.SortOrder
-  studentId?: Prisma.SortOrder
   houseNo?: Prisma.SortOrder
   street?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -444,45 +427,41 @@ export type AddressUncheckedUpdateOneWithoutFamilyNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AddressUpdateToOneWithWhereWithoutFamilyInput, Prisma.AddressUpdateWithoutFamilyInput>, Prisma.AddressUncheckedUpdateWithoutFamilyInput>
 }
 
-export type AddressCreateNestedManyWithoutStudentInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput> | Prisma.AddressCreateWithoutStudentInput[] | Prisma.AddressUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentInput | Prisma.AddressCreateOrConnectWithoutStudentInput[]
-  createMany?: Prisma.AddressCreateManyStudentInputEnvelope
+export type AddressCreateNestedManyWithoutStudentsInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput> | Prisma.AddressCreateWithoutStudentsInput[] | Prisma.AddressUncheckedCreateWithoutStudentsInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentsInput | Prisma.AddressCreateOrConnectWithoutStudentsInput[]
   connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
 }
 
-export type AddressUncheckedCreateNestedManyWithoutStudentInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput> | Prisma.AddressCreateWithoutStudentInput[] | Prisma.AddressUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentInput | Prisma.AddressCreateOrConnectWithoutStudentInput[]
-  createMany?: Prisma.AddressCreateManyStudentInputEnvelope
+export type AddressUncheckedCreateNestedManyWithoutStudentsInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput> | Prisma.AddressCreateWithoutStudentsInput[] | Prisma.AddressUncheckedCreateWithoutStudentsInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentsInput | Prisma.AddressCreateOrConnectWithoutStudentsInput[]
   connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
 }
 
-export type AddressUpdateManyWithoutStudentNestedInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput> | Prisma.AddressCreateWithoutStudentInput[] | Prisma.AddressUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentInput | Prisma.AddressCreateOrConnectWithoutStudentInput[]
-  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutStudentInput | Prisma.AddressUpsertWithWhereUniqueWithoutStudentInput[]
-  createMany?: Prisma.AddressCreateManyStudentInputEnvelope
+export type AddressUpdateManyWithoutStudentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput> | Prisma.AddressCreateWithoutStudentsInput[] | Prisma.AddressUncheckedCreateWithoutStudentsInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentsInput | Prisma.AddressCreateOrConnectWithoutStudentsInput[]
+  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutStudentsInput | Prisma.AddressUpsertWithWhereUniqueWithoutStudentsInput[]
   set?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   disconnect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   delete?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
-  update?: Prisma.AddressUpdateWithWhereUniqueWithoutStudentInput | Prisma.AddressUpdateWithWhereUniqueWithoutStudentInput[]
-  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutStudentInput | Prisma.AddressUpdateManyWithWhereWithoutStudentInput[]
+  update?: Prisma.AddressUpdateWithWhereUniqueWithoutStudentsInput | Prisma.AddressUpdateWithWhereUniqueWithoutStudentsInput[]
+  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutStudentsInput | Prisma.AddressUpdateManyWithWhereWithoutStudentsInput[]
   deleteMany?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
 }
 
-export type AddressUncheckedUpdateManyWithoutStudentNestedInput = {
-  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput> | Prisma.AddressCreateWithoutStudentInput[] | Prisma.AddressUncheckedCreateWithoutStudentInput[]
-  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentInput | Prisma.AddressCreateOrConnectWithoutStudentInput[]
-  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutStudentInput | Prisma.AddressUpsertWithWhereUniqueWithoutStudentInput[]
-  createMany?: Prisma.AddressCreateManyStudentInputEnvelope
+export type AddressUncheckedUpdateManyWithoutStudentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput> | Prisma.AddressCreateWithoutStudentsInput[] | Prisma.AddressUncheckedCreateWithoutStudentsInput[]
+  connectOrCreate?: Prisma.AddressCreateOrConnectWithoutStudentsInput | Prisma.AddressCreateOrConnectWithoutStudentsInput[]
+  upsert?: Prisma.AddressUpsertWithWhereUniqueWithoutStudentsInput | Prisma.AddressUpsertWithWhereUniqueWithoutStudentsInput[]
   set?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   disconnect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   delete?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
   connect?: Prisma.AddressWhereUniqueInput | Prisma.AddressWhereUniqueInput[]
-  update?: Prisma.AddressUpdateWithWhereUniqueWithoutStudentInput | Prisma.AddressUpdateWithWhereUniqueWithoutStudentInput[]
-  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutStudentInput | Prisma.AddressUpdateManyWithWhereWithoutStudentInput[]
+  update?: Prisma.AddressUpdateWithWhereUniqueWithoutStudentsInput | Prisma.AddressUpdateWithWhereUniqueWithoutStudentsInput[]
+  updateMany?: Prisma.AddressUpdateManyWithWhereWithoutStudentsInput | Prisma.AddressUpdateManyWithWhereWithoutStudentsInput[]
   deleteMany?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
 }
 
@@ -494,18 +473,18 @@ export type AddressCreateWithoutFamilyInput = {
   district: string
   state: string
   pincode: string
-  student: Prisma.StudentCreateNestedOneWithoutAddressesInput
+  students?: Prisma.StudentCreateNestedManyWithoutAddressesInput
 }
 
 export type AddressUncheckedCreateWithoutFamilyInput = {
   id?: string
-  studentId: string
   houseNo?: string | null
   street: string
   city: string
   district: string
   state: string
   pincode: string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutAddressesInput
 }
 
 export type AddressCreateOrConnectWithoutFamilyInput = {
@@ -532,21 +511,21 @@ export type AddressUpdateWithoutFamilyInput = {
   district?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
-  student?: Prisma.StudentUpdateOneRequiredWithoutAddressesNestedInput
+  students?: Prisma.StudentUpdateManyWithoutAddressesNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutFamilyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  studentId?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   street?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutAddressesNestedInput
 }
 
-export type AddressCreateWithoutStudentInput = {
+export type AddressCreateWithoutStudentsInput = {
   id?: string
   houseNo?: string | null
   street: string
@@ -557,7 +536,7 @@ export type AddressCreateWithoutStudentInput = {
   family: Prisma.FamilyCreateNestedOneWithoutAddressInput
 }
 
-export type AddressUncheckedCreateWithoutStudentInput = {
+export type AddressUncheckedCreateWithoutStudentsInput = {
   id?: string
   familyId: string
   houseNo?: string | null
@@ -568,30 +547,25 @@ export type AddressUncheckedCreateWithoutStudentInput = {
   pincode: string
 }
 
-export type AddressCreateOrConnectWithoutStudentInput = {
+export type AddressCreateOrConnectWithoutStudentsInput = {
   where: Prisma.AddressWhereUniqueInput
-  create: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput>
+  create: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput>
 }
 
-export type AddressCreateManyStudentInputEnvelope = {
-  data: Prisma.AddressCreateManyStudentInput | Prisma.AddressCreateManyStudentInput[]
-  skipDuplicates?: boolean
-}
-
-export type AddressUpsertWithWhereUniqueWithoutStudentInput = {
+export type AddressUpsertWithWhereUniqueWithoutStudentsInput = {
   where: Prisma.AddressWhereUniqueInput
-  update: Prisma.XOR<Prisma.AddressUpdateWithoutStudentInput, Prisma.AddressUncheckedUpdateWithoutStudentInput>
-  create: Prisma.XOR<Prisma.AddressCreateWithoutStudentInput, Prisma.AddressUncheckedCreateWithoutStudentInput>
+  update: Prisma.XOR<Prisma.AddressUpdateWithoutStudentsInput, Prisma.AddressUncheckedUpdateWithoutStudentsInput>
+  create: Prisma.XOR<Prisma.AddressCreateWithoutStudentsInput, Prisma.AddressUncheckedCreateWithoutStudentsInput>
 }
 
-export type AddressUpdateWithWhereUniqueWithoutStudentInput = {
+export type AddressUpdateWithWhereUniqueWithoutStudentsInput = {
   where: Prisma.AddressWhereUniqueInput
-  data: Prisma.XOR<Prisma.AddressUpdateWithoutStudentInput, Prisma.AddressUncheckedUpdateWithoutStudentInput>
+  data: Prisma.XOR<Prisma.AddressUpdateWithoutStudentsInput, Prisma.AddressUncheckedUpdateWithoutStudentsInput>
 }
 
-export type AddressUpdateManyWithWhereWithoutStudentInput = {
+export type AddressUpdateManyWithWhereWithoutStudentsInput = {
   where: Prisma.AddressScalarWhereInput
-  data: Prisma.XOR<Prisma.AddressUpdateManyMutationInput, Prisma.AddressUncheckedUpdateManyWithoutStudentInput>
+  data: Prisma.XOR<Prisma.AddressUpdateManyMutationInput, Prisma.AddressUncheckedUpdateManyWithoutStudentsInput>
 }
 
 export type AddressScalarWhereInput = {
@@ -600,7 +574,6 @@ export type AddressScalarWhereInput = {
   NOT?: Prisma.AddressScalarWhereInput | Prisma.AddressScalarWhereInput[]
   id?: Prisma.StringFilter<"Address"> | string
   familyId?: Prisma.StringFilter<"Address"> | string
-  studentId?: Prisma.StringFilter<"Address"> | string
   houseNo?: Prisma.StringNullableFilter<"Address"> | string | null
   street?: Prisma.StringFilter<"Address"> | string
   city?: Prisma.StringFilter<"Address"> | string
@@ -609,18 +582,7 @@ export type AddressScalarWhereInput = {
   pincode?: Prisma.StringFilter<"Address"> | string
 }
 
-export type AddressCreateManyStudentInput = {
-  id?: string
-  familyId: string
-  houseNo?: string | null
-  street: string
-  city: string
-  district: string
-  state: string
-  pincode: string
-}
-
-export type AddressUpdateWithoutStudentInput = {
+export type AddressUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   street?: Prisma.StringFieldUpdateOperationsInput | string
@@ -631,7 +593,7 @@ export type AddressUpdateWithoutStudentInput = {
   family?: Prisma.FamilyUpdateOneRequiredWithoutAddressNestedInput
 }
 
-export type AddressUncheckedUpdateWithoutStudentInput = {
+export type AddressUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   familyId?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -642,7 +604,7 @@ export type AddressUncheckedUpdateWithoutStudentInput = {
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type AddressUncheckedUpdateManyWithoutStudentInput = {
+export type AddressUncheckedUpdateManyWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   familyId?: Prisma.StringFieldUpdateOperationsInput | string
   houseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -653,12 +615,40 @@ export type AddressUncheckedUpdateManyWithoutStudentInput = {
   pincode?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+
+/**
+ * Count Type AddressCountOutputType
+ */
+
+export type AddressCountOutputType = {
+  students: number
+}
+
+export type AddressCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  students?: boolean | AddressCountOutputTypeCountStudentsArgs
+}
+
+/**
+ * AddressCountOutputType without action
+ */
+export type AddressCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AddressCountOutputType
+   */
+  select?: Prisma.AddressCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AddressCountOutputType without action
+ */
+export type AddressCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentWhereInput
+}
 
 
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   familyId?: boolean
-  studentId?: boolean
   houseNo?: boolean
   street?: boolean
   city?: boolean
@@ -666,13 +656,13 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   state?: boolean
   pincode?: boolean
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  students?: boolean | Prisma.Address$studentsArgs<ExtArgs>
+  _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   familyId?: boolean
-  studentId?: boolean
   houseNo?: boolean
   street?: boolean
   city?: boolean
@@ -680,13 +670,11 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   state?: boolean
   pincode?: boolean
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   familyId?: boolean
-  studentId?: boolean
   houseNo?: boolean
   street?: boolean
   city?: boolean
@@ -694,13 +682,11 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   state?: boolean
   pincode?: boolean
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectScalar = {
   id?: boolean
   familyId?: boolean
-  studentId?: boolean
   houseNo?: boolean
   street?: boolean
   city?: boolean
@@ -709,30 +695,28 @@ export type AddressSelectScalar = {
   pincode?: boolean
 }
 
-export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "familyId" | "studentId" | "houseNo" | "street" | "city" | "district" | "state" | "pincode", ExtArgs["result"]["address"]>
+export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "familyId" | "houseNo" | "street" | "city" | "district" | "state" | "pincode", ExtArgs["result"]["address"]>
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  students?: boolean | Prisma.Address$studentsArgs<ExtArgs>
+  _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AddressIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
 export type AddressIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   family?: boolean | Prisma.FamilyDefaultArgs<ExtArgs>
-  student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
 
 export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Address"
   objects: {
     family: Prisma.$FamilyPayload<ExtArgs>
-    student: Prisma.$StudentPayload<ExtArgs>
+    students: Prisma.$StudentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     familyId: string
-    studentId: string
     houseNo: string | null
     street: string
     city: string
@@ -1134,7 +1118,7 @@ readonly fields: AddressFieldRefs;
 export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   family<T extends Prisma.FamilyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FamilyDefaultArgs<ExtArgs>>): Prisma.Prisma__FamilyClient<runtime.Types.Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  students<T extends Prisma.Address$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Address$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1166,7 +1150,6 @@ export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.
 export interface AddressFieldRefs {
   readonly id: Prisma.FieldRef<"Address", 'String'>
   readonly familyId: Prisma.FieldRef<"Address", 'String'>
-  readonly studentId: Prisma.FieldRef<"Address", 'String'>
   readonly houseNo: Prisma.FieldRef<"Address", 'String'>
   readonly street: Prisma.FieldRef<"Address", 'String'>
   readonly city: Prisma.FieldRef<"Address", 'String'>
@@ -1571,6 +1554,30 @@ export type AddressDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Addresses to delete.
    */
   limit?: number
+}
+
+/**
+ * Address.students
+ */
+export type Address$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Student
+   */
+  select?: Prisma.StudentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Student
+   */
+  omit?: Prisma.StudentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentInclude<ExtArgs> | null
+  where?: Prisma.StudentWhereInput
+  orderBy?: Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[]
+  cursor?: Prisma.StudentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentScalarFieldEnum | Prisma.StudentScalarFieldEnum[]
 }
 
 /**
