@@ -135,7 +135,6 @@ export default function PrincipalDashboard() {
 		},
 	];
 
-
 	const stats = [
 		{
 			label: "Approvals",
@@ -155,9 +154,7 @@ export default function PrincipalDashboard() {
 			color: "text-emerald-400",
 			glow: "shadow-emerald-500/20",
 		},
-	]
-
-
+	];
 
 	const containerVariants = {
 		hidden: { opacity: 0 },
@@ -255,9 +252,9 @@ export default function PrincipalDashboard() {
 					<div className="relative z-10 flex gap-4 md:gap-6 overflow-x-auto pb-2 xl:pb-0 hide-scrollbar">
 						{stats.map((stat, i) => (
 							<motion.div
-								whileHover={{ y: 0, scale: 0.95}}
+								whileHover={{ y: 0, scale: 0.95 }}
 								key={i}
-								className={`bg-white/5 border border-white/10 rounded-3xl p-5 min-w-[130px] text-center backdrop-blur-xl shadow-lg ${stat.glow} cursor-pointer transition-all`}
+								className={`bg-white/5 border border-white/10 rounded-3xl p-5 min-w-32.5 text-center backdrop-blur-xl shadow-lg ${stat.glow} cursor-pointer transition-all`}
 							>
 								<p
 									className={`text-4xl font-black ${stat.color} drop-shadow-sm`}
@@ -300,7 +297,6 @@ export default function PrincipalDashboard() {
 					className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
 				>
 					{(data?.kpis || []).map((kpi, idx) => {
-						// Fallback to default Users icon if iconName is missing or wrong
 						const IconComponent = IconMap[kpi.iconName] || Users;
 
 						return (
@@ -337,8 +333,16 @@ export default function PrincipalDashboard() {
 						<h3 className="text-lg font-extrabold text-slate-800 mb-6">
 							Students by Class
 						</h3>
-						<div className="h-72">
-							<ResponsiveContainer width="100%" height="100%">
+						{/* ✅ FIX: Inline Style for strict dimensions */}
+						<div
+							className="w-full"
+							style={{
+								width: "100%",
+								height: 320,
+								minHeight: 320,
+							}}
+						>
+							<ResponsiveContainer width="100%" height={320}>
 								<BarChart
 									data={data?.charts?.studentsByClass || []}
 									margin={{
@@ -400,8 +404,16 @@ export default function PrincipalDashboard() {
 						<h3 className="text-lg font-extrabold text-slate-800 mb-6">
 							Last 30 Days Attendance %
 						</h3>
-						<div className="h-72">
-							<ResponsiveContainer width="100%" height="100%">
+						{/* ✅ FIX: Inline Style for strict dimensions */}
+						<div
+							className="w-full"
+							style={{
+								width: "100%",
+								height: 320,
+								minHeight: 320,
+							}}
+						>
+							<ResponsiveContainer width="100%" height={320}>
 								<LineChart
 									data={data?.charts?.attendanceTrend || []}
 									margin={{
@@ -468,8 +480,16 @@ export default function PrincipalDashboard() {
 						<h3 className="text-lg font-extrabold text-slate-800 mb-2">
 							Gender Distribution
 						</h3>
-						<div className="h-72 flex-1">
-							<ResponsiveContainer width="100%" height="100%">
+						{/* ✅ FIX: Inline Style for strict dimensions */}
+						<div
+							className="w-full"
+							style={{
+								width: "100%",
+								height: 320,
+								minHeight: 320,
+							}}
+						>
+							<ResponsiveContainer width="100%" height={320}>
 								<PieChart>
 									<Pie
 										data={data?.charts?.gender || []}
@@ -518,8 +538,16 @@ export default function PrincipalDashboard() {
 						<h3 className="text-lg font-extrabold text-slate-800 mb-6">
 							Revenue Analytics
 						</h3>
-						<div className="h-72">
-							<ResponsiveContainer width="100%" height="100%">
+						{/* ✅ FIX: Inline Style for strict dimensions */}
+						<div
+							className="w-full"
+							style={{
+								width: "100%",
+								height: 320,
+								minHeight: 320,
+							}}
+						>
+							<ResponsiveContainer width="100%" height={320}>
 								<AreaChart
 									data={data?.charts?.revenue || []}
 									margin={{
@@ -604,7 +632,7 @@ export default function PrincipalDashboard() {
 					{/* LEFT COLUMN */}
 					<div className="space-y-8 xl:col-span-2">
 						{/* AI Insights Widget */}
-						<div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-1 rounded-[2rem] shadow-xl">
+						<div className="bg-linear-to-br from-indigo-500 to-purple-600 p-1 rounded-4xl shadow-xl">
 							<div className="bg-white/95 backdrop-blur-xl rounded-[1.8rem] p-6 h-full">
 								<h3 className="text-xl font-extrabold mb-5 flex items-center gap-2 text-slate-800 tracking-tight">
 									<Sparkles className="w-6 h-6 text-indigo-500 fill-indigo-100" />{" "}
@@ -778,10 +806,18 @@ export default function PrincipalDashboard() {
 							</h3>
 							<div className="grid grid-cols-3 gap-2 text-center">
 								<div>
-									<div className="h-28">
+									{/* ✅ FIX: Small Donut 1 (Strict height 112px instead of percentage) */}
+									<div
+										className="w-full"
+										style={{
+											width: "100%",
+											height: 112,
+											minHeight: 112,
+										}}
+									>
 										<ResponsiveContainer
 											width="100%"
-											height="100%"
+											height={112}
 										>
 											<PieChart>
 												<Pie
@@ -814,10 +850,18 @@ export default function PrincipalDashboard() {
 									</p>
 								</div>
 								<div>
-									<div className="h-28">
+									{/* ✅ FIX: Small Donut 2 (Strict height 112px) */}
+									<div
+										className="w-full"
+										style={{
+											width: "100%",
+											height: 112,
+											minHeight: 112,
+										}}
+									>
 										<ResponsiveContainer
 											width="100%"
-											height="100%"
+											height={112}
 										>
 											<PieChart>
 												<Pie
@@ -850,10 +894,18 @@ export default function PrincipalDashboard() {
 									</p>
 								</div>
 								<div>
-									<div className="h-28">
+									{/* ✅ FIX: Small Donut 3 (Strict height 112px) */}
+									<div
+										className="w-full"
+										style={{
+											width: "100%",
+											height: 112,
+											minHeight: 112,
+										}}
+									>
 										<ResponsiveContainer
 											width="100%"
-											height="100%"
+											height={112}
 										>
 											<PieChart>
 												<Pie

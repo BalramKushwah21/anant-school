@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 // Keep the standard UI icons from Lucide
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -7,7 +5,6 @@ import { Mail, Phone, MapPin } from "lucide-react";
 // Import the brand icons from React Icons (Feather set matches Lucide's style)
 import { FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from "react-icons/fi";
 export default function HomePage() {
-
 	const currentYear = new Date().getFullYear();
 	const plans = [
 		{
@@ -36,8 +33,29 @@ export default function HomePage() {
 	return (
 		<main className="bg-slate-950 text-white min-h-screen">
 			{/* Hero Section */}
-			<section className="container mx-auto px-6 py-24">
-				<div className="grid lg:grid-cols-2 gap-12 items-center">
+			<section className="container mx-auto px-6 py-10 ">
+				<div className="justify-between flex">
+					<Link
+						href="/pages/about"
+						className="bg-pink-600 hover:bg-pink-500 px-6 py-3 rounded-xl font-medium"
+					>
+						About
+					</Link>
+					<Link
+						href="/pages/contact"
+						className="bg-pink-600 hover:bg-pink-500 px-6 py-3 rounded-xl font-medium"
+					>
+						Contact
+					</Link>
+					<Link
+						href="/auth/login"
+						className="bg-pink-600 hover:bg-pink-500 px-6 py-3 rounded-xl font-medium"
+					>
+						Login
+					</Link>
+				</div>
+
+				<div className="grid lg:grid-cols-2 gap-12 items-center py-10">
 					<div>
 						<span className="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-full text-sm">
 							School Management SaaS
