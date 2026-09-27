@@ -76,80 +76,151 @@ export async function GET(request) {
 		// 2. PARALLEL QUERIES FOR ALL 8 KPI BOXES
 		// Promise.all se saari queries ek sath execute hongi (No API Lag)
 		// ==========================================
-		const [
-			schoolInfo,
-			totalStudents,
-			totalTeachers,
-			totalFamilies,
-			uniqueClasses,
-			attendanceStats,
-			feeStats,
-			studentsByGender,
-		] = await Promise.all([
-			// 1. School Info
-			prisma.school.findUnique({
-				where: { id: schoolId },
-				select: { schoolName: true },
-			}),
+		// const [
+		// 	schoolInfo,
+		// 	totalStudents,
+		// 	totalTeachers,
+		// 	totalFamilies,
+		// 	uniqueClasses,
+		// 	attendanceStats,
+		// 	feeStats,
+		// 	studentsByGender,
+		// ] = await Promise.all([
+		// 	// 1. School Info
+		// 	prisma.school.findUnique({
+		// 		where: { id: schoolId },
+		// 		select: { schoolName: true },
+		// 	}),
 
-			// 2. Box 1: Total Students in selected Academic Year
-			prisma.student.count({
-				where: {
-					schoolId,
-					academicProfiles: {
-						some: { academicYearId: selectedYearId },
-					},
+		// 	// 2. Box 1: Total Students in selected Academic Year
+		// 	prisma.student.count({
+		// 		where: {
+		// 			schoolId,
+		// 			academicProfiles: {
+		// 				some: { academicYearId: selectedYearId },
+		// 			},
+		// 		},
+		// 	}),
+
+		// 	// 3. Box 2: Total Teachers (School global hota hai)
+		// 	prisma.teacher.count({
+		// 		where: { schoolId, status: "Active" },
+		// 	}), 
+
+		// 	// 4. Box 3: Total Parents/Families
+		// 	prisma.family.count({
+		// 		where: { schoolId },
+		// 	}),
+
+		// 	// 5. Box 4: Total Classes running in this session
+		// 	prisma.academicProfile.groupBy({
+		// 		by: ["currentClass"],
+		// 		where: { schoolId, academicYearId: selectedYearId },
+		// 	}),
+
+		// 	// 6. Box 5: Today's Attendance calculation (Present / Total)
+		// 	prisma.attendance.findMany({
+		// 		where: {
+		// 			schoolId,
+		// 			academicYearId: selectedYearId,
+		// 			date: { gte: todayStart, lte: todayEnd },
+		// 		},
+		// 		select: { status: true },
+		// 	}),
+
+		// 	// 7. Box 6: Fee Collection Analysis
+		// 	prisma.feeRecord.aggregate({
+		// 		where: { schoolId, academicYearId: selectedYearId },
+		// 		_sum: {
+		// 			admissionFeePaid: true,
+		// 			transportFeePaid: true,
+		// 			securityDepositPaid: true,
+		// 		},
+		// 	}),
+
+		// 	// Chart Data: Gender Distribution
+		// 	prisma.student.groupBy({
+		// 		by: ["gender"],
+		// 		where: {
+		// 			schoolId,
+		// 			academicProfiles: {
+		// 				some: { academicYearId: selectedYearId },
+		// 			},
+		// 		},
+		// 		_count: { gender: true },
+		// 	}),
+		// ]);
+
+
+
+
+
+
+
+		const schoolInfo = await prisma.school.findUnique({
+			where: { id: schoolId },
+			select: { schoolName: true },
+		});
+
+		const totalStudents = await prisma.student.count({
+			where: {
+				schoolId,
+				academicProfiles: {
+					some: { academicYearId: selectedYearId },
 				},
-			}),
+			},
+		});
 
-			// 3. Box 2: Total Teachers (School global hota hai)
-			prisma.teacher.count({
-				where: { schoolId, status: "Active" },
-			}),
+		const totalTeachers = await prisma.teacher.count({
+			where: {
+				schoolId,
+				status: "Active",
+			},
+		});
 
-			// 4. Box 3: Total Parents/Families
-			prisma.family.count({
-				where: { schoolId },
-			}),
+		const totalFamilies = await prisma.family.count({
+			where: { schoolId },
+		});
 
-			// 5. Box 4: Total Classes running in this session
-			prisma.academicProfile.groupBy({
-				by: ["currentClass"],
-				where: { schoolId, academicYearId: selectedYearId },
-			}),
+		const uniqueClasses = await prisma.academicProfile.groupBy({
+			by: ["currentClass"],
+			where: {
+				schoolId,
+				academicYearId: selectedYearId,
+			},
+		});
 
-			// 6. Box 5: Today's Attendance calculation (Present / Total)
-			prisma.attendance.findMany({
-				where: {
-					schoolId,
-					academicYearId: selectedYearId,
-					date: { gte: todayStart, lte: todayEnd },
+		const attendanceStats = await prisma.attendance.findMany({
+			where: {
+				schoolId,
+				academicYearId: selectedYearId,
+				date: { gte: todayStart, lte: todayEnd },
+			},
+			select: { status: true },
+		});
+
+		const feeStats = await prisma.feeRecord.aggregate({
+			where: {
+				schoolId,
+				academicYearId: selectedYearId,
+			},
+			_sum: {
+				admissionFeePaid: true,
+				transportFeePaid: true,
+				securityDepositPaid: true,
+			},
+		});
+
+		const studentsByGender = await prisma.student.groupBy({
+			by: ["gender"],
+			where: {
+				schoolId,
+				academicProfiles: {
+					some: { academicYearId: selectedYearId },
 				},
-				select: { status: true },
-			}),
-
-			// 7. Box 6: Fee Collection Analysis
-			prisma.feeRecord.aggregate({
-				where: { schoolId, academicYearId: selectedYearId },
-				_sum: {
-					admissionFeePaid: true,
-					transportFeePaid: true,
-					securityDepositPaid: true,
-				},
-			}),
-
-			// Chart Data: Gender Distribution
-			prisma.student.groupBy({
-				by: ["gender"],
-				where: {
-					schoolId,
-					academicProfiles: {
-						some: { academicYearId: selectedYearId },
-					},
-				},
-				_count: { gender: true },
-			}),
-		]);
+			},
+			_count: { gender: true },
+		});
 
 		// ==========================================
 		// 3. DATA AGGREGATION & MATHEMATICAL LOGIC

@@ -69,7 +69,9 @@ export const ModelName = {
   StudentDocument: 'StudentDocument',
   Vehicle: 'Vehicle',
   ExamResult: 'ExamResult',
-  SubjectMark: 'SubjectMark'
+  SubjectMark: 'SubjectMark',
+  SubscriptionTransaction: 'SubscriptionTransaction',
+  StudentPaymentTransaction: 'StudentPaymentTransaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -480,6 +482,44 @@ export const SubjectMarkScalarFieldEnum = {
 } as const
 
 export type SubjectMarkScalarFieldEnum = (typeof SubjectMarkScalarFieldEnum)[keyof typeof SubjectMarkScalarFieldEnum]
+
+
+export const SubscriptionTransactionScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  planName: 'planName',
+  amount: 'amount',
+  billingCycle: 'billingCycle',
+  status: 'status',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
+  razorpaySignature: 'razorpaySignature',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionTransactionScalarFieldEnum = (typeof SubscriptionTransactionScalarFieldEnum)[keyof typeof SubscriptionTransactionScalarFieldEnum]
+
+
+export const StudentPaymentTransactionScalarFieldEnum = {
+  id: 'id',
+  schoolId: 'schoolId',
+  studentId: 'studentId',
+  academicYearId: 'academicYearId',
+  amount: 'amount',
+  feeCategory: 'feeCategory',
+  status: 'status',
+  paymentMode: 'paymentMode',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
+  razorpaySignature: 'razorpaySignature',
+  receiptNumber: 'receiptNumber',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentPaymentTransactionScalarFieldEnum = (typeof StudentPaymentTransactionScalarFieldEnum)[keyof typeof StudentPaymentTransactionScalarFieldEnum]
 
 
 export const SortOrder = {

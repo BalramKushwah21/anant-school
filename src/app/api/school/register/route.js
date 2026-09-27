@@ -1,119 +1,150 @@
-import { prisma } from "@/lib/prisma";
-
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
-
-
-export async function POST(request) {
+export async function POST(req) {
 	try {
-		// 1. Frontend se form data receive karein
-		// Isme School Information aur Administrator Information shamil hain
-		const data = await request.json();
-
+		const body = await req.json();
 		const {
 			schoolName,
-			subdomain, // e.g., 'dps-delhi'
-			schoolType, // e.g., 'K-12'
+			subdomain,
+			schoolType,
 			udiseCode,
 			phone,
 			schoolEmail,
+			address,
 			city,
 			district,
 			state,
-			address,
 			pincode,
-
-			// Admin Details
 			adminName,
 			adminEmail,
 			adminPassword,
-		} = data;
+			subscriptionPlan,
+			razorpay_order_id,
+			razorpay_payment_id,
+			razorpay_signature,
+		} = body;
 
-		// 2. Validation: Check karein ki email ya UDISE code pehle se register toh nahi
+		// 1. Verify Razorpay Signature (Security Check)
+		if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+			return NextResponse.json(
+				{ error: "Payment details missing." },
+				{ status: 400 },
+			);
+		}
+
+		const generatedSignature = crypto
+			.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+			.update(`${razorpay_order_id}|${razorpay_payment_id}`)
+			.digest("hex");
+
+		if (generatedSignature !== razorpay_signature) {
+			return NextResponse.json(
+				{
+					error: "Payment verification failed! Security breach detected.",
+				},
+				{ status: 400 },
+			);
+		}
+
+		// 2. Check for Duplicates
 		const existingSchool = await prisma.school.findFirst({
-			where: {
-				OR: [
-					{ subdomain: subdomain },
-					{ udiseCode: udiseCode },
-					{ email: schoolEmail },
-				],
-			},
+			where: { OR: [{ subdomain: subdomain }, { email: schoolEmail }] },
 		});
 
 		if (existingSchool) {
 			return NextResponse.json(
-				{
-					error: "School with this Subdomain, UDISE Code, or Email already exists.",
-				},
+				{ error: "Subdomain or Email already registered." },
 				{ status: 400 },
 			);
 		}
 
-		const existingUser = await prisma.user.findUnique({
-			where: { email: adminEmail },
-		});
-
-		if (existingUser) {
-			return NextResponse.json(
-				{ error: "Administrator email is already registered." },
-				{ status: 400 },
-			);
-		}
-
-		// 3. Password Hashing (Security)
+		// 3. Hash Admin Password
 		const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-		// 4. THE PRISMA TRANSACTION (Data Isolation Logic)
-		// Yeh ensure karega ki dono (School aur Admin) ek hi waqt par database me create hon
-		const result = await prisma.$transaction(async (tx) => {
-			// Step A: Pehle School table me ek naya record banega
-			const newSchool = await tx.school.create({
+		// Map plan IDs to amounts based on your frontend Pricing logic
+		const planPrices = {
+			BASIC: 299,
+			STANDARD: 999,
+			PREMIUM: 1499,
+		};
+		const paidAmount = planPrices[subscriptionPlan] || 0;
+
+		// 4. Execute Prisma Transaction (All or Nothing)
+		const newRegistration = await prisma.$transaction(async (tx) => {
+			// A. Create School
+			const school = await tx.school.create({
 				data: {
-					schoolName,
-					subdomain,
-					schoolType,
-					adminName,
-					udiseCode,
-					phone,
+					schoolName: schoolName,
+					subdomain: subdomain,
+					schoolType: schoolType,
+					udiseCode: udiseCode,
+					phone: phone,
 					email: schoolEmail,
-					city,
-					district,
-					state,
-					address,
-					pincode,
-					subscriptionPlan: "BASIC", // Default plan
+					address: address,
+					city: city,
+					district: district,
+					state: state,
+					pincode: pincode,
+					subscriptionPlan: subscriptionPlan,
+					isActive: true,
 				},
 			});
 
-			// Step B: Usi waqt, User table me ek naya admin create hoga
-			// Sabse important, us user ko newly generated schoolId assign kar diya jayega
-			const newAdmin = await tx.user.create({
+			// B. Create Admin User
+			await tx.user.create({
 				data: {
+					schoolId: school.id,
 					name: adminName,
 					email: adminEmail,
 					password: hashedPassword,
-					userRole: "ADMIN", // Role-Based Access Control
-					schoolId: newSchool.id, // Strict Data Isolation Guarantee
+					userRole: "ADMIN",
 				},
 			});
 
-			return { newSchool, newAdmin };
+			// C. Record the Subscription Payment
+			await tx.subscriptionTransaction.create({
+				data: {
+					schoolId: school.id,
+					planName: subscriptionPlan,
+					amount: paidAmount,
+					billingCycle: "MONTHLY",
+					status: "SUCCESS",
+					razorpayOrderId: razorpay_order_id,
+					razorpayPaymentId: razorpay_payment_id,
+					razorpaySignature: razorpay_signature,
+				},
+			});
+
+			return school;
 		});
 
-		// 5. Success Response
 		return NextResponse.json(
 			{
 				success: true,
-				message: "School and Admin successfully registered!",
-				tenantId: result.newSchool.id,
+				message:
+					"Subscription active & School registered successfully!",
+				school: newRegistration,
 			},
 			{ status: 201 },
 		);
 	} catch (error) {
-		console.error("Registration Error:", error);
+		console.error("Subscription Registration Error:", error);
+
+		// Handle specific Prisma Unique Constraint errors gracefully
+		if (error.code === "P2002") {
+			return NextResponse.json(
+				{ error: "A record with this data already exists." },
+				{ status: 400 },
+			);
+		}
+
 		return NextResponse.json(
-			{ error: "Something went wrong during registration." },
+			{
+				error: "Failed to process registration. Please contact support.",
+			},
 			{ status: 500 },
 		);
 	}

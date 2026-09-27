@@ -48,6 +48,8 @@ model School {
   feeStructures     FeeStructure[]
   examResults       ExamResult[]
   vehicles          Vehicle[]
+  subscriptionTransactions    SubscriptionTransaction[]
+  studentPaymentTransactions  StudentPaymentTransaction[]
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -68,6 +70,7 @@ model AcademicYear {
   feeRecords       FeeRecord[]
   academicProfiles AcademicProfile[]
   examResults      ExamResult[]
+  studentPaymentTransactions StudentPaymentTransaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -311,6 +314,7 @@ model Student {
   feeRecords         FeeRecord[]
   attendances        Attendance[]
   examResults        ExamResult[]
+  studentPaymentTransactions StudentPaymentTransaction[]
   addresses          Address[]
   users              User[]   @relation("StudentUsers")
  
@@ -595,9 +599,81 @@ model SubjectMark {
   @@index([examResultId])
 }
 
+
+
+
+model SubscriptionTransaction {
+  id                  String         @id @default(cuid())
+  
+  // Link to the School (Tenant)
+  schoolId            String
+  school              School         @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  // SaaS Specific Fields
+  planName            String         // e.g., "BASIC", "PREMIUM"
+  amount              Decimal        @db.Decimal(10, 2)
+  billingCycle        String         // "MONTHLY", "YEARLY"
+  status              PaymentStatus  @default(PENDING)
+  
+  // Platform's Razorpay Account Details
+  razorpayOrderId     String?        @unique
+  razorpayPaymentId   String?        @unique
+  razorpaySignature   String?
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([schoolId])
+}
+
+model StudentPaymentTransaction {
+  id                  String         @id @default(cuid())
+  
+  // Multi-Tenant Isolation & Relational Links
+  schoolId            String
+  school              School         @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  
+  studentId           String
+  student             Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  academicYearId      String         // To track which year the fee belongs to
+  academicYear        AcademicYear   @relation(fields: [academicYearId], references: [id], onDelete: Restrict)
+
+  // Fee Specific Fields
+  amount              Decimal        @db.Decimal(10, 2)
+  feeCategory         FeeCategory    // e.g., TUITION, TRANSPORT, ADMISSION
+  status              PaymentStatus  @default(PENDING)
+  paymentMode         PaymentMode    @default(CARD) // CASH, CHEQUE, UPI, CARD
+
+  // Gateway Details (If paid online)
+  razorpayOrderId     String?        @unique
+  razorpayPaymentId   String?        @unique
+  razorpaySignature   String?
+  
+  // Receipt tracking
+  receiptNumber       String?        @unique
+  errorMessage        String?        @db.Text
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([schoolId, academicYearId])
+  @@index([studentId])
+}
+
 // ==========================================
 // 12. ENUMS
 // ==========================================
+
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+
 enum UserRole {
   SUPER_ADMIN
   ADMIN

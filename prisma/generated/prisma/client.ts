@@ -136,3 +136,13 @@ export type ExamResult = Prisma.ExamResultModel
  * 
  */
 export type SubjectMark = Prisma.SubjectMarkModel
+/**
+ * Model SubscriptionTransaction
+ * 
+ */
+export type SubscriptionTransaction = Prisma.SubscriptionTransactionModel
+/**
+ * Model StudentPaymentTransaction
+ * 
+ */
+export type StudentPaymentTransaction = Prisma.StudentPaymentTransactionModel
