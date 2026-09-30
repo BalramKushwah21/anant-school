@@ -14,9 +14,9 @@ import {
 const StudentDashboard = () => {
   // Mock Data: In production, this will be fetched from your API
   const [studentInfo] = useState({
-    name: "Aarav Sharma",
-    class: "Class 10 - A",
-    rollNo: "10A-45",
+    name: "Pooja Sharma",
+    class: "Nursery - A",
+    rollNo: "01",
     attendance: 88, // Percentage
   });
 
